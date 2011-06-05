@@ -7,7 +7,7 @@
 /**
  * team actions.
  *
- * @package    stab
+ * @package    3tab
  * @subpackage team
  * @author     Your name here
  * @version    SVN: $Id: actions.class.php 3335 2007-01-23 16:19:56Z fabien $
