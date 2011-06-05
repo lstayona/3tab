@@ -3,7 +3,7 @@
 /**
  * tournament actions.
  *
- * @package    stab
+ * @package    3tab
  * @subpackage tournament
  * @author     suthen
  * @version    SVN: $Id: actions.class.php 2692 2006-11-15 21:03:55Z fabien $

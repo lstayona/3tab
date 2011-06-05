@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__).'/../bootstrap/unit.php');
-define('SF_APP',         'stab');
+define('SF_APP',         '3tab');
 define('SF_ENVIRONMENT', 'dev');
 define('SF_DEBUG',       true);
 

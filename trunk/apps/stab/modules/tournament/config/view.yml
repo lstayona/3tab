@@ -1,2 +1,2 @@
 debateResultsEntrySuccess:
-    javascripts:  [apps/stab/modules/tournament/debateResultsEntrySuccess]
+    javascripts:  [apps/3tab/modules/tournament/debateResultsEntrySuccess]

@@ -7,4 +7,4 @@ all:
   propel:
     class:          sfPropelDatabase
     param:
-      dsn:          pgsql://postgres:data01@localhost/stab
+      dsn:          pgsql://postgres:data01@localhost/3tab

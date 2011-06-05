@@ -1,14 +1,14 @@
 <?php
-pake_desc('stab import csv all');
-pake_task('stab-import-csv-all');
+pake_desc('3tab import csv all');
+pake_task('3tab-import-csv-all');
 
-pake_desc('stab import csv specific');
-pake_task('stab-import-csv-specific');
+pake_desc('3tab import csv specific');
+pake_task('3tab-import-csv-specific');
 
-function run_stab_import_csv_all($task, $args)
+function run_3tab_import_csv_all($task, $args)
 {
     define('SF_ROOT_DIR',    sfConfig::get('sf_root_dir'));
-    define('SF_APP',         'stab');
+    define('SF_APP',         '3tab');
     define('SF_ENVIRONMENT', 'dev');
     define('SF_DEBUG',       true);
     require_once SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
@@ -48,10 +48,10 @@ function run_stab_import_csv_all($task, $args)
     }
 }
 
-function run_stab_import_csv_specific($task, $args)
+function run_3tab_import_csv_specific($task, $args)
 {
     define('SF_ROOT_DIR',    sfConfig::get('sf_root_dir'));
-    define('SF_APP',         'stab');
+    define('SF_APP',         '3tab');
     define('SF_ENVIRONMENT', 'dev');
     define('SF_DEBUG',       true);
     require_once SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
