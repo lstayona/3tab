@@ -1,0 +1,50 @@
+Institution:
+    MMU:
+        name: Multimedia University, Cyberjaya
+        code: MMU
+    FOO:
+        name: Fulham Orinthology Organisation
+        code: FOO
+    BAR:
+        name: British Aviation Research
+        code: BAR
+    SHIT:
+        name: South Highlands Institute of Technology
+        code: SHIT
+    SWING:
+        name: Swing Team Placeholder Institution
+        code: SWING
+    IIU:
+        name: International Inuit Union
+        code: IIU
+    NTU:
+        name: National Tango Union
+        code: NTU
+    SMU:
+        name: Swaziland Microbiology Union
+        code: SMU
+    UITM:
+        name: United International Terrestrial Machines
+        code: UITM
+    GAB:
+        name: Good And Bad
+        code: GAB
+    SAB:
+        name: Shoot Any Balloon
+        code: SAB
+    TEE:
+        name: Totally Evil Enterprise
+        code: TEE
+    HYC:
+        name: Hot Young Couples
+        code: HYC
+    PIG:
+        name: Penang Institute of Geese
+        code: PIG
+    FCC:
+        name: Fools Can't Count
+        code: FCC
+    GSC:
+        name: Go Shoot Chickens
+        code: GSC
+      

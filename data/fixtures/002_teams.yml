@@ -1,0 +1,104 @@
+Team:
+    mmu_a:
+        name: MMU A
+        institution_id: MMU
+    mmu_b:
+        name: MMU B
+        institution_id: MMU
+    mmu_c:
+        name: MMU C
+        institution_id: MMU
+    foo_a:
+        name: FOO A
+        institution_id: FOO
+    foo_b:
+        name: FOO B
+        institution_id: FOO
+    foo_c:
+        name: FOO C
+        institution_id: FOO
+    foo_d:
+        name: FOO D
+        institution_id: FOO
+    bar_a:
+        name: BAR A
+        institution_id: BAR
+    bar_b:
+        name: BAR B
+        institution_id: BAR
+    bar_c:
+        name: BAR C
+        institution_id: BAR
+    shit_a:
+        name: SHIT A
+        institution_id: SHIT
+    swing_a:
+        name: SWING A
+        institution_id: SWING
+        swing: 1
+    iiu_a:
+        name: IIU A
+        institution_id: IIU
+    iiu_b:
+        name: IIU B
+        institution_id: IIU
+    iiu_c:
+        name: IIU_C
+        institution_id: IIU
+    ntu_a:
+        name: NTU_A
+        institution_id: NTU
+    ntu_b:
+        name: NTU_B
+        institution_id: NTU
+    ntu_c:
+        name: NTU_C
+        institution_id: NTU
+    ntu_d:
+        name: NTU_D
+        institution_id: NTU
+    smu_a:
+        name: SMU_A
+        institution_id: SMU
+    smu_b:
+        name: SMU_B
+        institution_id: SMU
+    uitm_a:
+        name: UITM_A
+        institution_id: UITM
+    gab_a:
+        name: GAB_A
+        institution_id: GAB
+    gab_b:
+        name: GAB_B
+        institution_id: GAB
+    gab_c:
+        name: GAB_C
+        institution_id: GAB
+    sab_a:
+        name: SAB_A
+        institution_id: SAB
+    tee_a:
+        name: TEE_A
+        institution_id: TEE
+    hyc_a:
+        name: HYC_A
+        institution_id: HYC
+    hyc_b:
+        name: HYC_B
+        institution_id: HYC
+    hyc_c:
+        name: HYC_C
+        institution_id: HYC
+    pig_a:
+        name: PIG_A
+        institution_id: PIG
+    fcc_a:
+        name: FCC_A
+        institution_id: FCC
+    fcc_b:
+        name: FCC_B
+        institution_id: FCC
+    gsc_a:
+        name: GSC_A
+        institution_id: GSC

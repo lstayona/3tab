@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="propel" defaultIdMethod="native" noXsd="true" package="lib.model">
+    <table name="institutions" idMethod="native" phpName="Institution">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="code" type="VARCHAR" size="20" required="true" />
+        <column name="name" type="VARCHAR" required="true" />
+        <unique name="institutions_code">
+            <unique-column name="code"/>
+        </unique>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
+    
+    <table name="teams" idMethod="native" phpName="Team">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="name" type="VARCHAR" size="50" required="true" />
+        <column name="institution_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="institutions" onDelete="" onUpdate="">
+            <reference local="institution_id" foreign="id"/>
+        </foreign-key>
+        <column name="swing" type="BOOLEAN" required="true" default="false" />
+        <column name="active" type="BOOLEAN" required="true" default="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="teams_name">
+            <unique-column name="name"/>
+        </unique>
+    </table>
+    
+    
+    <table name="debaters" idMethod="native" phpName="Debater">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="name" type="VARCHAR" size="100" required="true" />
+        <column name="team_id" type="INTEGER" required="false" />
+        <foreign-key foreignTable="teams" onDelete="" onUpdate="">
+            <reference local="team_id" foreign="id"/>
+        </foreign-key>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="debaters_name">
+            <unique-column name="name"/>
+        </unique>
+    </table>
+    
+    <table name="adjudicators" idMethod="native" phpName="Adjudicator">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="name" type="VARCHAR" size="100" required="true" />
+        <column name="test_score" type="FLOAT" required="true" />
+        <column name="institution_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="institutions" onDelete="" onUpdate="">
+            <reference local="institution_id" foreign="id"/>
+        </foreign-key>
+        <column name="active" type="BOOLEAN" required="true" default="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="adjudicators_name">
+            <unique-column name="name"/>
+        </unique>
+    </table>
+    
+    <table name="rounds" idMethod="native" phpName="Round">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="name" type="VARCHAR" required="true" />
+        <column name="type" type="INTEGER" required="true" />
+        <column name="status" type="INTEGER" required="true" default="1" />
+        <column name="preceded_by_round_id" type="INTEGER" required="false" />
+        <foreign-key foreignTable="rounds" onDelete="" onUpdate="">
+            <reference local="preceded_by_round_id" foreign="id"/>
+        </foreign-key>
+		<column name="feedback_weightage" type="FLOAT" required="true" default="0" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="rounds_name">
+            <unique-column name="name"/>
+        </unique>
+    </table>
+    
+    <table name="venues" idMethod="native" phpName="Venue">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="name" type="VARCHAR" required="true" />
+        <column name="active" type="BOOLEAN" required="true" default="true" />
+        <column name="priority" type="INTEGER" required="true" default="1" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="venues_name">
+            <unique-column name="name"/>
+        </unique>
+    </table>
+    
+    <table name="debates" idMethod="native" phpName="Debate">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="round_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="rounds" onDelete="" onUpdate="">
+            <reference local="round_id" foreign="id"/>
+        </foreign-key>
+        <column name="venue_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="venues" onDelete="" onUpdate="">
+            <reference local="venue_id" foreign="id"/>
+        </foreign-key>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="debates_round_id_venue_id">
+            <unique-column name="round_id"/>
+            <unique-column name="venue_id"/>
+        </unique>
+    </table>
+    
+    <table name="debates_teams_xrefs" idMethod="native" phpName="DebateTeamXref">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="debate_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates" onDelete="" onUpdate="">
+            <reference local="debate_id" foreign="id"/>
+        </foreign-key>
+        <column name="team_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="teams" onDelete="" onUpdate="">
+            <reference local="team_id" foreign="id"/>
+        </foreign-key>
+        <column name="position" type="INTEGER" required="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="debates_teams_xrefs_debate_id_team_id">
+            <unique-column name="debate_id"/>
+            <unique-column name="team_id"/>
+        </unique>
+    </table>
+    
+    <table name="adjudicator_allocations" idMethod="native" phpName="AdjudicatorAllocation">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="debate_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates" onDelete="" onUpdate="">
+            <reference local="debate_id" foreign="id"/>
+        </foreign-key>
+        <column name="adjudicator_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicators" onDelete="" onUpdate="">
+            <reference local="adjudicator_id" foreign="id"/>
+        </foreign-key>
+        <column name="type" type="INTEGER" required="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="adjudicator_allocations_debate_id_adjudicator_id">
+            <unique-column name="debate_id"/>
+            <unique-column name="adjudicator_id"/>
+        </unique>
+    </table>
+	
+	<table name="trainee_allocations" idMethod="native" phpName="TraineeAllocation">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="trainee_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicators" onDelete="" onUpdate="">
+            <reference local="trainee_id" foreign="id"/>
+        </foreign-key>
+        <column name="chair_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicators" onDelete="" onUpdate="">
+            <reference local="chair_id" foreign="id"/>
+        </foreign-key>
+		<column name="round_id" type="INTEGER" required="true" />
+		<foreign-key foreignTable="rounds" onDelete="" onUpdate="">
+			<reference local="round_id" foreign="id"/>
+		</foreign-key>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+        <unique name="trainee_allocations_trainee_id_chair_id_round_id">
+            <unique-column name="trainee_id"/>
+            <unique-column name="chair_id"/>
+			<unique-column name="round_id"/>
+        </unique>
+    </table>
+    
+    <table name="team_score_sheets" idMethod="native" phpName="TeamScoreSheet">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="adjudicator_allocation_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicator_allocations" onDelete="" onUpdate="">
+            <reference local="adjudicator_allocation_id" foreign="id"/>
+        </foreign-key>
+        <column name="debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="score" type="INTEGER" required="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
+    
+    <table name="speaker_score_sheets" idMethod="native" phpName="SpeakerScoreSheet">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="adjudicator_allocation_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicator_allocations" onDelete="" onUpdate="">
+            <reference local="adjudicator_allocation_id" foreign="id"/>
+        </foreign-key>
+        <column name="debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="debater_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debaters" onDelete="" onUpdate="">
+            <reference local="debater_id" foreign="id"/>
+        </foreign-key>
+        <column name="score" type="FLOAT" required="true" />
+        <column name="speaking_position" type="INTEGER" required="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
+	
+    <table name="adjudicator_feedback_sheets" idMethod="native" phpName="AdjudicatorFeedbackSheet">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="adjudicator_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicators" onDelete="" onUpdate="">
+            <reference local="adjudicator_id" foreign="id"/>
+        </foreign-key>   
+		<column name="adjudicator_allocation_id" type="INTEGER" required="false" />
+        <foreign-key foreignTable="adjudicator_allocations" onDelete="" onUpdate="">
+            <reference local="adjudicator_allocation_id" foreign="id"/>
+        </foreign-key>
+		<column name="debate_team_xref_id" type="INTEGER" required="false" />		
+		<foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>   		
+		<column name="comments" type="VARCHAR" size="500" required="false" />
+        <column name="score" type="FLOAT" required="true" />
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
+	
+	<table name="team_scores" idMethod="native" phpName="TeamScore">
+		<column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+		<column name="team_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="teams" onDelete="" onUpdate="">
+            <reference local="team_id" foreign="id"/>
+        </foreign-key>
+		<column name="total_team_score" type="INTEGER" required="true" default="0" />
+		<column name="total_speaker_score" type="FLOAT" required="true" default="0" />
+		<column name="total_margin" type="FLOAT" required="true" default="0" />
+		<column name="created_at" type="TIMESTAMP" />
+		<column name="updated_at" type="TIMESTAMP" />
+        <unique name="team_scores_team_id">
+            <unique-column name="team_id"/>
+        </unique>
+	</table>
+	
+	<table name="speaker_scores" idMethod="native" phpName="SpeakerScore">
+		<column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+		<column name="debater_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debaters" onDelete="" onUpdate="">
+            <reference local="debater_id" foreign="id"/>
+        </foreign-key>
+		<column name="total_speaker_score" type="FLOAT" required="true" default="0" />
+		<column name="created_at" type="TIMESTAMP" />
+		<column name="updated_at" type="TIMESTAMP" />
+        <unique name="speaker_scores_debater_id">
+            <unique-column name="debater_id"/>
+        </unique>
+	</table>
+    
+    <table name="adjudicator_conflicts" idMethod="native" phpName="AdjudicatorConflict">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="team_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="teams" onDelete="" onUpdate="">
+            <reference local="team_id" foreign="id"/>
+        </foreign-key>
+        <column name="adjudicator_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicators" onDelete="" onUpdate="">
+            <reference local="adjudicator_id" foreign="id"/>
+        </foreign-key>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
+</database>

@@ -1,0 +1,10 @@
+#all:
+#  propel:
+#    class:          sfPropelDatabase
+#    param:
+#      dsn:          mysql://root@localhost/dbname
+all:
+  propel:
+    class:          sfPropelDatabase
+    param:
+      dsn:          pgsql://postgres:data01@localhost/stab
