@@ -1,0 +1,118 @@
+Adjudicator:
+    mmu_adjudicator1:
+        test_score: 5.0
+        name: mmu_adjudicator1
+        institution_id: MMU
+    mmu_adjudicator2:
+        test_score: 5.0
+        name: mmu_adjudicator2
+        institution_id: MMU
+    foo_adjudicator1:
+        test_score: 3.0
+        name: foo_adjudicator1
+        institution_id: FOO
+    foo_adjudicator2:
+        test_score: 3.0
+        name: foo_adjudicator2
+        institution_id: FOO
+    foo_adjudicator3:
+        test_score: 3.5
+        name: foo_adjudicator3
+        institution_id: FOO
+    bar_adjudicator1:
+        test_score: 4.0
+        name: bar_adjudicator1
+        institution_id: BAR
+    bar_adjudicator2:
+        test_score: 5.0
+        name: bar_adjudicator2
+        institution_id: BAR
+    bar_adjudicator3:
+        test_score: 3.5
+        name: bar_adjudicator3
+        institution_id: BAR
+    bar_adjudicator4:
+        test_score: 2.5
+        name: bar_adjudicator4
+        institution_id: BAR
+    bar_adjudicator5:
+        test_score: 2
+        name: bar_adjudicator5
+        institution_id: BAR
+    iiu_adjudicator1:
+        test_score: 4.0
+        name: iiu_adjudicator1
+        institution_id: IIU
+    iiu_adjudicator2:
+        test_score: 3.0
+        name: iiu_adjudicator2
+        institution_id: IIU
+    ntu_adjudicator1:
+        test_score: 4.0
+        name: ntu_adjudicator1
+        institution_id: NTU
+    ntu_adjudicator2:
+        test_score: 5.0
+        name: ntu_adjudicator2
+        institution_id: NTU
+    ntu_adjudicator3:
+        test_score: 2.5
+        name: ntu_adjudicator3
+        institution_id: NTU
+    smu_adjudicator1:
+        test_score: 4.0
+        name: smu_adjudicator1
+        institution_id: SMU
+    uitm_adjudicator1:
+        test_score: 3.0
+        name: uitm_adjudicator1
+        institution_id: UITM
+    uitm_adjudicator2:
+        test_score: 2.0
+        name: uitm_adjudicator2
+        institution_id: UITM
+    gab_adjudicator1:
+        test_score: 2.0
+        name: gab_adjudicator1
+        institution_id: GAB
+    gab_adjudicator2:
+        test_score: 5.0
+        name: gab_adjudicator2
+        institution_id: GAB
+    sab_adjudicator1:
+        test_score: 2.0
+        name: sab_adjudicator1
+        institution_id: SAB
+    tee_adjudicator1:
+        test_score: 3.0
+        name: tee_adjudicator1
+        institution_id: TEE
+    hyc_adjudicator1:
+        test_score: 3.0
+        name: hyc_adjudicator1
+        institution_id: HYC
+    hyc_adjudicator2:
+        test_score: 3.0
+        name: hyc_adjudicator2
+        institution_id: HYC
+    pig_adjudicator1:
+        test_score: 2.0
+        name: pig_adjudicator1
+        institution_id: PIG
+    fcc_adjudicator1:
+        test_score: 3.0
+        name: fcc_adjudicator1
+        institution_id: FCC
+    fcc_adjudicator2:
+        test_score: 3.5
+        name: fcc_adjudicator2
+        institution_id: FCC
+    gsc_adjudicator1:
+        test_score: 4.0
+        name: gsc_adjudicator1
+        institution_id: GSC
+    gsc_adjudicator2:
+        test_score: 3.0
+        name: gsc_adjudicator2
+        institution_id: GSC
+        

@@ -1,0 +1,307 @@
+Debater:
+    mmu_a_speaker1:
+        team_id: mmu_a
+        name: mmu_a_speaker1
+    mmu_a_speaker2:
+        team_id: mmu_a
+        name: mmu_a_speaker2
+    mmu_a_speaker3:
+        team_id: mmu_a
+        name: mmu_a_speaker3
+    mmu_b_speaker1:
+        team_id: mmu_b
+        name: mmu_b_speaker1
+    mmu_b_speaker2:
+        team_id: mmu_b
+        name: mmu_b_speaker2
+    mmu_b_speaker3:
+        team_id: mmu_b
+        name: mmu_b_speaker3
+    mmu_c_speaker1:
+        team_id: mmu_c
+        name: mmu_c_speaker1
+    mmu_c_speaker2:
+        team_id: mmu_c
+        name: mmu_c_speaker2
+    mmu_c_speaker3:
+        team_id: mmu_c
+        name: mmu_c_speaker3
+    foo_a_speaker1:
+        team_id: foo_a
+        name: foo_a_speaker1
+    foo_a_speaker2:
+        team_id: foo_a
+        name: foo_a_speaker2
+    foo_a_speaker3:
+        team_id: foo_a
+        name: foo_a_speaker3
+    foo_b_speaker1:
+        team_id: foo_b
+        name: foo_b_speaker1
+    foo_b_speaker2:
+        team_id: foo_b
+        name: foo_b_speaker2
+    foo_b_speaker3:
+        team_id: foo_b
+        name: foo_b_speaker3
+    foo_c_speaker1:
+        team_id: foo_c
+        name: foo_c_speaker1
+    foo_c_speaker2:
+        team_id: foo_c
+        name: foo_c_speaker2
+    foo_c_speaker3:
+        team_id: foo_c
+        name: foo_c_speaker3
+    foo_d_speaker1:
+        team_id: foo_d
+        name: foo_d_speaker1
+    foo_d_speaker2:
+        team_id: foo_d
+        name: foo_d_speaker2
+    foo_d_speaker3:
+        team_id: foo_d
+        name: foo_d_speaker3
+    bar_a_speaker1:
+        team_id: bar_a
+        name: bar_a_speaker1
+    bar_a_speaker2:
+        team_id: bar_a
+        name: bar_a_speaker2
+    bar_a_speaker3:
+        team_id: bar_a
+        name: bar_a_speaker3
+    bar_b_speaker1:
+        team_id: bar_b
+        name: bar_b_speaker1
+    bar_b_speaker2:
+        team_id: bar_b
+        name: bar_b_speaker2
+    bar_b_speaker3:
+        team_id: bar_b
+        name: bar_b_speaker3
+    bar_c_speaker1:
+        team_id: bar_c
+        name: bar_c_speaker1
+    bar_c_speaker2:
+        team_id: bar_c
+        name: bar_c_speaker2
+    bar_c_speaker3:
+        team_id: bar_c
+        name: bar_c_speaker3
+    shit_a_speaker1:
+        team_id: shit_a
+        name: shit_a_speaker1
+    shit_a_speaker2:
+        team_id: shit_a
+        name: shit_a_speaker2
+    shit_a_speaker3:
+        team_id: shit_a
+        name: shit_a_speaker3
+    swing_a_speaker1:
+        team_id: swing_a
+        name: swing_a_speaker1
+    swing_a_speaker2:
+        team_id: swing_a
+        name: swing_a_speaker2
+    swing_a_speaker3:
+        team_id: swing_a
+        name: swing_a_speaker3
+    iiu_a_speaker1:
+        team_id: iiu_a
+        name: iiu_a_speaker1
+    iiu_a_speaker2:
+        team_id: iiu_a
+        name: iiu_a_speaker2
+    iiu_a_speaker3:
+        team_id: iiu_a
+        name: iiu_a_speaker3
+    iiu_b_speaker1:
+        team_id: iiu_b
+        name: iiu_b_speaker1
+    iiu_b_speaker2:
+        team_id: iiu_b
+        name: iiu_b_speaker2
+    iiu_b_speaker3:
+        team_id: iiu_b
+        name: iiu_b_speaker3
+    iiu_c_speaker1:
+        team_id: iiu_c
+        name: iiu_c_speaker1
+    iiu_c_speaker2:
+        team_id: iiu_c
+        name: iiu_c_speaker2
+    iiu_c_speaker3:
+        team_id: iiu_c
+        name: iiu_c_speaker3
+    ntu_a_speaker1:
+        team_id: ntu_a
+        name: ntu_a_speaker1
+    ntu_a_speaker2:
+        team_id: ntu_a
+        name: ntu_a_speaker2
+    ntu_a_speaker3:
+        team_id: ntu_a
+        name: ntu_a_speaker3
+    ntu_b_speaker1:
+        team_id: ntu_b
+        name: ntu_b_speaker1
+    ntu_b_speaker2:
+        team_id: ntu_b
+        name: ntu_b_speaker2
+    ntu_b_speaker3:
+        team_id: ntu_b
+        name: ntu_b_speaker3
+    ntu_c_speaker1:
+        team_id: ntu_c
+        name: ntu_c_speaker1
+    ntu_c_speaker2:
+        team_id: ntu_c
+        name: ntu_c_speaker2
+    ntu_c_speaker3:
+        team_id: ntu_c
+        name: ntu_c_speaker3
+    ntu_d_speaker1:
+        team_id: ntu_d
+        name: ntu_d_speaker1
+    ntu_d_speaker2:
+        team_id: ntu_d
+        name: ntu_d_speaker2
+    ntu_d_speaker3:
+        team_id: ntu_d
+        name: ntu_d_speaker3
+    smu_a_speaker1:
+        team_id: smu_a
+        name: smu_a_speaker1
+    smu_a_speaker2:
+        team_id: smu_a
+        name: smu_a_speaker2
+    smu_a_speaker3:
+        team_id: smu_a
+        name: smu_a_speaker3
+    smu_b_speaker1:
+        team_id: smu_b
+        name: smu_b_speaker1
+    smu_b_speaker2:
+        team_id: smu_b
+        name: smu_b_speaker2
+    smu_b_speaker3:
+        team_id: smu_b
+        name: smu_b_speaker3
+    uitm_a_speaker1:
+        team_id: uitm_a
+        name: uitm_a_speaker1
+    uitm_a_speaker2:
+        team_id: uitm_a
+        name: uitm_a_speaker2
+    uitm_a_speaker3:
+        team_id: uitm_a
+        name: uitm_a_speaker3
+    gab_a_speaker1:
+        team_id: gab_a
+        name: gab_a_speaker1
+    gab_a_speaker2:
+        team_id: gab_a
+        name: gab_a_speaker2
+    gab_a_speaker3:
+        team_id: gab_a
+        name: gab_a_speaker3
+    gab_b_speaker1:
+        team_id: gab_b
+        name: gab_b_speaker1
+    gab_b_speaker2:
+        team_id: gab_b
+        name: gab_b_speaker2
+    gab_b_speaker3:
+        team_id: gab_b
+        name: gab_b_speaker3
+    gab_c_speaker1:
+        team_id: gab_c
+        name: gab_c_speaker1
+    gab_c_speaker2:
+        team_id: gab_c
+        name: gab_c_speaker2
+    gab_c_speaker3:
+        team_id: gab_c
+        name: gab_c_speaker3
+    sab_a_speaker1:
+        team_id: sab_a
+        name: sab_a_speaker1
+    sab_a_speaker2:
+        team_id: sab_a
+        name: sab_a_speaker2
+    sab_a_speaker3:
+        team_id: sab_a
+        name: sab_a_speaker3
+    tee_a_speaker1:
+        team_id: tee_a
+        name: tee_a_speaker1
+    tee_a_speaker2:
+        team_id: tee_a
+        name: tee_a_speaker2
+    tee_a_speaker3:
+        team_id: tee_a
+        name: tee_a_speaker3
+    hyc_a_speaker1:
+        team_id: hyc_a
+        name: hyc_a_speaker1
+    hyc_a_speaker2:
+        team_id: hyc_a
+        name: hyc_a_speaker2
+    hyc_a_speaker3:
+        team_id: hyc_a
+        name: hyc_a_speaker3
+    hyc_b_speaker1:
+        team_id: hyc_b
+        name: hyc_b_speaker1
+    hyc_b_speaker2:
+        team_id: hyc_b
+        name: hyc_b_speaker2
+    hyc_b_speaker3:
+        team_id: hyc_b
+        name: hyc_b_speaker3
+    hyc_c_speaker1:
+        team_id: hyc_c
+        name: hyc_c_speaker1
+    hyc_c_speaker2:
+        team_id: hyc_c
+        name: hyc_c_speaker2
+    hyc_c_speaker3:
+        team_id: hyc_c
+        name: hyc_c_speaker3
+    pig_a_speaker1:
+        team_id: pig_a
+        name: pig_a_speaker1
+    pig_a_speaker2:
+        team_id: pig_a
+        name: pig_a_speaker2
+    pig_a_speaker3:
+        team_id: pig_a
+        name: pig_a_speaker3
+    fcc_a_speaker1:
+        team_id: fcc_a
+        name: fcc_a_speaker1
+    fcc_a_speaker2:
+        team_id: fcc_a
+        name: fcc_a_speaker2
+    fcc_a_speaker3:
+        team_id: fcc_a
+        name: fcc_a_speaker3
+    fcc_b_speaker1:
+        team_id: fcc_b
+        name: fcc_b_speaker1
+    fcc_b_speaker2:
+        team_id: fcc_b
+        name: fcc_b_speaker2
+    fcc_b_speaker3:
+        team_id: fcc_b
+        name: fcc_b_speaker3
+    gsc_a_speaker1:
+        team_id: gsc_a
+        name: gsc_a_speaker1
+    gsc_a_speaker2:
+        team_id: gsc_a
+        name: gsc_a_speaker2
+    gsc_a_speaker3:
+        team_id: gsc_a
+        name: gsc_a_speaker3

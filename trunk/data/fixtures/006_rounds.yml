@@ -1,0 +1,39 @@
+Round:
+    round_1:
+        name: Round 1
+        type: 1
+    round_2:
+        name: Round 2
+        type: 2
+        preceded_by_round_id: round_1
+        feedback_weightage: 0.1
+    round_3:
+        name: Round 3
+        type: 2
+        preceded_by_round_id: round_2
+        feedback_weightage: 0.2
+    round_4:
+        name: Round 4
+        type: 2
+        preceded_by_round_id: round_3
+        feedback_weightage: 0.3
+    round_5:
+        name: Round 5
+        type: 2
+        preceded_by_round_id: round_4
+        feedback_weightage: 0.4
+    round_6:
+        name: Round 6
+        type: 2
+        preceded_by_round_id: round_5
+        feedback_weightage: 0.5
+    round_7:
+        name: Round 7
+        type: 8
+        preceded_by_round_id: round_6
+        feedback_weightage: 0.6
+    round_8:
+        name: Round 8
+        type: 8
+        preceded_by_round_id: round_7
+        feedback_weightage: 0.7

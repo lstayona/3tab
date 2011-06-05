@@ -1,0 +1,5 @@
+# default values
+all:
+    .speaker_scores:
+        highest_possible: 82
+        lowest_possible: 68
