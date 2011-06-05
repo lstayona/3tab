@@ -44,8 +44,8 @@
 <div id="footer">
 	<p>Copyright &copy; 2008 code-monkeys</p>
 	<p>
-		sTab is developed by Suthen "Tate" Thomas and Edwin "Clansman" Law.<br/>
-		sTab stylesheet is scripted by n.g.
+		3tab is developed by Suthen "Tate" Thomas and Edwin "Clansman" Law.<br/>
+		3tab stylesheet is scripted by n.g.
 	</p>
 
 </div>

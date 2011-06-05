@@ -3,9 +3,9 @@ default:
     content-type: text/html
 
   metas:
-    title:        symfony project
+    title:        3tab
     robots:       index, follow
-    description:  symfony project
+    description:  A 3-on-3 tab
     keywords:     symfony, project
     language:     en
 
