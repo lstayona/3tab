@@ -43,62 +43,62 @@ Team:
         name: IIU B
         institution_id: IIU
     iiu_c:
-        name: IIU_C
+        name: IIU C
         institution_id: IIU
     ntu_a:
-        name: NTU_A
+        name: NTU A
         institution_id: NTU
     ntu_b:
-        name: NTU_B
+        name: NTU B
         institution_id: NTU
     ntu_c:
-        name: NTU_C
+        name: NTU C
         institution_id: NTU
     ntu_d:
-        name: NTU_D
+        name: NTU D
         institution_id: NTU
     smu_a:
-        name: SMU_A
+        name: SMU A
         institution_id: SMU
     smu_b:
-        name: SMU_B
+        name: SMU B
         institution_id: SMU
     uitm_a:
-        name: UITM_A
+        name: UITM A
         institution_id: UITM
     gab_a:
-        name: GAB_A
+        name: GAB A
         institution_id: GAB
     gab_b:
-        name: GAB_B
+        name: GAB B
         institution_id: GAB
     gab_c:
-        name: GAB_C
+        name: GAB C
         institution_id: GAB
     sab_a:
-        name: SAB_A
+        name: SAB A
         institution_id: SAB
     tee_a:
-        name: TEE_A
+        name: TEE A
         institution_id: TEE
     hyc_a:
-        name: HYC_A
+        name: HYC A
         institution_id: HYC
     hyc_b:
-        name: HYC_B
+        name: HYC B
         institution_id: HYC
     hyc_c:
-        name: HYC_C
+        name: HYC C
         institution_id: HYC
     pig_a:
-        name: PIG_A
+        name: PIG A
         institution_id: PIG
     fcc_a:
-        name: FCC_A
+        name: FCC A
         institution_id: FCC
     fcc_b:
-        name: FCC_B
+        name: FCC B
         institution_id: FCC
     gsc_a:
-        name: GSC_A
+        name: GSC A
         institution_id: GSC

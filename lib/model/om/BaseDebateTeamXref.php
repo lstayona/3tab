@@ -56,6 +56,30 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 	protected $lastAdjudicatorFeedbackSheetCriteria = null;
 
 	
+	protected $collDebaterResults;
+
+	
+	protected $lastDebaterResultCriteria = null;
+
+	
+	protected $collTeamResultsRelatedByDebateTeamXrefId;
+
+	
+	protected $lastTeamResultRelatedByDebateTeamXrefIdCriteria = null;
+
+	
+	protected $collTeamResultsRelatedByOpponentDebateTeamXrefId;
+
+	
+	protected $lastTeamResultRelatedByOpponentDebateTeamXrefIdCriteria = null;
+
+	
+	protected $collTeamResultsRelatedByWinningDebateTeamXrefId;
+
+	
+	protected $lastTeamResultRelatedByWinningDebateTeamXrefIdCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -378,6 +402,38 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collDebaterResults !== null) {
+				foreach($this->collDebaterResults as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collTeamResultsRelatedByDebateTeamXrefId !== null) {
+				foreach($this->collTeamResultsRelatedByDebateTeamXrefId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collTeamResultsRelatedByOpponentDebateTeamXrefId !== null) {
+				foreach($this->collTeamResultsRelatedByOpponentDebateTeamXrefId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collTeamResultsRelatedByWinningDebateTeamXrefId !== null) {
+				foreach($this->collTeamResultsRelatedByWinningDebateTeamXrefId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -451,6 +507,38 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 				if ($this->collAdjudicatorFeedbackSheets !== null) {
 					foreach($this->collAdjudicatorFeedbackSheets as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collDebaterResults !== null) {
+					foreach($this->collDebaterResults as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTeamResultsRelatedByDebateTeamXrefId !== null) {
+					foreach($this->collTeamResultsRelatedByDebateTeamXrefId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTeamResultsRelatedByOpponentDebateTeamXrefId !== null) {
+					foreach($this->collTeamResultsRelatedByOpponentDebateTeamXrefId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTeamResultsRelatedByWinningDebateTeamXrefId !== null) {
+					foreach($this->collTeamResultsRelatedByWinningDebateTeamXrefId as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -622,6 +710,22 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 			foreach($this->getAdjudicatorFeedbackSheets() as $relObj) {
 				$copyObj->addAdjudicatorFeedbackSheet($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getDebaterResults() as $relObj) {
+				$copyObj->addDebaterResult($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTeamResultsRelatedByDebateTeamXrefId() as $relObj) {
+				$copyObj->addTeamResultRelatedByDebateTeamXrefId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTeamResultsRelatedByOpponentDebateTeamXrefId() as $relObj) {
+				$copyObj->addTeamResultRelatedByOpponentDebateTeamXrefId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTeamResultsRelatedByWinningDebateTeamXrefId() as $relObj) {
+				$copyObj->addTeamResultRelatedByWinningDebateTeamXrefId($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1090,6 +1194,321 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 		$this->lastAdjudicatorFeedbackSheetCriteria = $criteria;
 
 		return $this->collAdjudicatorFeedbackSheets;
+	}
+
+	
+	public function initDebaterResults()
+	{
+		if ($this->collDebaterResults === null) {
+			$this->collDebaterResults = array();
+		}
+	}
+
+	
+	public function getDebaterResults($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterResults === null) {
+			if ($this->isNew()) {
+			   $this->collDebaterResults = array();
+			} else {
+
+				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				DebaterResultPeer::addSelectColumns($criteria);
+				$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				DebaterResultPeer::addSelectColumns($criteria);
+				if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
+					$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDebaterResultCriteria = $criteria;
+		return $this->collDebaterResults;
+	}
+
+	
+	public function countDebaterResults($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+		return DebaterResultPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addDebaterResult(DebaterResult $l)
+	{
+		$this->collDebaterResults[] = $l;
+		$l->setDebateTeamXref($this);
+	}
+
+
+	
+	public function getDebaterResultsJoinDebater($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterResults === null) {
+			if ($this->isNew()) {
+				$this->collDebaterResults = array();
+			} else {
+
+				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebater($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+			if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
+				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebater($criteria, $con);
+			}
+		}
+		$this->lastDebaterResultCriteria = $criteria;
+
+		return $this->collDebaterResults;
+	}
+
+	
+	public function initTeamResultsRelatedByDebateTeamXrefId()
+	{
+		if ($this->collTeamResultsRelatedByDebateTeamXrefId === null) {
+			$this->collTeamResultsRelatedByDebateTeamXrefId = array();
+		}
+	}
+
+	
+	public function getTeamResultsRelatedByDebateTeamXrefId($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTeamResultsRelatedByDebateTeamXrefId === null) {
+			if ($this->isNew()) {
+			   $this->collTeamResultsRelatedByDebateTeamXrefId = array();
+			} else {
+
+				$criteria->add(TeamResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamResultPeer::addSelectColumns($criteria);
+				$this->collTeamResultsRelatedByDebateTeamXrefId = TeamResultPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(TeamResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamResultPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTeamResultRelatedByDebateTeamXrefIdCriteria) || !$this->lastTeamResultRelatedByDebateTeamXrefIdCriteria->equals($criteria)) {
+					$this->collTeamResultsRelatedByDebateTeamXrefId = TeamResultPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTeamResultRelatedByDebateTeamXrefIdCriteria = $criteria;
+		return $this->collTeamResultsRelatedByDebateTeamXrefId;
+	}
+
+	
+	public function countTeamResultsRelatedByDebateTeamXrefId($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TeamResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+		return TeamResultPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addTeamResultRelatedByDebateTeamXrefId(TeamResult $l)
+	{
+		$this->collTeamResultsRelatedByDebateTeamXrefId[] = $l;
+		$l->setDebateTeamXrefRelatedByDebateTeamXrefId($this);
+	}
+
+	
+	public function initTeamResultsRelatedByOpponentDebateTeamXrefId()
+	{
+		if ($this->collTeamResultsRelatedByOpponentDebateTeamXrefId === null) {
+			$this->collTeamResultsRelatedByOpponentDebateTeamXrefId = array();
+		}
+	}
+
+	
+	public function getTeamResultsRelatedByOpponentDebateTeamXrefId($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTeamResultsRelatedByOpponentDebateTeamXrefId === null) {
+			if ($this->isNew()) {
+			   $this->collTeamResultsRelatedByOpponentDebateTeamXrefId = array();
+			} else {
+
+				$criteria->add(TeamResultPeer::OPPONENT_DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamResultPeer::addSelectColumns($criteria);
+				$this->collTeamResultsRelatedByOpponentDebateTeamXrefId = TeamResultPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(TeamResultPeer::OPPONENT_DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamResultPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTeamResultRelatedByOpponentDebateTeamXrefIdCriteria) || !$this->lastTeamResultRelatedByOpponentDebateTeamXrefIdCriteria->equals($criteria)) {
+					$this->collTeamResultsRelatedByOpponentDebateTeamXrefId = TeamResultPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTeamResultRelatedByOpponentDebateTeamXrefIdCriteria = $criteria;
+		return $this->collTeamResultsRelatedByOpponentDebateTeamXrefId;
+	}
+
+	
+	public function countTeamResultsRelatedByOpponentDebateTeamXrefId($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TeamResultPeer::OPPONENT_DEBATE_TEAM_XREF_ID, $this->getId());
+
+		return TeamResultPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addTeamResultRelatedByOpponentDebateTeamXrefId(TeamResult $l)
+	{
+		$this->collTeamResultsRelatedByOpponentDebateTeamXrefId[] = $l;
+		$l->setDebateTeamXrefRelatedByOpponentDebateTeamXrefId($this);
+	}
+
+	
+	public function initTeamResultsRelatedByWinningDebateTeamXrefId()
+	{
+		if ($this->collTeamResultsRelatedByWinningDebateTeamXrefId === null) {
+			$this->collTeamResultsRelatedByWinningDebateTeamXrefId = array();
+		}
+	}
+
+	
+	public function getTeamResultsRelatedByWinningDebateTeamXrefId($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTeamResultsRelatedByWinningDebateTeamXrefId === null) {
+			if ($this->isNew()) {
+			   $this->collTeamResultsRelatedByWinningDebateTeamXrefId = array();
+			} else {
+
+				$criteria->add(TeamResultPeer::WINNING_DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamResultPeer::addSelectColumns($criteria);
+				$this->collTeamResultsRelatedByWinningDebateTeamXrefId = TeamResultPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(TeamResultPeer::WINNING_DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamResultPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTeamResultRelatedByWinningDebateTeamXrefIdCriteria) || !$this->lastTeamResultRelatedByWinningDebateTeamXrefIdCriteria->equals($criteria)) {
+					$this->collTeamResultsRelatedByWinningDebateTeamXrefId = TeamResultPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTeamResultRelatedByWinningDebateTeamXrefIdCriteria = $criteria;
+		return $this->collTeamResultsRelatedByWinningDebateTeamXrefId;
+	}
+
+	
+	public function countTeamResultsRelatedByWinningDebateTeamXrefId($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TeamResultPeer::WINNING_DEBATE_TEAM_XREF_ID, $this->getId());
+
+		return TeamResultPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addTeamResultRelatedByWinningDebateTeamXrefId(TeamResult $l)
+	{
+		$this->collTeamResultsRelatedByWinningDebateTeamXrefId[] = $l;
+		$l->setDebateTeamXrefRelatedByWinningDebateTeamXrefId($this);
 	}
 
 } 

@@ -47,5 +47,26 @@ class RoundPeer extends BaseRoundPeer
 		
 		throw new Exception('All rounds have been completed, or there is an error with the rounds');		
 	}	
-	
+
+	public static function retrieveByName($name, $conn = null)
+    {
+        $c = new Criteria();
+        $c->add(RoundPeer::NAME, $name);
+        
+        $results = RoundPeer::doSelect($c, $conn);
+        
+        if(count($results) < 1)
+        {
+            return null;
+        }
+        else if(count($results) > 1)
+        {
+            throw new Exception("More that one round returned for '" . $name . "'");
+        }
+        else
+        {
+            return $results[0];
+        }
+    }
+
 }

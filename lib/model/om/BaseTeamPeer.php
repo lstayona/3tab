@@ -13,7 +13,7 @@ abstract class BaseTeamPeer {
 	const CLASS_DEFAULT = 'lib.model.Team';
 
 	
-	const NUM_COLUMNS = 7;
+	const NUM_COLUMNS = 9;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -32,6 +32,12 @@ abstract class BaseTeamPeer {
 	const SWING = 'teams.SWING';
 
 	
+	const ENGLISH_AS_A_SECOND_LANGUAGE = 'teams.ENGLISH_AS_A_SECOND_LANGUAGE';
+
+	
+	const ENGLISH_AS_A_FOREIGN_LANGUAGE = 'teams.ENGLISH_AS_A_FOREIGN_LANGUAGE';
+
+	
 	const ACTIVE = 'teams.ACTIVE';
 
 	
@@ -46,18 +52,18 @@ abstract class BaseTeamPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'InstitutionId', 'Swing', 'Active', 'CreatedAt', 'UpdatedAt', ),
-		BasePeer::TYPE_COLNAME => array (TeamPeer::ID, TeamPeer::NAME, TeamPeer::INSTITUTION_ID, TeamPeer::SWING, TeamPeer::ACTIVE, TeamPeer::CREATED_AT, TeamPeer::UPDATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'institution_id', 'swing', 'active', 'created_at', 'updated_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'InstitutionId', 'Swing', 'EnglishAsASecondLanguage', 'EnglishAsAForeignLanguage', 'Active', 'CreatedAt', 'UpdatedAt', ),
+		BasePeer::TYPE_COLNAME => array (TeamPeer::ID, TeamPeer::NAME, TeamPeer::INSTITUTION_ID, TeamPeer::SWING, TeamPeer::ENGLISH_AS_A_SECOND_LANGUAGE, TeamPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE, TeamPeer::ACTIVE, TeamPeer::CREATED_AT, TeamPeer::UPDATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'institution_id', 'swing', 'english_as_a_second_language', 'english_as_a_foreign_language', 'active', 'created_at', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'InstitutionId' => 2, 'Swing' => 3, 'Active' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-		BasePeer::TYPE_COLNAME => array (TeamPeer::ID => 0, TeamPeer::NAME => 1, TeamPeer::INSTITUTION_ID => 2, TeamPeer::SWING => 3, TeamPeer::ACTIVE => 4, TeamPeer::CREATED_AT => 5, TeamPeer::UPDATED_AT => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'institution_id' => 2, 'swing' => 3, 'active' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'InstitutionId' => 2, 'Swing' => 3, 'EnglishAsASecondLanguage' => 4, 'EnglishAsAForeignLanguage' => 5, 'Active' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+		BasePeer::TYPE_COLNAME => array (TeamPeer::ID => 0, TeamPeer::NAME => 1, TeamPeer::INSTITUTION_ID => 2, TeamPeer::SWING => 3, TeamPeer::ENGLISH_AS_A_SECOND_LANGUAGE => 4, TeamPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE => 5, TeamPeer::ACTIVE => 6, TeamPeer::CREATED_AT => 7, TeamPeer::UPDATED_AT => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'institution_id' => 2, 'swing' => 3, 'english_as_a_second_language' => 4, 'english_as_a_foreign_language' => 5, 'active' => 6, 'created_at' => 7, 'updated_at' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	
@@ -118,6 +124,10 @@ abstract class BaseTeamPeer {
 		$criteria->addSelectColumn(TeamPeer::INSTITUTION_ID);
 
 		$criteria->addSelectColumn(TeamPeer::SWING);
+
+		$criteria->addSelectColumn(TeamPeer::ENGLISH_AS_A_SECOND_LANGUAGE);
+
+		$criteria->addSelectColumn(TeamPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE);
 
 		$criteria->addSelectColumn(TeamPeer::ACTIVE);
 

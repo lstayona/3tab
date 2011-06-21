@@ -40,6 +40,10 @@ class DebaterMapBuilder {
 
 		$tMap->addForeignKey('TEAM_ID', 'TeamId', 'int', CreoleTypes::INTEGER, 'teams', 'ID', false, null);
 
+		$tMap->addColumn('ENGLISH_AS_A_SECOND_LANGUAGE', 'EnglishAsASecondLanguage', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
+		$tMap->addColumn('ENGLISH_AS_A_FOREIGN_LANGUAGE', 'EnglishAsAForeignLanguage', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
 
 		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);

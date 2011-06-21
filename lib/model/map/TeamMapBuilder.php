@@ -42,6 +42,10 @@ class TeamMapBuilder {
 
 		$tMap->addColumn('SWING', 'Swing', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
+		$tMap->addColumn('ENGLISH_AS_A_SECOND_LANGUAGE', 'EnglishAsASecondLanguage', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
+		$tMap->addColumn('ENGLISH_AS_A_FOREIGN_LANGUAGE', 'EnglishAsAForeignLanguage', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 		$tMap->addColumn('ACTIVE', 'Active', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
 		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);

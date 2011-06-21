@@ -14,27 +14,6 @@ class SpeakerScoreSheet extends BaseSpeakerScoreSheet
 	const THIRD_SPEAKER  = 3;
 	const REPLY_SPEAKER  = 4;
 	
-	public static function createSpeakerScoreSheet($allocation, $xref, $debater, $score, $position)
-	{
-		$propelConn = Propel::getConnection();
-		try{
-			$propelConn->begin();
-			$scoreSheet = new SpeakerScoreSheet();
-			$scoreSheet->setAdjudicatorAllocationId($allocation);
-			$scoreSheet->setDebateTeamXrefId($xref);
-			$scoreSheet->setDebaterId($debater);
-			$scoreSheet->setScore($score);
-			$scoreSheet->setSpeakingPosition($position);
-			$scoreSheet->save($propelConn);				
-			$propelConn->commit();			
-		}
-		catch(Exception $e)
-		{
-			$propelConn->rollback();
-			throw $e;
-		}		
-		return $scoreSheet;		
-	}
     
     public static function getSpeakerPositions()
     {

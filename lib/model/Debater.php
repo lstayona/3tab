@@ -35,4 +35,21 @@ class Debater extends BaseDebater
 		
 		return $totalSpeakerScore;
 	}
+
+    public function getDebaterResult($debateTeamXrefId, $speakingPosition, $con = null)
+    {
+        $criteria = new Criteria();
+        $criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $debateTeamXrefId);
+        $criteria->add(DebaterResultPeer::SPEAKING_POSITION, $speakingPosition);
+        
+        $debaterResults = $this->getDebaterResults($criteria, $con);
+
+        if (count($debaterResults) > 1) {
+            throw new Exception("Cannot have more than one DebaterResult for a Debater object");
+        } else if (count($debaterResults) < 1) {
+            return null;
+        } else {
+            return $debaterResults[0];
+        }
+    }
 }

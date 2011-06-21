@@ -185,4 +185,17 @@ class DebateTeamXref extends BaseDebateTeamXref
 					return $this->getSpeakerScores($conn) - $xref[0]->getSpeakerScores($conn);
 			}
 	}
+
+    public function getTeamResult($con = null)
+    {
+        $debateResults = $this->getTeamResultsRelatedByDebateTeamXrefId(null, $con);
+
+        if (count($debateResults) > 1) {
+            throw new Exception("Cannot have more than one TeamResult for a DebateTeamXref object");
+        } else if (count($debateResults) < 1) {
+            return null;
+        } else {
+            return $debateResults[0];
+        }
+    }
 }

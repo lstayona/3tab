@@ -3,3 +3,6 @@ all:
     .speaker_scores:
         highest_possible: 82
         lowest_possible: 68
+    .one_up_one_down:
+        on_same_institution: 1
+        on_have_met_before: 1
