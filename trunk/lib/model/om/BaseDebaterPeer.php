@@ -13,7 +13,7 @@ abstract class BaseDebaterPeer {
 	const CLASS_DEFAULT = 'lib.model.Debater';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 7;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -29,6 +29,12 @@ abstract class BaseDebaterPeer {
 	const TEAM_ID = 'debaters.TEAM_ID';
 
 	
+	const ENGLISH_AS_A_SECOND_LANGUAGE = 'debaters.ENGLISH_AS_A_SECOND_LANGUAGE';
+
+	
+	const ENGLISH_AS_A_FOREIGN_LANGUAGE = 'debaters.ENGLISH_AS_A_FOREIGN_LANGUAGE';
+
+	
 	const CREATED_AT = 'debaters.CREATED_AT';
 
 	
@@ -40,18 +46,18 @@ abstract class BaseDebaterPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'TeamId', 'CreatedAt', 'UpdatedAt', ),
-		BasePeer::TYPE_COLNAME => array (DebaterPeer::ID, DebaterPeer::NAME, DebaterPeer::TEAM_ID, DebaterPeer::CREATED_AT, DebaterPeer::UPDATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'team_id', 'created_at', 'updated_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'TeamId', 'EnglishAsASecondLanguage', 'EnglishAsAForeignLanguage', 'CreatedAt', 'UpdatedAt', ),
+		BasePeer::TYPE_COLNAME => array (DebaterPeer::ID, DebaterPeer::NAME, DebaterPeer::TEAM_ID, DebaterPeer::ENGLISH_AS_A_SECOND_LANGUAGE, DebaterPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE, DebaterPeer::CREATED_AT, DebaterPeer::UPDATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'team_id', 'english_as_a_second_language', 'english_as_a_foreign_language', 'created_at', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'TeamId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-		BasePeer::TYPE_COLNAME => array (DebaterPeer::ID => 0, DebaterPeer::NAME => 1, DebaterPeer::TEAM_ID => 2, DebaterPeer::CREATED_AT => 3, DebaterPeer::UPDATED_AT => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'team_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'TeamId' => 2, 'EnglishAsASecondLanguage' => 3, 'EnglishAsAForeignLanguage' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+		BasePeer::TYPE_COLNAME => array (DebaterPeer::ID => 0, DebaterPeer::NAME => 1, DebaterPeer::TEAM_ID => 2, DebaterPeer::ENGLISH_AS_A_SECOND_LANGUAGE => 3, DebaterPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE => 4, DebaterPeer::CREATED_AT => 5, DebaterPeer::UPDATED_AT => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'team_id' => 2, 'english_as_a_second_language' => 3, 'english_as_a_foreign_language' => 4, 'created_at' => 5, 'updated_at' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
@@ -110,6 +116,10 @@ abstract class BaseDebaterPeer {
 		$criteria->addSelectColumn(DebaterPeer::NAME);
 
 		$criteria->addSelectColumn(DebaterPeer::TEAM_ID);
+
+		$criteria->addSelectColumn(DebaterPeer::ENGLISH_AS_A_SECOND_LANGUAGE);
+
+		$criteria->addSelectColumn(DebaterPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE);
 
 		$criteria->addSelectColumn(DebaterPeer::CREATED_AT);
 

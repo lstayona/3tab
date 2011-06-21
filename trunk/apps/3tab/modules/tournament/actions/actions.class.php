@@ -21,46 +21,25 @@ class tournamentActions extends sfActions
     
     public function executeCreateMatchups()
     {
-		$propelConn = Propel::getConnection();
-        try
-        {	
-			$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-			if($this->round->getType() == Round::ROUND_TYPE_RANDOM)
-			{
-				$debates = DebatePeer::generateRandomDrawDebates($propelConn);
-				DebatePeer::doOneUpOneDown($debates, $propelConn);
-			}
-			else if($this->round->getType() == Round::ROUND_TYPE_PRELIMINARY || $this->round->getType() == Round::ROUND_TYPE_BUBBLE)
-			{
-				$debates = DebatePeer::generateMatchedDrawDebates();
-				foreach($debates as $debate)
-				{
-					$brackets[$debate->getBracket()][] = $debate;
-				}
-				foreach($brackets as $bracket)
-				{
-					DebatePeer::doOneUpOneDown($bracket, $propelConn);
-				}
-				foreach($debates as $debate)
-				{
-					$xrefs = $debate->getDebateTeamXrefs();
-					if($this->coinToss())
-					{
-						$xrefs[0]->swapTeams($xrefs[1]);
-					}
-				}
-				DebatePeer::checkTeamPositions($debates);
-			}
-				
-			$this->debates = $debates;
-		}
-		 catch(Exception $e)
-        {
-            $propelConn->rollback();
-            throw $e;
-        }
+        $this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
+        $this->debates = DebatePeer::doDraw($this->round);
     }
     
+    public function validateConfirmMatchups()
+    {
+        $round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
+        if ($round->getStatus() >= Round::ROUND_STATUS_MATCHUPS_CONFIRMED) {
+            $this->getRequest()->setError("round_already_confirmed", "Matchups for " . $round->getName() . " have already been confirmed.");
+        }
+
+        return !$this->getRequest()->hasErrors();
+    }
+
+    public function handleErrorConfirmMatchups()
+    {
+        $this->forward('tournament', 'createMatchups');
+    }
+
     public function executeConfirmMatchups()
     {
         $propelConn = Propel::getConnection();
@@ -626,6 +605,7 @@ class tournamentActions extends sfActions
 		$propelConn = Propel::getConnection();
         try
         {
+            $propelConn->begin();
 			$teams = TeamPeer::doSelect(new Criteria(), $propelConn);
 			foreach($teams as $team)
 			{
@@ -1010,9 +990,5 @@ class tournamentActions extends sfActions
 			}
 		}
 		return $unallocatedAdjudicators;
-	}
-	public function coinToss()
-	{
-		return (rand(0,1) == 0) ? true : false;
 	}
 }

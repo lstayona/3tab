@@ -9,4 +9,13 @@
  */ 
 class TeamScoreSheetPeer extends BaseTeamScoreSheetPeer
 {
+	public static function createTeamScoreSheet($adjudicatorAllocationId, $debateTeamXrefId, $score)
+	{
+        $scoreSheet = new TeamScoreSheet();
+        $scoreSheet->setAdjudicatorAllocationId($adjudicatorAllocationId);
+        $scoreSheet->setDebateTeamXrefId($debateTeamXrefId);
+        $scoreSheet->setScore($score);
+
+        return $scoreSheet;		
+	}
 }

@@ -25,6 +25,14 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 
 
 	
+	protected $english_as_a_second_language = false;
+
+
+	
+	protected $english_as_a_foreign_language = false;
+
+
+	
 	protected $active = true;
 
 
@@ -94,6 +102,20 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 	{
 
 		return $this->swing;
+	}
+
+	
+	public function getEnglishAsASecondLanguage()
+	{
+
+		return $this->english_as_a_second_language;
+	}
+
+	
+	public function getEnglishAsAForeignLanguage()
+	{
+
+		return $this->english_as_a_foreign_language;
 	}
 
 	
@@ -210,6 +232,26 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setEnglishAsASecondLanguage($v)
+	{
+
+		if ($this->english_as_a_second_language !== $v || $v === false) {
+			$this->english_as_a_second_language = $v;
+			$this->modifiedColumns[] = TeamPeer::ENGLISH_AS_A_SECOND_LANGUAGE;
+		}
+
+	} 
+	
+	public function setEnglishAsAForeignLanguage($v)
+	{
+
+		if ($this->english_as_a_foreign_language !== $v || $v === false) {
+			$this->english_as_a_foreign_language = $v;
+			$this->modifiedColumns[] = TeamPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE;
+		}
+
+	} 
+	
 	public function setActive($v)
 	{
 
@@ -266,17 +308,21 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 
 			$this->swing = $rs->getBoolean($startcol + 3);
 
-			$this->active = $rs->getBoolean($startcol + 4);
+			$this->english_as_a_second_language = $rs->getBoolean($startcol + 4);
 
-			$this->created_at = $rs->getTimestamp($startcol + 5, null);
+			$this->english_as_a_foreign_language = $rs->getBoolean($startcol + 5);
 
-			$this->updated_at = $rs->getTimestamp($startcol + 6, null);
+			$this->active = $rs->getBoolean($startcol + 6);
+
+			$this->created_at = $rs->getTimestamp($startcol + 7, null);
+
+			$this->updated_at = $rs->getTimestamp($startcol + 8, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 7; 
+						return $startcol + 9; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Team object", $e);
 		}
@@ -507,12 +553,18 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 				return $this->getSwing();
 				break;
 			case 4:
-				return $this->getActive();
+				return $this->getEnglishAsASecondLanguage();
 				break;
 			case 5:
-				return $this->getCreatedAt();
+				return $this->getEnglishAsAForeignLanguage();
 				break;
 			case 6:
+				return $this->getActive();
+				break;
+			case 7:
+				return $this->getCreatedAt();
+				break;
+			case 8:
 				return $this->getUpdatedAt();
 				break;
 			default:
@@ -529,9 +581,11 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getInstitutionId(),
 			$keys[3] => $this->getSwing(),
-			$keys[4] => $this->getActive(),
-			$keys[5] => $this->getCreatedAt(),
-			$keys[6] => $this->getUpdatedAt(),
+			$keys[4] => $this->getEnglishAsASecondLanguage(),
+			$keys[5] => $this->getEnglishAsAForeignLanguage(),
+			$keys[6] => $this->getActive(),
+			$keys[7] => $this->getCreatedAt(),
+			$keys[8] => $this->getUpdatedAt(),
 		);
 		return $result;
 	}
@@ -560,12 +614,18 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 				$this->setSwing($value);
 				break;
 			case 4:
-				$this->setActive($value);
+				$this->setEnglishAsASecondLanguage($value);
 				break;
 			case 5:
-				$this->setCreatedAt($value);
+				$this->setEnglishAsAForeignLanguage($value);
 				break;
 			case 6:
+				$this->setActive($value);
+				break;
+			case 7:
+				$this->setCreatedAt($value);
+				break;
+			case 8:
 				$this->setUpdatedAt($value);
 				break;
 		} 	}
@@ -579,9 +639,11 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setInstitutionId($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setSwing($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setActive($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+		if (array_key_exists($keys[4], $arr)) $this->setEnglishAsASecondLanguage($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setEnglishAsAForeignLanguage($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setActive($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
 	}
 
 	
@@ -593,6 +655,8 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(TeamPeer::NAME)) $criteria->add(TeamPeer::NAME, $this->name);
 		if ($this->isColumnModified(TeamPeer::INSTITUTION_ID)) $criteria->add(TeamPeer::INSTITUTION_ID, $this->institution_id);
 		if ($this->isColumnModified(TeamPeer::SWING)) $criteria->add(TeamPeer::SWING, $this->swing);
+		if ($this->isColumnModified(TeamPeer::ENGLISH_AS_A_SECOND_LANGUAGE)) $criteria->add(TeamPeer::ENGLISH_AS_A_SECOND_LANGUAGE, $this->english_as_a_second_language);
+		if ($this->isColumnModified(TeamPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE)) $criteria->add(TeamPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE, $this->english_as_a_foreign_language);
 		if ($this->isColumnModified(TeamPeer::ACTIVE)) $criteria->add(TeamPeer::ACTIVE, $this->active);
 		if ($this->isColumnModified(TeamPeer::CREATED_AT)) $criteria->add(TeamPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(TeamPeer::UPDATED_AT)) $criteria->add(TeamPeer::UPDATED_AT, $this->updated_at);
@@ -631,6 +695,10 @@ abstract class BaseTeam extends BaseObject  implements Persistent {
 		$copyObj->setInstitutionId($this->institution_id);
 
 		$copyObj->setSwing($this->swing);
+
+		$copyObj->setEnglishAsASecondLanguage($this->english_as_a_second_language);
+
+		$copyObj->setEnglishAsAForeignLanguage($this->english_as_a_foreign_language);
 
 		$copyObj->setActive($this->active);
 

@@ -7,6 +7,21 @@ jQuery(document).ready(function () {
 });
 </script>
 <h1>Draft matchups for <?php echo $round->getName();?></h1>
+<?php 
+if ($sf_request->hasErrors()): 
+?>
+<ul id="errors">
+<?php
+    foreach ($sf_request->getErrors() as $id => $message):
+?>
+    <li id="<?php echo $id;?>"><?php echo $message; ?></li>
+<?php
+    endforeach;
+?>
+</ul>
+<?php 
+endif;
+?>
 <?php echo form_tag('tournament/confirmMatchups'); ?>
 <table>
     <thead>

@@ -24,7 +24,6 @@ CREATE TABLE "institutions"
 COMMENT ON TABLE "institutions" IS '';
 
 
-SET search_path TO public;
 -----------------------------------------------------------------------------
 -- teams
 -----------------------------------------------------------------------------
@@ -42,6 +41,8 @@ CREATE TABLE "teams"
 	"name" VARCHAR(50)  NOT NULL,
 	"institution_id" INTEGER  NOT NULL,
 	"swing" BOOLEAN default 'f' NOT NULL,
+	"english_as_a_second_language" BOOLEAN default 'f' NOT NULL,
+	"english_as_a_foreign_language" BOOLEAN default 'f' NOT NULL,
 	"active" BOOLEAN default 't' NOT NULL,
 	"created_at" TIMESTAMP,
 	"updated_at" TIMESTAMP,
@@ -52,7 +53,6 @@ CREATE TABLE "teams"
 COMMENT ON TABLE "teams" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "teams" ADD CONSTRAINT "teams_FK_1" FOREIGN KEY ("institution_id") REFERENCES "institutions" ("id");
 
 -----------------------------------------------------------------------------
@@ -71,6 +71,8 @@ CREATE TABLE "debaters"
 	"id" INTEGER  NOT NULL,
 	"name" VARCHAR(100)  NOT NULL,
 	"team_id" INTEGER,
+	"english_as_a_second_language" BOOLEAN default 'f' NOT NULL,
+	"english_as_a_foreign_language" BOOLEAN default 'f' NOT NULL,
 	"created_at" TIMESTAMP,
 	"updated_at" TIMESTAMP,
 	PRIMARY KEY ("id"),
@@ -80,7 +82,6 @@ CREATE TABLE "debaters"
 COMMENT ON TABLE "debaters" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "debaters" ADD CONSTRAINT "debaters_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 -----------------------------------------------------------------------------
@@ -110,7 +111,6 @@ CREATE TABLE "adjudicators"
 COMMENT ON TABLE "adjudicators" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "adjudicators" ADD CONSTRAINT "adjudicators_FK_1" FOREIGN KEY ("institution_id") REFERENCES "institutions" ("id");
 
 -----------------------------------------------------------------------------
@@ -141,7 +141,6 @@ CREATE TABLE "rounds"
 COMMENT ON TABLE "rounds" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "rounds" ADD CONSTRAINT "rounds_FK_1" FOREIGN KEY ("preceded_by_round_id") REFERENCES "rounds" ("id");
 
 -----------------------------------------------------------------------------
@@ -170,7 +169,6 @@ CREATE TABLE "venues"
 COMMENT ON TABLE "venues" IS '';
 
 
-SET search_path TO public;
 -----------------------------------------------------------------------------
 -- debates
 -----------------------------------------------------------------------------
@@ -196,7 +194,6 @@ CREATE TABLE "debates"
 COMMENT ON TABLE "debates" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "debates" ADD CONSTRAINT "debates_FK_1" FOREIGN KEY ("round_id") REFERENCES "rounds" ("id");
 
 ALTER TABLE "debates" ADD CONSTRAINT "debates_FK_2" FOREIGN KEY ("venue_id") REFERENCES "venues" ("id");
@@ -227,7 +224,6 @@ CREATE TABLE "debates_teams_xrefs"
 COMMENT ON TABLE "debates_teams_xrefs" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "debates_teams_xrefs" ADD CONSTRAINT "debates_teams_xrefs_FK_1" FOREIGN KEY ("debate_id") REFERENCES "debates" ("id");
 
 ALTER TABLE "debates_teams_xrefs" ADD CONSTRAINT "debates_teams_xrefs_FK_2" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
@@ -258,7 +254,6 @@ CREATE TABLE "adjudicator_allocations"
 COMMENT ON TABLE "adjudicator_allocations" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "adjudicator_allocations" ADD CONSTRAINT "adjudicator_allocations_FK_1" FOREIGN KEY ("debate_id") REFERENCES "debates" ("id");
 
 ALTER TABLE "adjudicator_allocations" ADD CONSTRAINT "adjudicator_allocations_FK_2" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");
@@ -289,7 +284,6 @@ CREATE TABLE "trainee_allocations"
 COMMENT ON TABLE "trainee_allocations" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "trainee_allocations" ADD CONSTRAINT "trainee_allocations_FK_1" FOREIGN KEY ("trainee_id") REFERENCES "adjudicators" ("id");
 
 ALTER TABLE "trainee_allocations" ADD CONSTRAINT "trainee_allocations_FK_2" FOREIGN KEY ("chair_id") REFERENCES "adjudicators" ("id");
@@ -321,7 +315,6 @@ CREATE TABLE "team_score_sheets"
 COMMENT ON TABLE "team_score_sheets" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "team_score_sheets" ADD CONSTRAINT "team_score_sheets_FK_1" FOREIGN KEY ("adjudicator_allocation_id") REFERENCES "adjudicator_allocations" ("id");
 
 ALTER TABLE "team_score_sheets" ADD CONSTRAINT "team_score_sheets_FK_2" FOREIGN KEY ("debate_team_xref_id") REFERENCES "debates_teams_xrefs" ("id");
@@ -353,7 +346,6 @@ CREATE TABLE "speaker_score_sheets"
 COMMENT ON TABLE "speaker_score_sheets" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "speaker_score_sheets" ADD CONSTRAINT "speaker_score_sheets_FK_1" FOREIGN KEY ("adjudicator_allocation_id") REFERENCES "adjudicator_allocations" ("id");
 
 ALTER TABLE "speaker_score_sheets" ADD CONSTRAINT "speaker_score_sheets_FK_2" FOREIGN KEY ("debate_team_xref_id") REFERENCES "debates_teams_xrefs" ("id");
@@ -387,7 +379,6 @@ CREATE TABLE "adjudicator_feedback_sheets"
 COMMENT ON TABLE "adjudicator_feedback_sheets" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "adjudicator_feedback_sheets" ADD CONSTRAINT "adjudicator_feedback_sheets_FK_1" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");
 
 ALTER TABLE "adjudicator_feedback_sheets" ADD CONSTRAINT "adjudicator_feedback_sheets_FK_2" FOREIGN KEY ("adjudicator_allocation_id") REFERENCES "adjudicator_allocations" ("id");
@@ -421,7 +412,6 @@ CREATE TABLE "team_scores"
 COMMENT ON TABLE "team_scores" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "team_scores" ADD CONSTRAINT "team_scores_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 -----------------------------------------------------------------------------
@@ -449,7 +439,6 @@ CREATE TABLE "speaker_scores"
 COMMENT ON TABLE "speaker_scores" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "speaker_scores" ADD CONSTRAINT "speaker_scores_FK_1" FOREIGN KEY ("debater_id") REFERENCES "debaters" ("id");
 
 -----------------------------------------------------------------------------
@@ -476,7 +465,6 @@ CREATE TABLE "adjudicator_conflicts"
 COMMENT ON TABLE "adjudicator_conflicts" IS '';
 
 
-SET search_path TO public;
 ALTER TABLE "adjudicator_conflicts" ADD CONSTRAINT "adjudicator_conflicts_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 ALTER TABLE "adjudicator_conflicts" ADD CONSTRAINT "adjudicator_conflicts_FK_2" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");

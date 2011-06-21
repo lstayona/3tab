@@ -21,6 +21,14 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 
 	
+	protected $english_as_a_second_language = false;
+
+
+	
+	protected $english_as_a_foreign_language = false;
+
+
+	
 	protected $created_at;
 
 
@@ -41,6 +49,12 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 	
 	protected $lastSpeakerScoreCriteria = null;
+
+	
+	protected $collDebaterResults;
+
+	
+	protected $lastDebaterResultCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -67,6 +81,20 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 	{
 
 		return $this->team_id;
+	}
+
+	
+	public function getEnglishAsASecondLanguage()
+	{
+
+		return $this->english_as_a_second_language;
+	}
+
+	
+	public function getEnglishAsAForeignLanguage()
+	{
+
+		return $this->english_as_a_foreign_language;
 	}
 
 	
@@ -166,6 +194,26 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setEnglishAsASecondLanguage($v)
+	{
+
+		if ($this->english_as_a_second_language !== $v || $v === false) {
+			$this->english_as_a_second_language = $v;
+			$this->modifiedColumns[] = DebaterPeer::ENGLISH_AS_A_SECOND_LANGUAGE;
+		}
+
+	} 
+	
+	public function setEnglishAsAForeignLanguage($v)
+	{
+
+		if ($this->english_as_a_foreign_language !== $v || $v === false) {
+			$this->english_as_a_foreign_language = $v;
+			$this->modifiedColumns[] = DebaterPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE;
+		}
+
+	} 
+	
 	public function setCreatedAt($v)
 	{
 
@@ -210,15 +258,19 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 			$this->team_id = $rs->getInt($startcol + 2);
 
-			$this->created_at = $rs->getTimestamp($startcol + 3, null);
+			$this->english_as_a_second_language = $rs->getBoolean($startcol + 3);
 
-			$this->updated_at = $rs->getTimestamp($startcol + 4, null);
+			$this->english_as_a_foreign_language = $rs->getBoolean($startcol + 4);
+
+			$this->created_at = $rs->getTimestamp($startcol + 5, null);
+
+			$this->updated_at = $rs->getTimestamp($startcol + 6, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 7; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Debater object", $e);
 		}
@@ -321,6 +373,14 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collDebaterResults !== null) {
+				foreach($this->collDebaterResults as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -386,6 +446,14 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collDebaterResults !== null) {
+					foreach($this->collDebaterResults as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -414,9 +482,15 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 				return $this->getTeamId();
 				break;
 			case 3:
-				return $this->getCreatedAt();
+				return $this->getEnglishAsASecondLanguage();
 				break;
 			case 4:
+				return $this->getEnglishAsAForeignLanguage();
+				break;
+			case 5:
+				return $this->getCreatedAt();
+				break;
+			case 6:
 				return $this->getUpdatedAt();
 				break;
 			default:
@@ -432,8 +506,10 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getTeamId(),
-			$keys[3] => $this->getCreatedAt(),
-			$keys[4] => $this->getUpdatedAt(),
+			$keys[3] => $this->getEnglishAsASecondLanguage(),
+			$keys[4] => $this->getEnglishAsAForeignLanguage(),
+			$keys[5] => $this->getCreatedAt(),
+			$keys[6] => $this->getUpdatedAt(),
 		);
 		return $result;
 	}
@@ -459,9 +535,15 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 				$this->setTeamId($value);
 				break;
 			case 3:
-				$this->setCreatedAt($value);
+				$this->setEnglishAsASecondLanguage($value);
 				break;
 			case 4:
+				$this->setEnglishAsAForeignLanguage($value);
+				break;
+			case 5:
+				$this->setCreatedAt($value);
+				break;
+			case 6:
 				$this->setUpdatedAt($value);
 				break;
 		} 	}
@@ -474,8 +556,10 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setTeamId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
+		if (array_key_exists($keys[3], $arr)) $this->setEnglishAsASecondLanguage($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setEnglishAsAForeignLanguage($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
 	}
 
 	
@@ -486,6 +570,8 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(DebaterPeer::ID)) $criteria->add(DebaterPeer::ID, $this->id);
 		if ($this->isColumnModified(DebaterPeer::NAME)) $criteria->add(DebaterPeer::NAME, $this->name);
 		if ($this->isColumnModified(DebaterPeer::TEAM_ID)) $criteria->add(DebaterPeer::TEAM_ID, $this->team_id);
+		if ($this->isColumnModified(DebaterPeer::ENGLISH_AS_A_SECOND_LANGUAGE)) $criteria->add(DebaterPeer::ENGLISH_AS_A_SECOND_LANGUAGE, $this->english_as_a_second_language);
+		if ($this->isColumnModified(DebaterPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE)) $criteria->add(DebaterPeer::ENGLISH_AS_A_FOREIGN_LANGUAGE, $this->english_as_a_foreign_language);
 		if ($this->isColumnModified(DebaterPeer::CREATED_AT)) $criteria->add(DebaterPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(DebaterPeer::UPDATED_AT)) $criteria->add(DebaterPeer::UPDATED_AT, $this->updated_at);
 
@@ -522,6 +608,10 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 		$copyObj->setTeamId($this->team_id);
 
+		$copyObj->setEnglishAsASecondLanguage($this->english_as_a_second_language);
+
+		$copyObj->setEnglishAsAForeignLanguage($this->english_as_a_foreign_language);
+
 		$copyObj->setCreatedAt($this->created_at);
 
 		$copyObj->setUpdatedAt($this->updated_at);
@@ -536,6 +626,10 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 			foreach($this->getSpeakerScores() as $relObj) {
 				$copyObj->addSpeakerScore($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getDebaterResults() as $relObj) {
+				$copyObj->addDebaterResult($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -800,6 +894,111 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 	{
 		$this->collSpeakerScores[] = $l;
 		$l->setDebater($this);
+	}
+
+	
+	public function initDebaterResults()
+	{
+		if ($this->collDebaterResults === null) {
+			$this->collDebaterResults = array();
+		}
+	}
+
+	
+	public function getDebaterResults($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterResults === null) {
+			if ($this->isNew()) {
+			   $this->collDebaterResults = array();
+			} else {
+
+				$criteria->add(DebaterResultPeer::DEBATER_ID, $this->getId());
+
+				DebaterResultPeer::addSelectColumns($criteria);
+				$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(DebaterResultPeer::DEBATER_ID, $this->getId());
+
+				DebaterResultPeer::addSelectColumns($criteria);
+				if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
+					$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDebaterResultCriteria = $criteria;
+		return $this->collDebaterResults;
+	}
+
+	
+	public function countDebaterResults($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DebaterResultPeer::DEBATER_ID, $this->getId());
+
+		return DebaterResultPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addDebaterResult(DebaterResult $l)
+	{
+		$this->collDebaterResults[] = $l;
+		$l->setDebater($this);
+	}
+
+
+	
+	public function getDebaterResultsJoinDebateTeamXref($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterResults === null) {
+			if ($this->isNew()) {
+				$this->collDebaterResults = array();
+			} else {
+
+				$criteria->add(DebaterResultPeer::DEBATER_ID, $this->getId());
+
+				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebateTeamXref($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(DebaterResultPeer::DEBATER_ID, $this->getId());
+
+			if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
+				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebateTeamXref($criteria, $con);
+			}
+		}
+		$this->lastDebaterResultCriteria = $criteria;
+
+		return $this->collDebaterResults;
 	}
 
 } 

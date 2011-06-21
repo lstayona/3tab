@@ -12,28 +12,13 @@ class TeamPeer extends BaseTeamPeer
     // returns all teams sorted randomly
 	public static function getTeamsInRandomOrder($active = true, $con = null)
 	{
-		$activeCondition = null;
-        if($active === true)
-        {
-            $activeCondition = "WHERE active = true";
+        $criteria = new Criteria();
+        if (!is_null($active)) {
+            $criteria->add(TeamPeer::ACTIVE, $active);
         }
-        else if($active === false)
-        {
-            $activeCondition = "WHERE active = false";
-        }
-        
-        if(is_null($con))
-        {
-            $con = Propel::getConnection();
-        }
-        
-    	$stmt = $con->createStatement();
-		$rs = $stmt->executeQuery(
-        "SELECT teams.id, teams.name, teams.institution_id, teams.swing, " .
-        "teams.active, teams.created_at, teams.updated_at FROM teams " . 
-        $activeCondition . " ORDER BY RANDOM()", ResultSet::FETCHMODE_NUM);
-        
-		return TeamPeer::populateObjects($rs); 
+        $criteria->addAscendingOrderByColumn("RANDOM()");
+	        
+		return TeamPeer::doSelect($criteria, $con); 
 	}
 	/*
 	

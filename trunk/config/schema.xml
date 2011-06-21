@@ -19,6 +19,8 @@
             <reference local="institution_id" foreign="id"/>
         </foreign-key>
         <column name="swing" type="BOOLEAN" required="true" default="false" />
+        <column name="english_as_a_second_language" type="BOOLEAN" required="true" default="false" />
+        <column name="english_as_a_foreign_language" type="BOOLEAN" required="true" default="false" />
         <column name="active" type="BOOLEAN" required="true" default="true" />
         <column name="created_at" type="TIMESTAMP" />
         <column name="updated_at" type="TIMESTAMP" />
@@ -35,6 +37,8 @@
         <foreign-key foreignTable="teams" onDelete="" onUpdate="">
             <reference local="team_id" foreign="id"/>
         </foreign-key>
+        <column name="english_as_a_second_language" type="BOOLEAN" required="true" default="false" />
+        <column name="english_as_a_foreign_language" type="BOOLEAN" required="true" default="false" />
         <column name="created_at" type="TIMESTAMP" />
         <column name="updated_at" type="TIMESTAMP" />
         <unique name="debaters_name">
@@ -123,7 +127,7 @@
             <unique-column name="team_id"/>
         </unique>
     </table>
-    
+
     <table name="adjudicator_allocations" idMethod="native" phpName="AdjudicatorAllocation">
         <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
         <column name="debate_id" type="INTEGER" required="true" />
@@ -263,5 +267,36 @@
         </foreign-key>
         <column name="created_at" type="TIMESTAMP" />
         <column name="updated_at" type="TIMESTAMP" />
+    </table>
+
+    <table name="debater_results" phpName="DebaterResult" skipSql="true" readOnly="true">
+        <column name="debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="debater_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debaters" onDelete="" onUpdate="">
+            <reference local="debater_id" foreign="id"/>
+        </foreign-key>
+        <column name="speaking_position" type="INTEGER" required="true" />
+        <column name="averaged_score" type="NUMERIC" required="true" />
+    </table>
+
+    <table name="team_results" phpName="TeamResult" skipSql="true" readOnly="true">
+        <column name="debate_team_xref_id" type="INTEGER" required="true" primaryKey="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="team_vote_count" type="INTEGER" required="true" />
+        <column name="opponent_debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="opponent_debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="opponent_team_vote_count" type="INTEGER" required="true" />
+        <column name="majority_team_score" type="INTEGER" required="true" />
+        <column name="winning_debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="winning_debate_team_xref_id" foreign="id"/>
+        </foreign-key>
     </table>
 </database>
