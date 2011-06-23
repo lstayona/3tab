@@ -3,3 +3,7 @@ config/databases.yml
 web/sf
 cache
 log
+.buildpath
+.project
+.settings
+
