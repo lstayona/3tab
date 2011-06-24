@@ -612,8 +612,8 @@ class tournamentActions extends sfActions
 				$c = new Criteria();
 				$c->add(TeamScorePeer::TEAM_ID, $team->getId());
 				$teamScore = TeamScorePeer::doSelect($c, $propelConn);
-				$teamScore[0]->setTotalTeamScore($team->getTotalTeamScoreSlow($propelConn));
-				$teamScore[0]->setTotalSpeakerScore($team->getTotalSpeakerScoreSlow($propelConn));
+				$teamScore[0]->setTotalTeamScore($team->deriveTotalTeamScore($propelConn));
+				$teamScore[0]->setTotalSpeakerScore($team->deriveTotalSpeakerScore($propelConn));
 				$teamScore[0]->setTotalMargin($team->getTotalMarginSlow($propelConn));
 				$teamScore[0]->save($propelConn);
 			}

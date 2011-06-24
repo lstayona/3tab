@@ -16,25 +16,20 @@ class Team extends BaseTeam
 	
 	public function getWinLossText($roundId, $con = null)
 	{
-		$win = 0;
-		$loss = 0;
-		foreach($this->getTeamScoreSheets($roundId, $con) as $scoreSheet)
-		{
-			$scoreSheet->getScore() == 0 ? $loss++ : $win++;			
-		}
-		if($win == 0)
+        $teamResult = $this->getDebate($roundId, $con)->getDebateTeamXrefForTeam($this->getId(), $con)->getTeamResult($con);
+		if($teamResult->getTeamVoteCount() == 0)
 		{
 			return 'Loss';
 		}
-		else if($loss == 0)
+		else if($teamResult->getOpponentTeamVoteCount() == 0)
 		{
 			return 'Win';
 		}
-		else if($win > $loss)
+		else if($teamResult->getTeamVoteCount() > $teamResult->getOpponentTeamVoteCount())
 		{
 			return 'Split Win';
 		}
-		else if($loss > $win)
+		else if($teamResult->getOpponentTeamVoteCount() > $teamResult->getTeamVoteCount())
 		{
 			return 'Split Loss';
 		}
@@ -43,20 +38,25 @@ class Team extends BaseTeam
 	
 	public function getDebate($roundId, $con = null)
 	{
-		$scoreSheets = $this->getTeamScoreSheets($roundId, $con);
-		return $scoreSheets[0]->getDebateTeamXref()->getDebate();
+        $criteria = new Criteria();
+        $criteria->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
+        $criteria->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+        $criteria->add(RoundPeer::ID, $roundId);
+		$criteria->add(DebateTeamXrefPeer::TEAM_ID, $this->getId());
+        
+        return DebatePeer::doSelectOne($criteria, $con);
 	}
 	
 	public function getTeamScoreSheets($roundId, $con = null)
 	{
-        $criteria = new Criteria();
-        $criteria->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
-        $criteria->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
-        $criteria->addJoin(DebateTeamXrefPeer::ID, TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID);
-        $criteria->add(RoundPeer::ID, $roundId);
-        $criteria->add(DebateTeamXrefPeer::TEAM_ID, $this->getId());
+		$criteria = new Criteria();
+		$criteria->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
+		$criteria->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+		$criteria->addJoin(DebateTeamXrefPeer::ID, TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID);
+		$criteria->add(RoundPeer::ID, $roundId);
+		$criteria->add(DebateTeamXrefPeer::TEAM_ID, $this->getId());
 
-        return TeamScoreSheetPeer::doSelect($criteria, $con);
+		return TeamScoreSheetPeer::doSelect($criteria, $con);
 	}
 	
 	public function save($con = null)
@@ -70,7 +70,7 @@ class Team extends BaseTeam
 			$this->addTeamScore($teamScore);
 		}		
 		
-		$adjudicators = $this->getInstitution()->getAdjudicators();		
+		$adjudicators = $this->getInstitution($con)->getAdjudicators(null, $con);		
 		foreach($adjudicators as $anAdjudicator)
 		{
 			$conflict = $anAdjudicator->createConflict($this, $con);
@@ -139,41 +139,16 @@ class Team extends BaseTeam
 		parent::delete();
 	}
 	
-	public function getTeamScore($debate, $conn=null){
-		$total = 0;
-		$c = new Criteria();
-		$c->add(DebateTeamXrefPeer::DEBATE_ID, $debate->getId());
-		$c->add(DebateTeamXrefPeer::TEAM_ID, $this->getId());
-		$xref = DebateTeamXrefPeer::doSelect($c, $conn);
-		$win=0;
-		$loss=0;
-		if($xref[0]->getTeamScoreSheets() != null)
-		{
-			foreach($xref[0]->getTeamScoreSheets() as $teamScoreSheet)
-			{
-				if($teamScoreSheet->getScore($conn) == 1)
-				{
-					$win++;
-				}
-				else if($teamScoreSheet->getScore($conn) == 0)
-				{
-					$loss++;
-				}
-				else
-				{
-					throw new Exception('Teams can only win or lose in Australs style.  Scores should either be 1 or 0.  Got ' . $teamScoreSheet->getScore());
-				}
-			}
-			if($win > $loss)
-			{
-				$total++;
-			}
-			else if($win == $loss)
-			{
-				throw new Exception('This team had an equal number of adjudicators giving the win to it as those that gave it against it');
-			}
-		}
-		return $total;
+	public function getTeamScore($debate, $con = null)
+    {
+        $c = new Criteria();
+        $c->addJoin(DebateTeamXrefPeer::ID, TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID);
+        $c->add(DebateTeamXrefPeer::DEBATE_ID, $debate->getId());
+        if ($debate->countAdjudicatorAllocations(new Criteria(), false, $con) * 2 != TeamScoreSheetPeer::doCount($c, false, $con))
+        {
+            return null;
+        }
+        return $debate->getDebateTeamXrefForTeam($this->getId(), $con)->getTeamResult($con)->getMajorityTeamScore();
 	}
 	
 	public function getTotalTeamScore($propelConn = null)
@@ -198,56 +173,41 @@ class Team extends BaseTeam
 		return $score[0]->getTotalMargin();
 	}
 	
-	public function getTotalTeamScoreSlow($propelConn=null)
+	public function deriveTotalTeamScore($con = null)
     {
-		$total = 0;
-		foreach($this->getDebateTeamXrefs(null, $propelConn) as $debateTeamXref)
-		{
-			if($debateTeamXref->getTeamScoreSheets() != null)
-			{
-				$win = 0;
-				$loss = 0;
-				foreach($debateTeamXref->getTeamScoreSheets(null, $propelConn) as $teamScoreSheet)
-				{
+        if (!($con instanceof Connection)) {
+            $con = Propel::getConnection();
+        }
 
-					if($teamScoreSheet->getScore() == 1)
-					{
-						$win++;
-					}
-					else if($teamScoreSheet->getScore() == 0)
-					{
-						$loss++;
-					}
-					else
-					{
-						throw new Exception('Teams can only win or lose in Australs style.  Scores should either be 1 or 0.  Got ' . $teamScoreSheet->getScore());
-					}
-				}
-				
-				if($win > $loss)
-				{
-					$total++;
-				}
-				else if($win == $loss)
-				{	
-					echo $win."-".$loss;
-					echo $debateTeamXref->getId();
-					throw new Exception('This team had an equal number of adjudicators giving the win to it as those that gave it against it');
-				}
-			}
-		}
-		
-		return $total;
+        $sql = "SELECT SUM(team_results.majority_team_score) AS total_team_score " .
+        "FROM teams " .
+        "JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
+        "JOIN team_results ON team_results.debate_team_xref_id = debates_teams_xrefs.id " .
+        "WHERE teams.id = ?";
+        $stmt = $con->prepareStatement($sql);
+        $stmt->setInt(1, $this->getId());
+        $rs = $stmt->executeQuery();
+        $rs->next();
+
+        return $rs->getInt('total_team_score');
     }
 	
-	public function getTotalSpeakerScoreSlow($conn = null)
+	public function deriveTotalSpeakerScore($con = null)
 	{
-		$total = 0;
-		foreach($this->getDebateTeamXrefs(new Criteria(), $conn) as $xref)
-		{
-			$total += $xref->getSpeakerScores();
-		}
-		return $total;
+        if (!($con instanceof Connection)) {
+            $con = Propel::getConnection();
+        }
+        $sql = "SELECT SUM(team_results.majority_team_score) AS total_team_speaker_score " .
+        "FROM teams " .
+        "JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
+        "JOIN debater_results ON debater_results.debate_team_xref_id = debates_teams_xrefs.id " .
+        "WHERE teams.id = ?";
+        $stmt = $con->prepareStatement($sql);
+        $stmt->setInt(1, $this->getId());
+        $rs = $stmt->executeQuery();
+        $rs->next();
+
+        return $rs->getInt('total_team_speaker_score');
 	}
 	
 	public function getTotalMarginSlow($conn = null)
@@ -263,9 +223,9 @@ class Team extends BaseTeam
 	public function getTotalAffs($conn=null)
 	{
 		$total = 0;
-		foreach($this->getDebateTeamXrefs($conn) as $xref)
+		foreach($this->getDebateTeamXrefs(new Criteria(), $conn) as $xref)
 		{
-			if($xref->getPosition($conn) == 1)
+			if($xref->getPosition() == 1)
 			{
 				$total++;
 			}
