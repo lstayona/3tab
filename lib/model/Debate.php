@@ -74,7 +74,25 @@ class Debate extends BaseDebate
 		$xrefs = DebateTeamXrefPeer::doSelect($c, $conn);
 		return $xrefs[0];
 	}
-	
+    
+    public function getDebateTeamXrefForTeam($teamId, $con = null)
+    {
+        $c = new Criteria();
+        $c->add(DebateTeamXrefPeer::DEBATE_ID, $this->getId());
+		$c->add(DebateTeamXrefPeer::TEAM_ID, $teamId);
+        $debateTeamXrefs = DebateTeamXrefPeer::doSelect($c, $con);
+
+        if (count($debateTeamXrefs) > 1) {
+            throw new Exception("More than one DebateTeamXref returned for " . 
+            "team_id = " . $teamId . " and debate_id = " . $this->getId());
+        } else if (count($debateTeamXrefs) < 1) {
+            throw new Exception("No DebateTeamXref returned for " . 
+            "team_id = " . $teamId . " and debate_id = " . $this->getId());
+        } else {
+            return $debateTeamXrefs[0];
+        }
+    }
+
 	public function getTeam($position, $conn = null)
 	{
 		foreach($this->getDebateTeamXrefs(new Criteria(), $conn) as $debateTeamXref)
