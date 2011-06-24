@@ -48,27 +48,21 @@ class Team extends BaseTeam
 	}
 	
 	public function getTeamScoreSheets($roundId, $con = null)
-	{        
-        if(is_null($con))
-        {
-            $con = Propel::getConnection();
-        }
-        
-    	$stmt = $con->createStatement();
-		$query = "SELECT team_score_sheets.* FROM debates_teams_xrefs, debates, " .
-        "team_score_sheets WHERE team_id = %d AND debates.round_id = %d AND " .
-		"debates_teams_xrefs.debate_id = debates.id AND team_score_sheets.".
-		"debate_team_xref_id = debates_teams_xrefs.id";
-		$query = sprintf($query, $this->getId(), $roundId);
-		$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-        
-		return TeamScoreSheetPeer::populateObjects($rs);		
+	{
+        $criteria = new Criteria();
+        $criteria->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
+        $criteria->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+        $criteria->addJoin(DebateTeamXrefPeer::ID, TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID);
+        $criteria->add(RoundPeer::ID, $roundId);
+        $criteria->add(DebateTeamXrefPeer::TEAM_ID, $this->getId());
+
+        return TeamScoreSheetPeer::doSelect($criteria, $con);
 	}
 	
 	public function save($con = null)
 	{
 		parent::save($con);
-		if(!$this->getTeamScores())
+		if(!$this->getTeamScores(null, $con))
 		{
 			$teamScore = new TeamScore();
 			$teamScore->setTeam($this);

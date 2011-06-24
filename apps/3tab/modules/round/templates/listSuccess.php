@@ -11,7 +11,7 @@
   <th>Name</th>
   <th>Type</th>
   <th>Preceded by round</th>
-  <th>Feedback weightage</th?
+  <th>Feedback weightage</th>
   <th>Created at</th>
   <th>Updated at</th>
 </tr>
