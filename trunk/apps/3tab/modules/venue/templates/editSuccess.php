@@ -19,7 +19,7 @@
 )) ?></td>
 </tr>
 <tr>
-  <th>Active <span class="red"*</span> :</th>
+  <th>Active <span class="red"></span> :</th>
   <td><?php echo object_checkbox_tag($venue, 'getActive', array (
 )) ?></td>
 </tr>
