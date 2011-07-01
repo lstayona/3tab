@@ -197,7 +197,7 @@ class Team extends BaseTeam
         if (!($con instanceof Connection)) {
             $con = Propel::getConnection();
         }
-        $sql = "SELECT SUM(team_results.majority_team_score) AS total_team_speaker_score " .
+        $sql = "SELECT SUM(debater_results.averaged_score) AS total_team_speaker_score " .
         "FROM teams " .
         "JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
         "JOIN debater_results ON debater_results.debate_team_xref_id = debates_teams_xrefs.id " .
