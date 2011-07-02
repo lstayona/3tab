@@ -92,9 +92,7 @@ abstract class BaseTeamResult extends BaseObject  {
 	public function setDebateTeamXrefId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -112,9 +110,7 @@ abstract class BaseTeamResult extends BaseObject  {
 	public function setTeamVoteCount($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -128,9 +124,7 @@ abstract class BaseTeamResult extends BaseObject  {
 	public function setOpponentDebateTeamXrefId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -148,9 +142,7 @@ abstract class BaseTeamResult extends BaseObject  {
 	public function setOpponentTeamVoteCount($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -164,9 +156,7 @@ abstract class BaseTeamResult extends BaseObject  {
 	public function setMajorityTeamScore($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -180,9 +170,7 @@ abstract class BaseTeamResult extends BaseObject  {
 	public function setWinningDebateTeamXrefId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

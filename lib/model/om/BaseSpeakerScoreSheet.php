@@ -144,9 +144,7 @@ abstract class BaseSpeakerScoreSheet extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -160,9 +158,7 @@ abstract class BaseSpeakerScoreSheet extends BaseObject  implements Persistent {
 	public function setAdjudicatorAllocationId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -180,9 +176,7 @@ abstract class BaseSpeakerScoreSheet extends BaseObject  implements Persistent {
 	public function setDebateTeamXrefId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -200,9 +194,7 @@ abstract class BaseSpeakerScoreSheet extends BaseObject  implements Persistent {
 	public function setDebaterId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -230,9 +222,7 @@ abstract class BaseSpeakerScoreSheet extends BaseObject  implements Persistent {
 	public function setSpeakingPosition($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
