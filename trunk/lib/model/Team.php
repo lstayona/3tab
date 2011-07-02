@@ -207,7 +207,7 @@ class Team extends BaseTeam
         $rs = $stmt->executeQuery();
         $rs->next();
 
-        return $rs->getInt('total_team_speaker_score');
+        return $rs->getFloat('total_team_speaker_score');
 	}
 	
 	public function getTotalMarginSlow($conn = null)
