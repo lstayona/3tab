@@ -108,9 +108,7 @@ abstract class BaseAdjudicatorConflict extends BaseObject  implements Persistent
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -124,9 +122,7 @@ abstract class BaseAdjudicatorConflict extends BaseObject  implements Persistent
 	public function setTeamId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -144,9 +140,7 @@ abstract class BaseAdjudicatorConflict extends BaseObject  implements Persistent
 	public function setAdjudicatorId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

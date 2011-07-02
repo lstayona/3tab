@@ -606,7 +606,14 @@ class tournamentActions extends sfActions
         try
         {
             $propelConn->begin();
-			$teams = TeamPeer::doSelect(new Criteria(), $propelConn);
+            $round = RoundPeer::retrieveByPk($this->getRequestParameter('id'));
+
+            $c = new Criteria();
+            $c->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
+            $c->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+            $c->addJoin(DebateTeamXrefPeer::TEAM_ID, TeamPeer::ID);
+            $c->add(RoundPeer::ID, $round->getId());
+			$teams = TeamPeer::doSelect($c, $propelConn);
 			foreach($teams as $team)
 			{
 				$c = new Criteria();
@@ -625,9 +632,9 @@ class tournamentActions extends sfActions
 				$speakerScore = SpeakerScorePeer::doSelect($c, $propelConn);
 				$speakerScore[0]->setTotalSpeakerScore($debater->getTotalSpeakerScoreSlow($propelConn));
 				$speakerScore[0]->save($propelConn);
-			}
-			$round = RoundPeer::retrieveByPk($this->getRequestParameter('id'));
-			$round->setStatus(ROUND::ROUND_STATUS_RESULT_ENTRY_COMPLETE);
+			}			
+            
+            $round->setStatus(ROUND::ROUND_STATUS_RESULT_ENTRY_COMPLETE);
 			$round->save($propelConn);
 			$propelConn->commit();
 		}

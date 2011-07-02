@@ -198,6 +198,15 @@
             <unique-column name="chair_id"/>
 			<unique-column name="round_id"/>
         </unique>
+        <index name="trainee_allocations_trainee_id_idx">
+            <index-column name="trainee_id"/>
+        </index>
+        <index name="trainee_allocations_chair_id_idx">
+            <index-column name="chair_id"/>
+        </index>
+        <index name="trainee_allocations_round_id_idx">
+            <index-column name="round_id"/>
+        </index>
     </table>
     
     <table name="team_score_sheets" idMethod="native" phpName="TeamScoreSheet">
@@ -213,6 +222,16 @@
         <column name="score" type="INTEGER" required="true" />
         <column name="created_at" type="TIMESTAMP" />
         <column name="updated_at" type="TIMESTAMP" />
+        <unique name="team_score_sheets_adjudicator_allocation_id_debate_team_xref_id">
+            <unique-column name="adjudicator_allocation_id" />
+            <unique-column name="debate_team_xref_id" />
+        </unique>
+        <index name="team_score_sheets_adjudicator_allocation_id_idx">
+            <index-column name="adjudicator_allocation_id"/>
+        </index>
+        <index name="team_score_sheets_debate_team_xref_id_idx">
+            <index-column name="debate_team_xref_id"/>
+        </index>
     </table>
     
     <table name="speaker_score_sheets" idMethod="native" phpName="SpeakerScoreSheet">
@@ -233,6 +252,24 @@
         <column name="speaking_position" type="INTEGER" required="true" />
         <column name="created_at" type="TIMESTAMP" />
         <column name="updated_at" type="TIMESTAMP" />
+        <unique name="speaker_score_sheets_adjudicator_allocation_id_debate_team_xref_id_debater_id_speaking_position">
+            <unique-column name="adjudicator_allocation_id" />
+            <unique-column name="debate_team_xref_id" />
+            <unique-column name="debater_id" />
+            <unique-column name="speaking_position" />
+        </unique>
+        <index name="speaker_score_sheets_adjudicator_allocation_id_idx">
+            <index-column name="adjudicator_allocation_id"/>
+        </index>
+        <index name="speaker_score_sheets_debate_team_xref_id_idx">
+            <index-column name="debate_team_xref_id"/>
+        </index>
+        <index name="speaker_score_sheets_debater_id_idx">
+            <index-column name="debater_id"/>
+        </index>
+        <index name="speaker_score_sheets_speaking_position_idx">
+            <index-column name="speaking_position"/>
+        </index>
     </table>
 	
     <table name="adjudicator_feedback_sheets" idMethod="native" phpName="AdjudicatorFeedbackSheet">

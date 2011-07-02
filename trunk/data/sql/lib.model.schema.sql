@@ -24,6 +24,7 @@ CREATE TABLE "institutions"
 COMMENT ON TABLE "institutions" IS '';
 
 
+SET search_path TO public;
 -----------------------------------------------------------------------------
 -- teams
 -----------------------------------------------------------------------------
@@ -52,6 +53,9 @@ CREATE TABLE "teams"
 
 COMMENT ON TABLE "teams" IS '';
 
+
+SET search_path TO public;
+CREATE INDEX "teams_institution_id_idx" ON "teams" ("institution_id");
 
 ALTER TABLE "teams" ADD CONSTRAINT "teams_FK_1" FOREIGN KEY ("institution_id") REFERENCES "institutions" ("id");
 
@@ -82,6 +86,9 @@ CREATE TABLE "debaters"
 COMMENT ON TABLE "debaters" IS '';
 
 
+SET search_path TO public;
+CREATE INDEX "debaters_team_id_idx" ON "debaters" ("team_id");
+
 ALTER TABLE "debaters" ADD CONSTRAINT "debaters_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 -----------------------------------------------------------------------------
@@ -110,6 +117,9 @@ CREATE TABLE "adjudicators"
 
 COMMENT ON TABLE "adjudicators" IS '';
 
+
+SET search_path TO public;
+CREATE INDEX "adjudicators_institution_id_idx" ON "adjudicators" ("institution_id");
 
 ALTER TABLE "adjudicators" ADD CONSTRAINT "adjudicators_FK_1" FOREIGN KEY ("institution_id") REFERENCES "institutions" ("id");
 
@@ -141,6 +151,7 @@ CREATE TABLE "rounds"
 COMMENT ON TABLE "rounds" IS '';
 
 
+SET search_path TO public;
 ALTER TABLE "rounds" ADD CONSTRAINT "rounds_FK_1" FOREIGN KEY ("preceded_by_round_id") REFERENCES "rounds" ("id");
 
 -----------------------------------------------------------------------------
@@ -169,6 +180,7 @@ CREATE TABLE "venues"
 COMMENT ON TABLE "venues" IS '';
 
 
+SET search_path TO public;
 -----------------------------------------------------------------------------
 -- debates
 -----------------------------------------------------------------------------
@@ -193,6 +205,11 @@ CREATE TABLE "debates"
 
 COMMENT ON TABLE "debates" IS '';
 
+
+SET search_path TO public;
+CREATE INDEX "debates_round_id_idx" ON "debates" ("round_id");
+
+CREATE INDEX "debates_venue_id_idx" ON "debates" ("venue_id");
 
 ALTER TABLE "debates" ADD CONSTRAINT "debates_FK_1" FOREIGN KEY ("round_id") REFERENCES "rounds" ("id");
 
@@ -224,6 +241,13 @@ CREATE TABLE "debates_teams_xrefs"
 COMMENT ON TABLE "debates_teams_xrefs" IS '';
 
 
+SET search_path TO public;
+CREATE INDEX "debates_teams_xrefs_debate_id_idx" ON "debates_teams_xrefs" ("debate_id");
+
+CREATE INDEX "debates_teams_xrefs_team_id_idx" ON "debates_teams_xrefs" ("team_id");
+
+CREATE INDEX "debates_teams_xrefs_position_idx" ON "debates_teams_xrefs" ("position");
+
 ALTER TABLE "debates_teams_xrefs" ADD CONSTRAINT "debates_teams_xrefs_FK_1" FOREIGN KEY ("debate_id") REFERENCES "debates" ("id");
 
 ALTER TABLE "debates_teams_xrefs" ADD CONSTRAINT "debates_teams_xrefs_FK_2" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
@@ -253,6 +277,11 @@ CREATE TABLE "adjudicator_allocations"
 
 COMMENT ON TABLE "adjudicator_allocations" IS '';
 
+
+SET search_path TO public;
+CREATE INDEX "adjudicator_allocations_debate_id_idx" ON "adjudicator_allocations" ("debate_id");
+
+CREATE INDEX "adjudicator_allocations_adjudicator_id_idx" ON "adjudicator_allocations" ("adjudicator_id");
 
 ALTER TABLE "adjudicator_allocations" ADD CONSTRAINT "adjudicator_allocations_FK_1" FOREIGN KEY ("debate_id") REFERENCES "debates" ("id");
 
@@ -284,6 +313,13 @@ CREATE TABLE "trainee_allocations"
 COMMENT ON TABLE "trainee_allocations" IS '';
 
 
+SET search_path TO public;
+CREATE INDEX "trainee_allocations_trainee_id_idx" ON "trainee_allocations" ("trainee_id");
+
+CREATE INDEX "trainee_allocations_chair_id_idx" ON "trainee_allocations" ("chair_id");
+
+CREATE INDEX "trainee_allocations_round_id_idx" ON "trainee_allocations" ("round_id");
+
 ALTER TABLE "trainee_allocations" ADD CONSTRAINT "trainee_allocations_FK_1" FOREIGN KEY ("trainee_id") REFERENCES "adjudicators" ("id");
 
 ALTER TABLE "trainee_allocations" ADD CONSTRAINT "trainee_allocations_FK_2" FOREIGN KEY ("chair_id") REFERENCES "adjudicators" ("id");
@@ -309,11 +345,17 @@ CREATE TABLE "team_score_sheets"
 	"score" INTEGER  NOT NULL,
 	"created_at" TIMESTAMP,
 	"updated_at" TIMESTAMP,
-	PRIMARY KEY ("id")
+	PRIMARY KEY ("id"),
+	CONSTRAINT "team_score_sheets_adjudicator_allocation_id_debate_team_xref_id" UNIQUE ("adjudicator_allocation_id","debate_team_xref_id")
 );
 
 COMMENT ON TABLE "team_score_sheets" IS '';
 
+
+SET search_path TO public;
+CREATE INDEX "team_score_sheets_adjudicator_allocation_id_idx" ON "team_score_sheets" ("adjudicator_allocation_id");
+
+CREATE INDEX "team_score_sheets_debate_team_xref_id_idx" ON "team_score_sheets" ("debate_team_xref_id");
 
 ALTER TABLE "team_score_sheets" ADD CONSTRAINT "team_score_sheets_FK_1" FOREIGN KEY ("adjudicator_allocation_id") REFERENCES "adjudicator_allocations" ("id");
 
@@ -340,11 +382,21 @@ CREATE TABLE "speaker_score_sheets"
 	"speaking_position" INTEGER  NOT NULL,
 	"created_at" TIMESTAMP,
 	"updated_at" TIMESTAMP,
-	PRIMARY KEY ("id")
+	PRIMARY KEY ("id"),
+	CONSTRAINT "speaker_score_sheets_adjudicator_allocation_id_debate_team_xref_id_debater_id_speaking_position" UNIQUE ("adjudicator_allocation_id","debate_team_xref_id","debater_id","speaking_position")
 );
 
 COMMENT ON TABLE "speaker_score_sheets" IS '';
 
+
+SET search_path TO public;
+CREATE INDEX "speaker_score_sheets_adjudicator_allocation_id_idx" ON "speaker_score_sheets" ("adjudicator_allocation_id");
+
+CREATE INDEX "speaker_score_sheets_debate_team_xref_id_idx" ON "speaker_score_sheets" ("debate_team_xref_id");
+
+CREATE INDEX "speaker_score_sheets_debater_id_idx" ON "speaker_score_sheets" ("debater_id");
+
+CREATE INDEX "speaker_score_sheets_speaking_position_idx" ON "speaker_score_sheets" ("speaking_position");
 
 ALTER TABLE "speaker_score_sheets" ADD CONSTRAINT "speaker_score_sheets_FK_1" FOREIGN KEY ("adjudicator_allocation_id") REFERENCES "adjudicator_allocations" ("id");
 
@@ -379,6 +431,7 @@ CREATE TABLE "adjudicator_feedback_sheets"
 COMMENT ON TABLE "adjudicator_feedback_sheets" IS '';
 
 
+SET search_path TO public;
 ALTER TABLE "adjudicator_feedback_sheets" ADD CONSTRAINT "adjudicator_feedback_sheets_FK_1" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");
 
 ALTER TABLE "adjudicator_feedback_sheets" ADD CONSTRAINT "adjudicator_feedback_sheets_FK_2" FOREIGN KEY ("adjudicator_allocation_id") REFERENCES "adjudicator_allocations" ("id");
@@ -412,6 +465,7 @@ CREATE TABLE "team_scores"
 COMMENT ON TABLE "team_scores" IS '';
 
 
+SET search_path TO public;
 ALTER TABLE "team_scores" ADD CONSTRAINT "team_scores_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 -----------------------------------------------------------------------------
@@ -439,6 +493,7 @@ CREATE TABLE "speaker_scores"
 COMMENT ON TABLE "speaker_scores" IS '';
 
 
+SET search_path TO public;
 ALTER TABLE "speaker_scores" ADD CONSTRAINT "speaker_scores_FK_1" FOREIGN KEY ("debater_id") REFERENCES "debaters" ("id");
 
 -----------------------------------------------------------------------------
@@ -465,6 +520,7 @@ CREATE TABLE "adjudicator_conflicts"
 COMMENT ON TABLE "adjudicator_conflicts" IS '';
 
 
+SET search_path TO public;
 ALTER TABLE "adjudicator_conflicts" ADD CONSTRAINT "adjudicator_conflicts_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 ALTER TABLE "adjudicator_conflicts" ADD CONSTRAINT "adjudicator_conflicts_FK_2" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");

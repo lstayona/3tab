@@ -67,9 +67,7 @@ abstract class BaseDebaterResult extends BaseObject  {
 	public function setDebateTeamXrefId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -87,9 +85,7 @@ abstract class BaseDebaterResult extends BaseObject  {
 	public function setDebaterId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -107,9 +103,7 @@ abstract class BaseDebaterResult extends BaseObject  {
 	public function setSpeakingPosition($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

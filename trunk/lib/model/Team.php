@@ -179,10 +179,10 @@ class Team extends BaseTeam
             $con = Propel::getConnection();
         }
 
-        $sql = "SELECT SUM(team_results.majority_team_score) AS total_team_score " .
+        $sql = "SELECT SUM(COALESCE(team_results.majority_team_score, 0)) AS total_team_score " .
         "FROM teams " .
-        "JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
-        "JOIN team_results ON team_results.debate_team_xref_id = debates_teams_xrefs.id " .
+        "LEFT JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
+        "LEFT JOIN team_results ON team_results.debate_team_xref_id = debates_teams_xrefs.id " .
         "WHERE teams.id = ?";
         $stmt = $con->prepareStatement($sql);
         $stmt->setInt(1, $this->getId());
@@ -197,10 +197,10 @@ class Team extends BaseTeam
         if (!($con instanceof Connection)) {
             $con = Propel::getConnection();
         }
-        $sql = "SELECT SUM(debater_results.averaged_score) AS total_team_speaker_score " .
+        $sql = "SELECT SUM(COALESCE(debater_results.averaged_score, 0.00)) AS total_team_speaker_score " .
         "FROM teams " .
-        "JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
-        "JOIN debater_results ON debater_results.debate_team_xref_id = debates_teams_xrefs.id " .
+        "LEFT JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
+        "LEFT JOIN debater_results ON debater_results.debate_team_xref_id = debates_teams_xrefs.id " .
         "WHERE teams.id = ?";
         $stmt = $con->prepareStatement($sql);
         $stmt->setInt(1, $this->getId());
