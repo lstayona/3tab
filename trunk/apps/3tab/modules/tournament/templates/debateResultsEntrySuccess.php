@@ -78,7 +78,7 @@ $errors = $sf_request->getErrors();
     <?php
     foreach(SpeakerScoreSheet::getSpeakerPositions() as $speakerPosition => $description)
     {
-        speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $sf_request->getParameter('speaker_scores'));
+        speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $sf_request->getParameter('speaker_scores'), $errors);
     }
     ?>
         <tr>
@@ -114,7 +114,7 @@ function debater_select_tag($name, $debaters, $selectedDebaterId, $options = arr
     return select_tag($name, options_for_select($opts, !is_null($selectedDebaterId) ? $selectedDebaterId : null), $options);
 }
 
-function speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $speakerScores)
+function speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $speakerScores, $errors)
 {
 ?>
         <tr>
