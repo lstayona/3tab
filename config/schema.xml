@@ -27,6 +27,9 @@
         <unique name="teams_name">
             <unique-column name="name"/>
         </unique>
+        <index name="teams_institution_id_idx">
+            <index-column name="institution_id"/>
+        </index>
     </table>
     
     
@@ -44,6 +47,9 @@
         <unique name="debaters_name">
             <unique-column name="name"/>
         </unique>
+        <index name="debaters_team_id_idx">
+            <index-column name="team_id"/>
+        </index>
     </table>
     
     <table name="adjudicators" idMethod="native" phpName="Adjudicator">
@@ -60,6 +66,9 @@
         <unique name="adjudicators_name">
             <unique-column name="name"/>
         </unique>
+        <index name="adjudicators_institution_id_idx">
+            <index-column name="institution_id"/>
+        </index>
     </table>
     
     <table name="rounds" idMethod="native" phpName="Round">
@@ -107,6 +116,12 @@
             <unique-column name="round_id"/>
             <unique-column name="venue_id"/>
         </unique>
+        <index name="debates_round_id_idx">
+            <index-column name="round_id"/>
+        </index>
+        <index name="debates_venue_id_idx">
+            <index-column name="venue_id"/>
+        </index>
     </table>
     
     <table name="debates_teams_xrefs" idMethod="native" phpName="DebateTeamXref">
@@ -126,6 +141,15 @@
             <unique-column name="debate_id"/>
             <unique-column name="team_id"/>
         </unique>
+        <index name="debates_teams_xrefs_debate_id_idx">
+            <index-column name="debate_id"/>
+        </index>
+        <index name="debates_teams_xrefs_team_id_idx">
+            <index-column name="team_id"/>
+        </index>
+        <index name="debates_teams_xrefs_position_idx">
+            <index-column name="position"/>
+        </index>
     </table>
 
     <table name="adjudicator_allocations" idMethod="native" phpName="AdjudicatorAllocation">
@@ -145,6 +169,12 @@
             <unique-column name="debate_id"/>
             <unique-column name="adjudicator_id"/>
         </unique>
+        <index name="adjudicator_allocations_debate_id_idx">
+            <index-column name="debate_id"/>
+        </index>
+        <index name="adjudicator_allocations_adjudicator_id_idx">
+            <index-column name="adjudicator_id"/>
+        </index>
     </table>
 	
 	<table name="trainee_allocations" idMethod="native" phpName="TraineeAllocation">
