@@ -8,10 +8,12 @@ require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.D
 
 sfContext::getInstance();
 
-$t = new lime_test(4, new lime_output_color());
+$t = new lime_test(15, new lime_output_color());
 
 $con = Propel::getConnection();
 $con->begin();
+$t->diag("Check that without results, the team_margins table is empty.");
+$t->is(TeamMarginPeer::doCount(new Criteria(), false, $con), 0, "-> verified team_margins view is empty.");
 /*
  * Test data scenario:
  * Round 1 Debate 1: 
@@ -182,8 +184,14 @@ SpeakerScoreSheetPeer::createSpeakerScoreSheet(
   DebaterPeer::retrieveByName('iiu_a_speaker2', $con)->getId(),
   37.5, SpeakerScoreSheet::REPLY_SPEAKER)->save($con);
 
-$t->is($affirmativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 265.75, "-> correct total team speaker score returned for team in the affirmative after round 1.");
-$t->is($negativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 263.25, "-> correct total team speaker score returned for team in the negative after round 1.");
+$t->is(TeamMarginPeer::doCount(new Criteria(), false, $con), 2, "-> verified team_margins view has correct number of entries.");
+$t->is($affirmativeDebateTeamXref->getTeamMargin($con)->getMajorityTeamScore(), 1, "-> correct majority team score returned for team in the affirmative after round 1.");
+$t->is($affirmativeDebateTeamXref->getTeamMargin($con)->getTeamSpeakerScore(), 265.75, "-> correct total team speaker score returned for team in the affirmative after round 1.");
+$t->is($affirmativeDebateTeamXref->getTeamMargin($con)->getMargin(), 2.5, "-> correct margin returned for team in the affirmative after round 1.");
+
+$t->is($negativeDebateTeamXref->getTeamMargin($con)->getMajorityTeamScore($con), 0, "-> correct majority team score returned for team in the negative after round 1.");
+$t->is($negativeDebateTeamXref->getTeamMargin($con)->getTeamSpeakerScore($con), 263.25, "-> correct total team speaker score returned for team in the negative after round 1.");
+$t->is($negativeDebateTeamXref->getTeamMargin($con)->getMargin($con), -2.5, "-> correct margin returned for team in the negative after round 1.");
 
 /*
  * Test data scenario:
@@ -252,7 +260,12 @@ SpeakerScoreSheetPeer::createSpeakerScoreSheet(
   DebaterPeer::retrieveByName('swing_a_speaker3', $con)->getId(),
   37.5, SpeakerScoreSheet::REPLY_SPEAKER)->save($con);
 
-$t->is($affirmativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 263.25 + 268, "-> correct total team speaker score returned for team in the affirmative after round 2.");
-$t->is($negativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 265.75 + 265.5, "-> correct total team speaker score returned for team in the negative after round 2.");
+$t->is(TeamMarginPeer::doCount(new Criteria(), false, $con), 4, "-> verified team_margins view has correct number of entries.");
+$t->is($affirmativeDebateTeamXref->getTeamMargin($con)->getMajorityTeamScore(), 1, "-> correct total majority score returned for team in the affirmative after round 2.");
+$t->is($affirmativeDebateTeamXref->getTeamMargin($con)->getTeamSpeakerScore(), 268, "-> correct total team speaker score returned for team in the affirmative after round 2.");
+$t->is($affirmativeDebateTeamXref->getTeamMargin($con)->getMargin(), 2.5, "-> correct margin returned for team in the affirmative after round 2.");
 
+$t->is($negativeDebateTeamXref->getTeamMargin($con)->getMajorityTeamScore($con), 0, "-> correct total majority score returned for team in the negative after round 2.");
+$t->is($negativeDebateTeamXref->getTeamMargin($con)->getTeamSpeakerScore($con), 265.5, "-> correct total team speaker score returned for team in the negative after round 2.");
+$t->is($negativeDebateTeamXref->getTeamMargin($con)->getMargin($con), -2.5, "-> correct margin score returned for team in the negative after round 2.");
 $con->rollback();

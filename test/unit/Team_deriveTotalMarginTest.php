@@ -182,8 +182,8 @@ SpeakerScoreSheetPeer::createSpeakerScoreSheet(
   DebaterPeer::retrieveByName('iiu_a_speaker2', $con)->getId(),
   37.5, SpeakerScoreSheet::REPLY_SPEAKER)->save($con);
 
-$t->is($affirmativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 265.75, "-> correct total team speaker score returned for team in the affirmative after round 1.");
-$t->is($negativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 263.25, "-> correct total team speaker score returned for team in the negative after round 1.");
+$t->is($affirmativeDebateTeamXref->getTeam($con)->deriveTotalMargin($con), 2.5, '-> correct total margin four affirmative team after round 1.');
+$t->is($negativeDebateTeamXref->getTeam($con)->deriveTotalMargin($con), -2.5, '-> correct total margin four affirmative team after round 1.');
 
 /*
  * Test data scenario:
@@ -252,7 +252,7 @@ SpeakerScoreSheetPeer::createSpeakerScoreSheet(
   DebaterPeer::retrieveByName('swing_a_speaker3', $con)->getId(),
   37.5, SpeakerScoreSheet::REPLY_SPEAKER)->save($con);
 
-$t->is($affirmativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 263.25 + 268, "-> correct total team speaker score returned for team in the affirmative after round 2.");
-$t->is($negativeDebateTeamXref->getTeam($con)->deriveTotalSpeakerScore($con), 265.75 + 265.5, "-> correct total team speaker score returned for team in the negative after round 2.");
+$t->is($affirmativeDebateTeamXref->getTeam($con)->deriveTotalMargin($con), 0.0, '-> correct total margin four affirmative team after round 2.');
+$t->is($negativeDebateTeamXref->getTeam($con)->deriveTotalMargin($con), 0.0, '-> correct total margin four affirmative team after round 2.');
 
 $con->rollback();

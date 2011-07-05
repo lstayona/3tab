@@ -198,4 +198,17 @@ class DebateTeamXref extends BaseDebateTeamXref
             return $debateResults[0];
         }
     }
+    
+    public function getTeamMargin($con = null)
+    {
+        $teamMargins = $this->getTeamMargins(null, $con);
+
+        if (count($teamMargins) > 1) {
+            throw new Exception("Cannot have more than one TeamMargin for a DebateTeamXref object");
+        } else if (count($teamMargins) < 1) {
+            return null;
+        } else {
+            return $teamMargins[0];
+        }
+    }
 }

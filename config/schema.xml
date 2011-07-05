@@ -336,19 +336,6 @@
         <column name="updated_at" type="TIMESTAMP" />
     </table>
 
-    <table name="debater_results" phpName="DebaterResult" skipSql="true" readOnly="true">
-        <column name="debate_team_xref_id" type="INTEGER" required="true" />
-        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
-            <reference local="debate_team_xref_id" foreign="id"/>
-        </foreign-key>
-        <column name="debater_id" type="INTEGER" required="true" />
-        <foreign-key foreignTable="debaters" onDelete="" onUpdate="">
-            <reference local="debater_id" foreign="id"/>
-        </foreign-key>
-        <column name="speaking_position" type="INTEGER" required="true" />
-        <column name="averaged_score" type="NUMERIC" required="true" />
-    </table>
-
     <table name="team_results" phpName="TeamResult" skipSql="true" readOnly="true">
         <column name="debate_team_xref_id" type="INTEGER" required="true" primaryKey="true" />
         <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
@@ -365,5 +352,28 @@
         <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
             <reference local="winning_debate_team_xref_id" foreign="id"/>
         </foreign-key>
+    </table>
+
+    <table name="debater_results" phpName="DebaterResult" skipSql="true" readOnly="true">
+        <column name="debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="debater_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debaters" onDelete="" onUpdate="">
+            <reference local="debater_id" foreign="id"/>
+        </foreign-key>
+        <column name="speaking_position" type="INTEGER" required="true" />
+        <column name="averaged_score" type="NUMERIC" required="true" />
+    </table>
+
+    <table name="team_margins" phpName="TeamMargin" skipSql="true" readOnly="true">
+        <column name="debate_team_xref_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debates_teams_xrefs" onDelete="" onUpdate="">
+            <reference local="debate_team_xref_id" foreign="id"/>
+        </foreign-key>
+        <column name="majority_team_score" type="INTEGER" required="true" />
+        <column name="team_speaker_score" type="NUMERIC" required="true" />
+        <column name="margin" type="NUMERIC" required="true" />
     </table>
 </database>
