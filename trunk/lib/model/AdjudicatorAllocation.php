@@ -99,46 +99,6 @@ class AdjudicatorAllocation extends BaseAdjudicatorAllocation
         }
     }	
 		
-	public static function getUnallocatedTrainees($round, $con=null)
-	{
-		$c = new Criteria();
-		$c->add(AdjudicatorPeer::ACTIVE, true);
-		$adjudicators = AdjudicatorPeer::doSelect($c);
-		$traineeAdjudicators = array();
-		foreach($adjudicators as $anAdjudicator)
-		{
-			if($anAdjudicator->getScore($round) < 1.5)
-			{
-				$traineeAdjudicators[] = $anAdjudicator;
-			}
-		}
-		$unallocatedTrainees = array();
-		$allocatedAdjudicators = AdjudicatorFeedbackSheet::getAdjudicatorsToReceiveFeedback($round, $con);
-		foreach($traineeAdjudicators as $aTrainee)
-		{
-			if(!in_array($aTrainee, $allocatedAdjudicators))
-			{
-				$unallocatedTrainees[] = $aTrainee;
-			}
-		}
-		return $unallocatedTrainees;
-	}
-	
-	public static function getChairs($round, $con=null)
-	{
-		$debates = $round->getDebates();
-		$chairs = array();
-		foreach($debates as $debate)
-		{
-			$c = new Criteria();
-			$c->add(AdjudicatorAllocationPeer::TYPE, 1);
-			$allocations = $debate->getAdjudicatorAllocations($c, $con);
-			$chairs[] = $allocations[0]->getAdjudicator();
-		}
-		return $chairs;
-	
-	}	
-    
     public function getTeamTotalSpeakerScore($debateTeamXref, $conn = null)
     {
         $c = new Criteria();

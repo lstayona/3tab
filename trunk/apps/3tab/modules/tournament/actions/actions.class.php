@@ -101,6 +101,7 @@ class tournamentActions extends sfActions
 		}
 		$this->adjudicatorAllocations = $allocator->allocate();
 		$this->unallocatedAdjudicators = $this->getUnallocatedAdjudicators($this->adjudicatorAllocations);
+        $this->adjudicators = $adjudicators;
     }
 
 	public function executePreAdjudicatorAllocation()
@@ -295,9 +296,7 @@ class tournamentActions extends sfActions
 	public function executeTraineeAllocation()
 	{
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter('id'));
-		$this->trainees = AdjudicatorAllocation::getUnallocatedTrainees($this->round);
-		$this->chairs = AdjudicatorAllocation::getChairs($this->round);		
-		
+		$this->trainees = AdjudicatorPeer::getUnallocatedTrainees($this->round);
 	}
 	
 	public function validateConfirmTraineeAllocation()

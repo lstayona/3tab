@@ -10,12 +10,17 @@ jQuery(document).ready(function () {
 });
 </script>
 <?php ini_set('memory_limit', '128M') //the sort is very memory intensive ?>
-<?php use_helper('Object') ?>
+<?php use_helper('Object'); ?>
+<?php use_helper('3tabForm'); ?>
 <h1>Draft matchups for <?php echo $round->getName();?></h1>
 <?php echo form_tag('tournament/confirmAdjudicatorAllocation'); ?>
+<?php if ($sf_request->hasErrors()):?>
+<ul class="error">
 <?php foreach($sf_request->getErrors() as $name => $error): ?>
-    <li><h2>Error: <?php echo $error ?></h2></li>
-  <?php endforeach; ?>
+    <li id="<?php echo $name; ?>"><?php echo $error; ?></li>
+<?php endforeach; ?>
+</ul>
+<?php endif; ?>
 
 <div id="window">
 <h3 class="toggle">Unallocated Adjudicators</h3>
@@ -61,45 +66,29 @@ foreach($adjudicatorAllocations as $number => $allocation):
 			<?php 
 				if(count($allocation) < 1)
 				{
-					$allocation[0] = null;
+					$allocation[0] = new AdjudicatorAllocation();
 				}
 			?>
 			<td>
-               	<?php echo object_select_tag($allocation[0], 'getAdjudicatorId', array (
-				 'related_class' => 'Adjudicator',
-					  'text_method' => 'getInfo',
-					  'control_name' => "adjudicatorId[$number][0]",
-					  'include_blank' => true,
-					)) ?>
-				
+                <?php echo adjudicator_select_tag("adjudicatorId[$number][0]", $sf_request->getParameter("adjudicatorId[$number][0]", $allocation[0]->getAdjudicatorId())); ?>
             </td>
 			<?php 
 				if(count($allocation) < 2)
 				{
-					$allocation[1] = null;
+					$allocation[1] = new AdjudicatorAllocation();
 				}
 			?>
 			<td>
-                <?php echo object_select_tag($allocation[1], 'getAdjudicatorId', array (
-				 'related_class' => 'Adjudicator',
-					  'text_method' => 'getInfo',
-					  'control_name' => "adjudicatorId[$number][1]",
-					  'include_blank' => true,
-					)) ?>
+                <?php echo adjudicator_select_tag("adjudicatorId[$number][1]", $sf_request->getParameter("adjudicatorId[$number][1]", $allocation[1]->getAdjudicatorId())); ?>
             </td>
 			<?php 
 				if(count($allocation) < 3)
 				{
-					$allocation[2] = null;
+					$allocation[2] = new AdjudicatorAllocation();
 				}
 			?>
 			<td>            
-				<?php echo object_select_tag($allocation[2], 'getAdjudicatorId', array (
-				 'related_class' => 'Adjudicator',
-					  'text_method' => 'getInfo',
-					  'control_name' => "adjudicatorId[$number][2]",
-					  'include_blank' => true,
-					)) ?>
+                <?php echo adjudicator_select_tag("adjudicatorId[$number][2]", $sf_request->getParameter("adjudicatorId[$number][2]", $allocation[2]->getAdjudicatorId())); ?>
             </td>
         </tr>
 <?php
