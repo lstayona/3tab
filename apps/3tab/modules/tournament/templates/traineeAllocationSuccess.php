@@ -9,11 +9,13 @@ jQuery(document).ready(function () {
 <?php use_helper('Object') ?>
 <h1>Draft Trainee Allocations For <?php echo $round->getName();?></h1>
 <?php echo form_tag('tournament/confirmTraineeAllocation'); ?>
+<?php if ($sf_request->hasErrors()): ?>
+<ul class="error">
 <?php foreach($sf_request->getErrors() as $name => $error): ?>
-    <li><h2>Error: <?php echo $error ?></h2></li>
+    <li id="<?php echo $name; ?>"><?php echo $error; ?></li>
   <?php endforeach; ?>
-
-
+</ul>
+<?php endif; ?>
 <table>
     <thead>
         <tr>
@@ -26,10 +28,11 @@ jQuery(document).ready(function () {
     </thead>
     <tbody>			
 <?php
-foreach($chairs as $number => $chair):
+foreach($round->getDebates() as $number => $debate):
 ?>
         <tr>	
-			<td><?php echo $chair->getDebate($round)->getInfo(); ?></td>
+			<td><?php echo $debate->getInfo(); ?></td>
+            <?php $chair = $debate->getChair(); ?>
             <td><?php echo $chair->getName(); ?></td>
 			<?php echo input_hidden_tag("chairs[$number]", $chair->getId()); ?>
 			<td>
@@ -37,7 +40,7 @@ foreach($chairs as $number => $chair):
 					  $trainees,
 					  'getId',
 					  'getInfo',
-					  null,
+					  $sf_request->getParameter("trainees[$number][0]"),
 					  'include_blank = true'
 					)) ?>
 			</td>
@@ -46,7 +49,7 @@ foreach($chairs as $number => $chair):
 					  $trainees,
 					  'getId',
 					  'getInfo',
-					  null,
+					  $sf_request->getParameter("trainees[$number][1]"),
 					  'include_blank = true'
 					)) ?>
 			</td>
@@ -55,7 +58,7 @@ foreach($chairs as $number => $chair):
 					  $trainees,
 					  'getId',
 					  'getInfo',
-					  null,
+					  $sf_request->getParameter("trainees[$number][2]"),
 					  'include_blank = true'
 					)) ?>
 			</td>

@@ -279,4 +279,21 @@ class Debate extends BaseDebate
 	
 	}
 	
+    public function getChair($con = null)
+    {
+        $c = new Criteria();
+        $c->addJoin(AdjudicatorAllocationPeer::DEBATE_ID, DebatePeer::ID);
+        $c->addJoin(AdjudicatorAllocationPeer::ADJUDICATOR_ID, AdjudicatorPeer::ID);
+        $c->add(DebatePeer::ID, $this->getId());
+        $c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_CHAIR);
+        $adjudicators = AdjudicatorPeer::doSelect($c, $con);
+
+        if (count($adjudicators) > 1) {
+            throw new Exception("More than one adjudicator in chair position for debate with id " . $this->getId());
+        } else if (count($adjudicators) < 1) {
+            return null;
+        } else {
+            return $adjudicators[0];
+        }
+    }
 }
