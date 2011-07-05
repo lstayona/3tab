@@ -620,7 +620,7 @@ class tournamentActions extends sfActions
 				$teamScore = TeamScorePeer::doSelect($c, $propelConn);
 				$teamScore[0]->setTotalTeamScore($team->deriveTotalTeamScore($propelConn));
 				$teamScore[0]->setTotalSpeakerScore($team->deriveTotalSpeakerScore($propelConn));
-				$teamScore[0]->setTotalMargin($team->getTotalMarginSlow($propelConn));
+				$teamScore[0]->setTotalMargin($team->deriveTotalMargin($propelConn));
 				$teamScore[0]->save($propelConn);
 			}
 			$debaters = DebaterPeer::doSelect(new Criteria(), $propelConn);

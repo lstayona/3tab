@@ -1,3 +1,4 @@
+DROP view team_margins;
 DROP VIEW debater_results;
 DROP VIEW team_results;
 
@@ -55,3 +56,15 @@ GROUP BY
   debates_teams_xrefs.id,
   debaters.id,
   speaker_score_sheets.speaking_position;
+
+
+CREATE VIEW team_margins AS
+SELECT
+  team_results.debate_team_xref_id,
+  team_results.majority_team_score,
+  SUM(debater_results.averaged_score) AS team_speaker_score,
+  SUM(debater_results.averaged_score) - SUM(opponent_debater_results.averaged_score) AS margin
+FROM team_results
+JOIN debater_results ON debater_results.debate_team_xref_id = team_results.debate_team_xref_id
+JOIN debater_results AS opponent_debater_results ON opponent_debater_results.debate_team_xref_id = team_results.opponent_debate_team_xref_id AND opponent_debater_results.speaking_position = debater_results.speaking_position
+GROUP BY team_results.debate_team_xref_id, team_results.majority_team_score;

@@ -56,12 +56,6 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 	protected $lastAdjudicatorFeedbackSheetCriteria = null;
 
 	
-	protected $collDebaterResults;
-
-	
-	protected $lastDebaterResultCriteria = null;
-
-	
 	protected $collTeamResultsRelatedByDebateTeamXrefId;
 
 	
@@ -78,6 +72,18 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 	
 	protected $lastTeamResultRelatedByWinningDebateTeamXrefIdCriteria = null;
+
+	
+	protected $collDebaterResults;
+
+	
+	protected $lastDebaterResultCriteria = null;
+
+	
+	protected $collTeamMargins;
+
+	
+	protected $lastTeamMarginCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -394,14 +400,6 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collDebaterResults !== null) {
-				foreach($this->collDebaterResults as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
 			if ($this->collTeamResultsRelatedByDebateTeamXrefId !== null) {
 				foreach($this->collTeamResultsRelatedByDebateTeamXrefId as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -420,6 +418,22 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 			if ($this->collTeamResultsRelatedByWinningDebateTeamXrefId !== null) {
 				foreach($this->collTeamResultsRelatedByWinningDebateTeamXrefId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collDebaterResults !== null) {
+				foreach($this->collDebaterResults as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collTeamMargins !== null) {
+				foreach($this->collTeamMargins as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -505,14 +519,6 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collDebaterResults !== null) {
-					foreach($this->collDebaterResults as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
 				if ($this->collTeamResultsRelatedByDebateTeamXrefId !== null) {
 					foreach($this->collTeamResultsRelatedByDebateTeamXrefId as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -531,6 +537,22 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 				if ($this->collTeamResultsRelatedByWinningDebateTeamXrefId !== null) {
 					foreach($this->collTeamResultsRelatedByWinningDebateTeamXrefId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collDebaterResults !== null) {
+					foreach($this->collDebaterResults as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTeamMargins !== null) {
+					foreach($this->collTeamMargins as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -704,10 +726,6 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 				$copyObj->addAdjudicatorFeedbackSheet($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getDebaterResults() as $relObj) {
-				$copyObj->addDebaterResult($relObj->copy($deepCopy));
-			}
-
 			foreach($this->getTeamResultsRelatedByDebateTeamXrefId() as $relObj) {
 				$copyObj->addTeamResultRelatedByDebateTeamXrefId($relObj->copy($deepCopy));
 			}
@@ -718,6 +736,14 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 			foreach($this->getTeamResultsRelatedByWinningDebateTeamXrefId() as $relObj) {
 				$copyObj->addTeamResultRelatedByWinningDebateTeamXrefId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getDebaterResults() as $relObj) {
+				$copyObj->addDebaterResult($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTeamMargins() as $relObj) {
+				$copyObj->addTeamMargin($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1189,111 +1215,6 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initDebaterResults()
-	{
-		if ($this->collDebaterResults === null) {
-			$this->collDebaterResults = array();
-		}
-	}
-
-	
-	public function getDebaterResults($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDebaterResultPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDebaterResults === null) {
-			if ($this->isNew()) {
-			   $this->collDebaterResults = array();
-			} else {
-
-				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
-
-				DebaterResultPeer::addSelectColumns($criteria);
-				$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
-
-				DebaterResultPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
-					$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDebaterResultCriteria = $criteria;
-		return $this->collDebaterResults;
-	}
-
-	
-	public function countDebaterResults($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDebaterResultPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
-
-		return DebaterResultPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDebaterResult(DebaterResult $l)
-	{
-		$this->collDebaterResults[] = $l;
-		$l->setDebateTeamXref($this);
-	}
-
-
-	
-	public function getDebaterResultsJoinDebater($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDebaterResultPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDebaterResults === null) {
-			if ($this->isNew()) {
-				$this->collDebaterResults = array();
-			} else {
-
-				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
-
-				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebater($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
-
-			if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
-				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebater($criteria, $con);
-			}
-		}
-		$this->lastDebaterResultCriteria = $criteria;
-
-		return $this->collDebaterResults;
-	}
-
-	
 	public function initTeamResultsRelatedByDebateTeamXrefId()
 	{
 		if ($this->collTeamResultsRelatedByDebateTeamXrefId === null) {
@@ -1501,6 +1422,181 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 	{
 		$this->collTeamResultsRelatedByWinningDebateTeamXrefId[] = $l;
 		$l->setDebateTeamXrefRelatedByWinningDebateTeamXrefId($this);
+	}
+
+	
+	public function initDebaterResults()
+	{
+		if ($this->collDebaterResults === null) {
+			$this->collDebaterResults = array();
+		}
+	}
+
+	
+	public function getDebaterResults($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterResults === null) {
+			if ($this->isNew()) {
+			   $this->collDebaterResults = array();
+			} else {
+
+				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				DebaterResultPeer::addSelectColumns($criteria);
+				$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				DebaterResultPeer::addSelectColumns($criteria);
+				if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
+					$this->collDebaterResults = DebaterResultPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDebaterResultCriteria = $criteria;
+		return $this->collDebaterResults;
+	}
+
+	
+	public function countDebaterResults($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+		return DebaterResultPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addDebaterResult(DebaterResult $l)
+	{
+		$this->collDebaterResults[] = $l;
+		$l->setDebateTeamXref($this);
+	}
+
+
+	
+	public function getDebaterResultsJoinDebater($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterResultPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterResults === null) {
+			if ($this->isNew()) {
+				$this->collDebaterResults = array();
+			} else {
+
+				$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebater($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(DebaterResultPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+			if (!isset($this->lastDebaterResultCriteria) || !$this->lastDebaterResultCriteria->equals($criteria)) {
+				$this->collDebaterResults = DebaterResultPeer::doSelectJoinDebater($criteria, $con);
+			}
+		}
+		$this->lastDebaterResultCriteria = $criteria;
+
+		return $this->collDebaterResults;
+	}
+
+	
+	public function initTeamMargins()
+	{
+		if ($this->collTeamMargins === null) {
+			$this->collTeamMargins = array();
+		}
+	}
+
+	
+	public function getTeamMargins($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamMarginPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTeamMargins === null) {
+			if ($this->isNew()) {
+			   $this->collTeamMargins = array();
+			} else {
+
+				$criteria->add(TeamMarginPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamMarginPeer::addSelectColumns($criteria);
+				$this->collTeamMargins = TeamMarginPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(TeamMarginPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+				TeamMarginPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTeamMarginCriteria) || !$this->lastTeamMarginCriteria->equals($criteria)) {
+					$this->collTeamMargins = TeamMarginPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTeamMarginCriteria = $criteria;
+		return $this->collTeamMargins;
+	}
+
+	
+	public function countTeamMargins($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseTeamMarginPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TeamMarginPeer::DEBATE_TEAM_XREF_ID, $this->getId());
+
+		return TeamMarginPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addTeamMargin(TeamMargin $l)
+	{
+		$this->collTeamMargins[] = $l;
+		$l->setDebateTeamXref($this);
 	}
 
 } 

@@ -209,16 +209,24 @@ class Team extends BaseTeam
 
         return $rs->getFloat('total_team_speaker_score');
 	}
-	
-	public function getTotalMarginSlow($conn = null)
-	{
-		$margin = 0;
-		foreach($this->getDebateTeamXrefs(new Criteria(), $conn) as $xref)
-		{
-			$margin += $xref->getMargin();
-		}
-		return $margin;
-	}
+    
+    public function deriveTotalMargin($con = null)
+    {   
+        if (!($con instanceof Connection)) {
+            $con = Propel::getConnection();
+        }
+        $sql = "SELECT SUM(COALESCE(team_margins.margin, 0.00)) AS total_margin " .
+        "FROM teams " .
+        "LEFT JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id " .
+        "LEFT JOIN team_margins ON team_margins.debate_team_xref_id = debates_teams_xrefs.id " .
+        "WHERE teams.id = ?";
+        $stmt = $con->prepareStatement($sql);
+        $stmt->setInt(1, $this->getId());
+        $rs = $stmt->executeQuery();
+        $rs->next();
+
+        return $rs->getFloat('total_margin');
+    }
 	
 	public function getTotalAffs($conn=null)
 	{
