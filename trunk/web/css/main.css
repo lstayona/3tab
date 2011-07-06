@@ -18,7 +18,8 @@ h5	{}
 h6	{}
 
 #container	{	background-color:#fff; padding: 20px; margin: 30px; border: 3px solid #555; text-align: center;}
-#header		{	background: url(../images/ateneo-logo.png) no-repeat top right; height: 55px; }
+#header_left	{	background: url(../images/host-logo.png) no-repeat top left; height: 100px; width: 300px; }
+#header_right	{	background: url(../images/3tab-logo.png) no-repeat top right; }
 #content	{}
 #footer		{	margin: 0 auto; font-size: 11px; text-align: center; color: #555;}
 

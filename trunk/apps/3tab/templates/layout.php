@@ -14,7 +14,10 @@
 	
 <div id="container">
 <!-- header -->
-<div id="header"></div>
+<div id="header_right">
+	<div id="header_left"></div>
+</div>
+
 <br clear="all" />
 <!-- nav bar -->
 <?php if (!in_array($sf_request->getParameter('module'), array('post_tournament', 'checkin'))):?>
