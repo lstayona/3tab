@@ -70,7 +70,9 @@ foreach($adjudicatorAllocations as $number => $allocation):
 				}
 			?>
 			<td>
-                <?php echo adjudicator_select_tag("adjudicatorId[$number][0]", $sf_request->getParameter("adjudicatorId[$number][0]", $allocation[0]->getAdjudicatorId())); ?>
+                <?php echo adjudicator_select_tag("adjudicatorId[$number][0]", $sf_request->getParameter("adjudicatorId[$number][0]", $allocation[0]->getAdjudicatorId()), true, array("class" => "adjudicator_selector")); ?>
+                <?php echo input_hidden_tag("previous_adjudicator_value[$number][0]"); ?>
+                <?php echo input_hidden_tag("previous_adjudicator_text[$number][0]"); ?>
             </td>
 			<?php 
 				if(count($allocation) < 2)
@@ -79,7 +81,9 @@ foreach($adjudicatorAllocations as $number => $allocation):
 				}
 			?>
 			<td>
-                <?php echo adjudicator_select_tag("adjudicatorId[$number][1]", $sf_request->getParameter("adjudicatorId[$number][1]", $allocation[1]->getAdjudicatorId())); ?>
+                <?php echo adjudicator_select_tag("adjudicatorId[$number][1]", $sf_request->getParameter("adjudicatorId[$number][1]", $allocation[1]->getAdjudicatorId()), true, array("class" => "adjudicator_selector")); ?>
+                <?php echo input_hidden_tag("previous_adjudicator_value[$number][1]"); ?>
+                <?php echo input_hidden_tag("previous_adjudicator_text[$number][1]"); ?>
             </td>
 			<?php 
 				if(count($allocation) < 3)
@@ -88,7 +92,9 @@ foreach($adjudicatorAllocations as $number => $allocation):
 				}
 			?>
 			<td>            
-                <?php echo adjudicator_select_tag("adjudicatorId[$number][2]", $sf_request->getParameter("adjudicatorId[$number][2]", $allocation[2]->getAdjudicatorId())); ?>
+                <?php echo adjudicator_select_tag("adjudicatorId[$number][2]", $sf_request->getParameter("adjudicatorId[$number][2]", $allocation[2]->getAdjudicatorId()), true, array("class" => "adjudicator_selector")); ?>
+                <?php echo input_hidden_tag("previous_adjudicator_value[$number][2]"); ?>
+                <?php echo input_hidden_tag("previous_adjudicator_text[$number][2]"); ?>
             </td>
         </tr>
 <?php
