@@ -607,13 +607,13 @@ class tournamentActions extends sfActions
             $propelConn->begin();
             $round = RoundPeer::retrieveByPk($this->getRequestParameter('id'));
 
-            $c = new Criteria();
-            $c->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
-            $c->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
-            $c->addJoin(DebateTeamXrefPeer::TEAM_ID, TeamPeer::ID);
-            $c->add(RoundPeer::ID, $round->getId());
-			$teams = TeamPeer::doSelect($c, $propelConn);
-			foreach($teams as $team)
+            $crit = new Criteria();
+            $crit->addJoin(RoundPeer::ID, DebatePeer::ROUND_ID);
+            $crit->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+            $crit->addJoin(DebateTeamXrefPeer::TEAM_ID, TeamPeer::ID);
+            $crit->add(RoundPeer::ID, $round->getId());
+
+			foreach(TeamPeer::doSelect($crit, $propelConn) as $team)
 			{
 				$c = new Criteria();
 				$c->add(TeamScorePeer::TEAM_ID, $team->getId());
@@ -623,13 +623,14 @@ class tournamentActions extends sfActions
 				$teamScore[0]->setTotalMargin($team->deriveTotalMargin($propelConn));
 				$teamScore[0]->save($propelConn);
 			}
-			$debaters = DebaterPeer::doSelect(new Criteria(), $propelConn);
-			foreach($debaters as $debater)
+
+            $crit->addJoin(DebaterPeer::TEAM_ID, TeamPeer::ID);
+			foreach(DebaterPeer::doSelect($crit, $propelConn) as $debater)
 			{
 				$c = new Criteria();
 				$c->add(SpeakerScorePeer::DEBATER_ID, $debater->getId());
 				$speakerScore = SpeakerScorePeer::doSelect($c, $propelConn);
-				$speakerScore[0]->setTotalSpeakerScore($debater->getTotalSpeakerScoreSlow($propelConn));
+				$speakerScore[0]->setTotalSpeakerScore($debater->deriveTotalSpeakerScore($propelConn));
 				$speakerScore[0]->save($propelConn);
 			}			
             

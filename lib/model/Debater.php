@@ -24,16 +24,22 @@ class Debater extends BaseDebater
 		
 	}
 	
-	public function getTotalSpeakerScoreSlow($conn = null)
-	{
-		$xrefs = $this->getTeam($conn)->getDebateTeamXrefs();
-		$totalSpeakerScore = 0;
-		foreach($xrefs as $xref)
-		{			
-			$totalSpeakerScore += $xref->getSpeakerScore($this);
-		}
-		
-		return $totalSpeakerScore;
+    public function deriveTotalSpeakerScore($con = null)
+    {
+        if (!($con instanceof Connection)) {
+            $con = Propel::getConnection();
+        }
+        $sql = "SELECT SUM(COALESCE(debater_results.averaged_score, 0.00)) AS total_debater_speaker_score " .
+        "FROM debaters " .
+        "LEFT JOIN debater_results ON debater_results.debater_id = debaters.id " .
+        "WHERE debaters.id = ? AND debater_results.speaking_position <> ?";
+        $stmt = $con->prepareStatement($sql);
+        $stmt->setInt(1, $this->getId());
+        $stmt->setInt(2, SpeakerScoreSheet::REPLY_SPEAKER);
+        $rs = $stmt->executeQuery();
+        $rs->next();
+
+        return $rs->getFloat('total_debater_speaker_score');
 	}
 
     public function getDebaterResult($debateTeamXrefId, $speakingPosition, $con = null)
