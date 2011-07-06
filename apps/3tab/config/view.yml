@@ -11,7 +11,7 @@ default:
 
   stylesheets:    [main]
 
-  javascripts:    [libs/jquery-1.2.6.js, libs/tablesorter/jquery.tablesorter.js, libs/firebug/firebug.js, libs/preload.js]
+  javascripts:    [libs/jquery-1.6.2.js, libs/tablesorter/jquery.tablesorter.js, libs/firebug/firebug.js, libs/preload.js]
 
   has_layout:     on
   layout:         layout

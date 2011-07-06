@@ -17,7 +17,7 @@
 <div id="header"></div>
 <br clear="all" />
 <!-- nav bar -->
-<?php if ($sf_request->getParameter('module') != 'post_tournament'):?>
+<?php if (!in_array($sf_request->getParameter('module'), array('post_tournament', 'checkin'))):?>
 <div id="navigation">
 <ul id="nav">
 	<li><?php echo link_to("Tournament", "tournament/index", array('title' => 'Tournament', 'absolute' => true)); ?></li>

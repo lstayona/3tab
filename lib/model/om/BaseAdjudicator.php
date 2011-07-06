@@ -69,6 +69,12 @@ abstract class BaseAdjudicator extends BaseObject  implements Persistent {
 	protected $lastAdjudicatorConflictCriteria = null;
 
 	
+	protected $collAdjudicatorCheckins;
+
+	
+	protected $lastAdjudicatorCheckinCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -403,6 +409,14 @@ abstract class BaseAdjudicator extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collAdjudicatorCheckins !== null) {
+				foreach($this->collAdjudicatorCheckins as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -486,6 +500,14 @@ abstract class BaseAdjudicator extends BaseObject  implements Persistent {
 
 				if ($this->collAdjudicatorConflicts !== null) {
 					foreach($this->collAdjudicatorConflicts as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collAdjudicatorCheckins !== null) {
+					foreach($this->collAdjudicatorCheckins as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -676,6 +698,10 @@ abstract class BaseAdjudicator extends BaseObject  implements Persistent {
 
 			foreach($this->getAdjudicatorConflicts() as $relObj) {
 				$copyObj->addAdjudicatorConflict($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getAdjudicatorCheckins() as $relObj) {
+				$copyObj->addAdjudicatorCheckin($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1290,6 +1316,111 @@ abstract class BaseAdjudicator extends BaseObject  implements Persistent {
 		$this->lastAdjudicatorConflictCriteria = $criteria;
 
 		return $this->collAdjudicatorConflicts;
+	}
+
+	
+	public function initAdjudicatorCheckins()
+	{
+		if ($this->collAdjudicatorCheckins === null) {
+			$this->collAdjudicatorCheckins = array();
+		}
+	}
+
+	
+	public function getAdjudicatorCheckins($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseAdjudicatorCheckinPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collAdjudicatorCheckins === null) {
+			if ($this->isNew()) {
+			   $this->collAdjudicatorCheckins = array();
+			} else {
+
+				$criteria->add(AdjudicatorCheckinPeer::ADJUDICATOR_ID, $this->getId());
+
+				AdjudicatorCheckinPeer::addSelectColumns($criteria);
+				$this->collAdjudicatorCheckins = AdjudicatorCheckinPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(AdjudicatorCheckinPeer::ADJUDICATOR_ID, $this->getId());
+
+				AdjudicatorCheckinPeer::addSelectColumns($criteria);
+				if (!isset($this->lastAdjudicatorCheckinCriteria) || !$this->lastAdjudicatorCheckinCriteria->equals($criteria)) {
+					$this->collAdjudicatorCheckins = AdjudicatorCheckinPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastAdjudicatorCheckinCriteria = $criteria;
+		return $this->collAdjudicatorCheckins;
+	}
+
+	
+	public function countAdjudicatorCheckins($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseAdjudicatorCheckinPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(AdjudicatorCheckinPeer::ADJUDICATOR_ID, $this->getId());
+
+		return AdjudicatorCheckinPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addAdjudicatorCheckin(AdjudicatorCheckin $l)
+	{
+		$this->collAdjudicatorCheckins[] = $l;
+		$l->setAdjudicator($this);
+	}
+
+
+	
+	public function getAdjudicatorCheckinsJoinRound($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseAdjudicatorCheckinPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collAdjudicatorCheckins === null) {
+			if ($this->isNew()) {
+				$this->collAdjudicatorCheckins = array();
+			} else {
+
+				$criteria->add(AdjudicatorCheckinPeer::ADJUDICATOR_ID, $this->getId());
+
+				$this->collAdjudicatorCheckins = AdjudicatorCheckinPeer::doSelectJoinRound($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(AdjudicatorCheckinPeer::ADJUDICATOR_ID, $this->getId());
+
+			if (!isset($this->lastAdjudicatorCheckinCriteria) || !$this->lastAdjudicatorCheckinCriteria->equals($criteria)) {
+				$this->collAdjudicatorCheckins = AdjudicatorCheckinPeer::doSelectJoinRound($criteria, $con);
+			}
+		}
+		$this->lastAdjudicatorCheckinCriteria = $criteria;
+
+		return $this->collAdjudicatorCheckins;
 	}
 
 } 

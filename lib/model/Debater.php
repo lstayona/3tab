@@ -52,4 +52,12 @@ class Debater extends BaseDebater
             return $debaterResults[0];
         }
     }
+
+    public function hasCheckedIn($round, $con = null)
+    {
+        $c = new Criteria();
+        $c->add(DebaterCheckinPeer::ROUND_ID, $round->getId());
+
+        return $this->countDebaterCheckins($c, false, $con) > 0 ? true : false;
+    }
 }

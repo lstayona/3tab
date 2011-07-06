@@ -201,4 +201,12 @@ class Adjudicator extends BaseAdjudicator
 
 		return $conflicts;
 	}
+
+    public function hasCheckedIn($round, $con = null)
+    {
+        $c = new Criteria();
+        $c->add(AdjudicatorCheckinPeer::ROUND_ID, $round->getId());
+
+        return $this->countAdjudicatorCheckins($c, false, $con) > 0 ? true : false;
+    }
 }
