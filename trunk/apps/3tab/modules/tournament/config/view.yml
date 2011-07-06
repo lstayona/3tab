@@ -1,2 +1,4 @@
+createAdjudicatorAllocationSuccess:
+    javascripts:  [apps/3tab/modules/tournament/createAdjudicatorAllocationSuccess] 
 debateResultsEntrySuccess:
     javascripts:  [apps/3tab/modules/tournament/debateResultsEntrySuccess]
