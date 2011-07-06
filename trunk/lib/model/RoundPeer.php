@@ -36,7 +36,7 @@ class RoundPeer extends BaseRoundPeer
 	 
 	public static function getCurrentRound($conn=null)
 	{
-		$rounds = RoundPeer::doSelect(new Criteria(), $conn);
+		$rounds = RoundPeer::getRoundsInSequence($conn);
 		foreach($rounds as $round)
 		{
 			if($round->isCurrentRound())

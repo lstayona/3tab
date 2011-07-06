@@ -57,6 +57,12 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 	protected $lastDebaterResultCriteria = null;
 
 	
+	protected $collDebaterCheckins;
+
+	
+	protected $lastDebaterCheckinCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -375,6 +381,14 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collDebaterCheckins !== null) {
+				foreach($this->collDebaterCheckins as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -442,6 +456,14 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 				if ($this->collDebaterResults !== null) {
 					foreach($this->collDebaterResults as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collDebaterCheckins !== null) {
+					foreach($this->collDebaterCheckins as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -624,6 +646,10 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 
 			foreach($this->getDebaterResults() as $relObj) {
 				$copyObj->addDebaterResult($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getDebaterCheckins() as $relObj) {
+				$copyObj->addDebaterCheckin($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -993,6 +1019,111 @@ abstract class BaseDebater extends BaseObject  implements Persistent {
 		$this->lastDebaterResultCriteria = $criteria;
 
 		return $this->collDebaterResults;
+	}
+
+	
+	public function initDebaterCheckins()
+	{
+		if ($this->collDebaterCheckins === null) {
+			$this->collDebaterCheckins = array();
+		}
+	}
+
+	
+	public function getDebaterCheckins($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterCheckinPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterCheckins === null) {
+			if ($this->isNew()) {
+			   $this->collDebaterCheckins = array();
+			} else {
+
+				$criteria->add(DebaterCheckinPeer::DEBATER_ID, $this->getId());
+
+				DebaterCheckinPeer::addSelectColumns($criteria);
+				$this->collDebaterCheckins = DebaterCheckinPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(DebaterCheckinPeer::DEBATER_ID, $this->getId());
+
+				DebaterCheckinPeer::addSelectColumns($criteria);
+				if (!isset($this->lastDebaterCheckinCriteria) || !$this->lastDebaterCheckinCriteria->equals($criteria)) {
+					$this->collDebaterCheckins = DebaterCheckinPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastDebaterCheckinCriteria = $criteria;
+		return $this->collDebaterCheckins;
+	}
+
+	
+	public function countDebaterCheckins($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterCheckinPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(DebaterCheckinPeer::DEBATER_ID, $this->getId());
+
+		return DebaterCheckinPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addDebaterCheckin(DebaterCheckin $l)
+	{
+		$this->collDebaterCheckins[] = $l;
+		$l->setDebater($this);
+	}
+
+
+	
+	public function getDebaterCheckinsJoinRound($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseDebaterCheckinPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collDebaterCheckins === null) {
+			if ($this->isNew()) {
+				$this->collDebaterCheckins = array();
+			} else {
+
+				$criteria->add(DebaterCheckinPeer::DEBATER_ID, $this->getId());
+
+				$this->collDebaterCheckins = DebaterCheckinPeer::doSelectJoinRound($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(DebaterCheckinPeer::DEBATER_ID, $this->getId());
+
+			if (!isset($this->lastDebaterCheckinCriteria) || !$this->lastDebaterCheckinCriteria->equals($criteria)) {
+				$this->collDebaterCheckins = DebaterCheckinPeer::doSelectJoinRound($criteria, $con);
+			}
+		}
+		$this->lastDebaterCheckinCriteria = $criteria;
+
+		return $this->collDebaterCheckins;
 	}
 
 } 

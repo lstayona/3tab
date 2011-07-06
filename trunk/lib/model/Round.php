@@ -31,7 +31,7 @@ class Round extends BaseRound
     {
         $previousRound = $this->getRoundRelatedByPrecededByRoundId($propelConn);
         /* It's the first round */
-        if(!$previousRound and 
+        if(is_null($previousRound) and 
             ($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE)
         )
         {

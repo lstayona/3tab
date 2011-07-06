@@ -524,3 +524,61 @@ SET search_path TO public;
 ALTER TABLE "adjudicator_conflicts" ADD CONSTRAINT "adjudicator_conflicts_FK_1" FOREIGN KEY ("team_id") REFERENCES "teams" ("id");
 
 ALTER TABLE "adjudicator_conflicts" ADD CONSTRAINT "adjudicator_conflicts_FK_2" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");
+
+-----------------------------------------------------------------------------
+-- debater_checkins
+-----------------------------------------------------------------------------
+
+DROP TABLE "debater_checkins" CASCADE;
+
+DROP SEQUENCE "debater_checkins_seq";
+
+CREATE SEQUENCE "debater_checkins_seq";
+
+
+CREATE TABLE "debater_checkins"
+(
+	"id" INTEGER  NOT NULL,
+	"debater_id" INTEGER  NOT NULL,
+	"round_id" INTEGER  NOT NULL,
+	"created_at" TIMESTAMP,
+	"updated_at" TIMESTAMP,
+	PRIMARY KEY ("id")
+);
+
+COMMENT ON TABLE "debater_checkins" IS '';
+
+
+SET search_path TO public;
+ALTER TABLE "debater_checkins" ADD CONSTRAINT "debater_checkins_FK_1" FOREIGN KEY ("debater_id") REFERENCES "debaters" ("id");
+
+ALTER TABLE "debater_checkins" ADD CONSTRAINT "debater_checkins_FK_2" FOREIGN KEY ("round_id") REFERENCES "rounds" ("id");
+
+-----------------------------------------------------------------------------
+-- adjudicator_checkins
+-----------------------------------------------------------------------------
+
+DROP TABLE "adjudicator_checkins" CASCADE;
+
+DROP SEQUENCE "adjudicator_checkins_seq";
+
+CREATE SEQUENCE "adjudicator_checkins_seq";
+
+
+CREATE TABLE "adjudicator_checkins"
+(
+	"id" INTEGER  NOT NULL,
+	"adjudicator_id" INTEGER  NOT NULL,
+	"round_id" INTEGER  NOT NULL,
+	"created_at" TIMESTAMP,
+	"updated_at" TIMESTAMP,
+	PRIMARY KEY ("id")
+);
+
+COMMENT ON TABLE "adjudicator_checkins" IS '';
+
+
+SET search_path TO public;
+ALTER TABLE "adjudicator_checkins" ADD CONSTRAINT "adjudicator_checkins_FK_1" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");
+
+ALTER TABLE "adjudicator_checkins" ADD CONSTRAINT "adjudicator_checkins_FK_2" FOREIGN KEY ("round_id") REFERENCES "rounds" ("id");

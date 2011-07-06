@@ -376,4 +376,32 @@
         <column name="team_speaker_score" type="NUMERIC" required="true" />
         <column name="margin" type="NUMERIC" required="true" />
     </table>
+
+    <table name="debater_checkins" idMethod="native" phpName="DebaterCheckin">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="debater_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="debaters" onDelete="" onUpdate="">
+            <reference local="debater_id" foreign="id"/>
+        </foreign-key>
+        <column name="round_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="rounds" onDelete="" onUpdate="">
+            <reference local="round_id" foreign="id"/>
+        </foreign-key>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
+
+    <table name="adjudicator_checkins" idMethod="native" phpName="AdjudicatorCheckin">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="adjudicator_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="adjudicators" onDelete="" onUpdate="">
+            <reference local="adjudicator_id" foreign="id"/>
+        </foreign-key>
+        <column name="round_id" type="INTEGER" required="true" />
+        <foreign-key foreignTable="rounds" onDelete="" onUpdate="">
+            <reference local="round_id" foreign="id"/>
+        </foreign-key>
+        <column name="created_at" type="TIMESTAMP" />
+        <column name="updated_at" type="TIMESTAMP" />
+    </table>
 </database>
