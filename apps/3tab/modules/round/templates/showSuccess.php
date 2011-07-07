@@ -16,7 +16,7 @@
 </tr>
 <tr>
 <th>Type: </th>
-<td><?php echo $round->getType() ?></td>
+<td><?php echo $round->getTypeText() ?></td>
 </tr>
 <tr>
 <th>Preceded by round: </th>

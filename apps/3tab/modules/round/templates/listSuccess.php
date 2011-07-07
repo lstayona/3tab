@@ -21,7 +21,7 @@
 <tr>
     <td><?php echo link_to($round->getId(), 'round/show?id='.$round->getId()) ?></td>
       <td><?php echo $round->getName() ?></td>
-      <td><?php echo $round->getType() ?></td>
+      <td><?php echo $round->getTypeText() ?></td>
       <td><?php echo $round->getPrecededByRoundId() ?></td>
 	  <td><?php echo $round->getFeedbackWeightage() ?></td>
       <td><?php echo $round->getCreatedAt() ?></td>
