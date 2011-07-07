@@ -95,7 +95,7 @@ class AdjudicatorPeer extends BaseAdjudicatorPeer
         $traineeAdjudicators = array();
 		foreach($unallocatedAdjudicators as $unallocatedAdjudicator)
 		{
-			if($unallocatedAdjudicator->getScore($round) < 1.5)
+			if($unallocatedAdjudicator->getScore($round) <= 1.5)
 			{
 				$traineeAdjudicators[] = $unallocatedAdjudicator;
 			}
