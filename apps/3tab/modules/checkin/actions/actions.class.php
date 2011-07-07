@@ -94,16 +94,17 @@ class checkinActions extends sfActions
   {
       $con = Propel::getConnection();
       $sql = "SELECT debaters.* FROM debaters ".
+      "JOIN teams ON teams.id = debaters.team_id ".
       "LEFT JOIN debater_checkins ON debater_checkins.debater_id = debaters.id AND debater_checkins.round_id = ? ".
-      "WHERE debater_checkins.id IS NULL";
+      "WHERE debater_checkins.id IS NULL AND teams.active = true";
       $statement = $con->prepareStatement($sql);
       $statement->setInt(1, RoundPeer::getCurrentRound()->getId());
       $rs = $statement->executeQuery(ResultSet::FETCHMODE_NUM);
       $this->debaters = DebaterPeer::populateObjects($rs);
 
-      $sql = "SELECT adjudicators.* FROM adjudicators ".
+      $sql = "SELECT adjudicators.* FROM adjudicators " .
       "LEFT JOIN adjudicator_checkins ON adjudicator_checkins.adjudicator_id = adjudicators.id AND adjudicator_checkins.round_id = ? ".
-      "WHERE adjudicator_checkins.id IS NULL";
+      "WHERE adjudicator_checkins.id IS NULL AND adjudicators.active = true";
       $statement = $con->prepareStatement($sql);
       $statement->setInt(1, RoundPeer::getCurrentRound()->getId());
       $rs = $statement->executeQuery(ResultSet::FETCHMODE_NUM);
