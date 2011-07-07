@@ -145,9 +145,7 @@ class tournamentActions extends sfActions
 				{
 					$adjudicators[] = $p;
 					$counter++;
-					$conflicts[$number][$position] = AdjudicatorAllocation::checkConflicts(
-					DebatePeer::retrieveByPk($debateIds[$number]),
-					AdjudicatorPeer::retrieveByPk($p));					
+					$conflicts[$number][$position] = DebatePeer::retrieveByPk($debateIds[$number])->checkIfAdjudicatorIsConflicted(AdjudicatorPeer::retrieveByPk($p));	
 				}
 			}
 			if(!($counter == 1 || $counter == 3))
@@ -322,9 +320,7 @@ class tournamentActions extends sfActions
 				if($aTrainee != null)
 				{
 					$allocatedTrainees[] = $aTrainee;
-					$conflicts[$number][$position] = AdjudicatorAllocation::checkConflicts(
-					DebatePeer::retrieveByPk($debateIds[$number]),
-					AdjudicatorPeer::retrieveByPk($aTrainee));	
+					$conflicts[$number][$position] = DebatePeer::retrieveByPk($debateIds[$number])->checkIfAdjudicatorIsConflicted(AdjudicatorPeer::retrieveByPk($aTrainee));
 				}
 			}
 		}

@@ -17,21 +17,6 @@ class AdjudicatorAllocation extends BaseAdjudicatorAllocation
 		return $this->getAdjudicator()->getName();
 	}
 	
-	public static function checkConflicts($debate, $adjudicator, $con = null)
-	{
-		$conflict = false;
-		$xrefs = $debate->getDebateTeamXrefs($con);
-		$gov = TeamPeer::retrieveByPk($xrefs[0]->getTeamId(), $con);
-		$opp = TeamPeer::retrieveByPk($xrefs[1]->getTeamId(), $con);
-		if($gov->getInstitutionId() == $adjudicator->getInstitutionId() ||
-		   $opp->getInstitutionId() == $adjudicator->getInstitutionId())
-		{
-			$conflict = true;
-		}
-		
-		return $conflict;		
-	}
-    
     public function getTeamScoreSheet($position, $conn = null)
     {
         $c = new Criteria();

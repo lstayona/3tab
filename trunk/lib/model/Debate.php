@@ -14,6 +14,16 @@ class Debate extends BaseDebate
         return 2;
     }
     
+	public function checkIfAdjudicatorIsConflicted($adjudicator, $con = null)
+	{
+        $c = new Criteria();
+        $c->add(DebatePeer::ID, $this->getId());
+        $c->addJoin(DebateTeamXrefPeer::DEBATE_ID, DebatePeer::ID);
+        $c->addJoin(AdjudicatorConflictPeer::TEAM_ID, DebateTeamXrefPeer::TEAM_ID);
+
+        return $adjudicator->countAdjudicatorConflicts($c, true, $con) > 0 ? true : false;
+	}
+
     public function areBothTeamsInDebateFromSameInstitution($conn = null)
     {
         $debateTeamXrefs = $this->getDebateTeamXrefs(new Criteria(), $conn);

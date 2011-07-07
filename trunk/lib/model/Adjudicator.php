@@ -60,14 +60,12 @@ class Adjudicator extends BaseAdjudicator
 	
 	public function save($con = null)
 	{
-		parent::save($con);
 		$conflicts = $this->createHomeInstitutionConflicts($con);
 		foreach($conflicts as $conflict)
 		{	
 			if($conflict != null)
 			{
 				$this->addAdjudicatorConflict($conflict);
-				$conflict->save($con);
 			}
 		}
 		parent::save($con);
@@ -78,8 +76,7 @@ class Adjudicator extends BaseAdjudicator
 		$conflicts = $this->getAdjudicatorConflicts();
 		foreach($conflicts as $aConflict)
 		{
-			//$this->forward404Unless($aConflict);
-			$aConflict->delete();		
+			$aConflict->delete($con);		
 		}
 		parent::delete($con);
 	}
