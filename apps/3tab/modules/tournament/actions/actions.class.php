@@ -933,6 +933,7 @@ class tournamentActions extends sfActions
      public function executeViewMatchupsWithAdjudicatorsLess()
     {
         $this->round = RoundPeer::retrieveByPK($this->getRequestParameter('id'));
+        $this->hideNavigationBar = true;
     }
     
      public function executeViewMatchupsWithAdjudicatorsLessRandom()

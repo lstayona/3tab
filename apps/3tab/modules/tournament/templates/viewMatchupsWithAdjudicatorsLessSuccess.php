@@ -13,10 +13,8 @@ jQuery(document).ready(function () {
             <th>Venue</th>
             <th>Affirmative</th>
             <th>Negative</th>
-			<th>Chair</th>
-			<th>Panel 1</th>
-			<th>Panel 2</th>
-			<th>Trainee 1</th>
+			<th>Panel</th>
+			<th>Trainees</th>
         </tr>
     </thead>
     <tbody>
@@ -24,13 +22,13 @@ jQuery(document).ready(function () {
 foreach($round->getDebates() as $number => $debate):
 ?>
         <tr>
-            <td>
+            <td style="font-size: 140%">
                 <?php echo $debate->getVenue()->getName(); ?>
             </td>
-            <td>
+            <td style="font-size: 140%">
                 <?php echo $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getName(); ?>
             </td>
-            <td>
+            <td style="font-size: 140%">
                 <?php echo $debate->getTeam(DebateTeamXref::NEGATIVE)->getName(); ?>
             </td>
 			<?php 
@@ -40,23 +38,21 @@ foreach($round->getDebates() as $number => $debate):
 				$chair = $adjudicatorAllocations[0]->getAdjudicator();
 			?>
 			<td>
-				<?php echo $adjudicatorAllocations[0]->getAdjudicator()->getInfo(); ?>
-			</td>
-			<td>
-				<?php 
-					if(count($adjudicatorAllocations) > 1)
-					{
-						echo $adjudicatorAllocations[1]->getAdjudicator()->getInfo(); 
-					}
-				?>
-			</td>
-			<td>
-				<?php 
-					if(count($adjudicatorAllocations) > 1)
-					{
-						echo $adjudicatorAllocations[2]->getAdjudicator()->getInfo(); 
-					}
-				?>
+                <ul>
+                <?php
+                foreach ($adjudicatorAllocations as $adjudicatorAllocation):
+                    if ($adjudicatorAllocation->getType() == AdjudicatorAllocation::ADJUDICATOR_TYPE_CHAIR) {
+                ?>
+                    <li style="font-weight: bold; font-size: 120%"><?php echo $adjudicatorAllocation->getAdjudicator()->getName(); ?></li>
+                <?php
+                    } elseif ($adjudicatorAllocation->getType() == AdjudicatorAllocation::ADJUDICATOR_TYPE_PANELIST) {
+                ?>
+                    <li style="font-size: 120%"><?php echo $adjudicatorAllocation->getAdjudicator()->getName(); ?></li>
+                <?php
+                    }
+                endforeach;
+                ?>
+                </ul>
 			</td>
 			<?php
 				$trainees = $chair->getTrainees($round);
@@ -65,7 +61,18 @@ foreach($round->getDebates() as $number => $debate):
 				<?php
 					if(count($trainees) > 0)
 					{
-						echo $trainees[0]->getInfo();
+                ?>
+                <ul>
+                <?php
+                        foreach ($trainees as $trainee)
+                        {
+                ?>
+						<li><?php echo $trainee->getName(); ?></li>
+                <?php
+                        }
+                ?>
+                </ul>
+                <?php
 					}
 				?>
 			</td>
