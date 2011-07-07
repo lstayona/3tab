@@ -6,7 +6,7 @@ function adjudicator_select_tag($name, $selected = null, $include_blank = true, 
     
     foreach(AdjudicatorPeer::getAdjudicatorsByTestScore() as $adjudicator)
     {
-        $select_options[$adjudicator->getId()] = $adjudicator->getInfo();
+        $select_options[$adjudicator->getId()] = $adjudicator->getInfoPlus();
     }
 
     if ($include_blank) {

@@ -20,7 +20,7 @@ class Adjudicator extends BaseAdjudicator
 		$currentRound = RoundPeer::getCurrentRound($conn);
 		return $this->getName()." - ".
 		$this->getInstitution($conn)->getCode($conn)." - Score: ".
-		$this->getScore($currentRound);
+		round($this->getScore($currentRound), 2);
 	}
 	
 	public function getTeamsAdjudicated($con = null)
