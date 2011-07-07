@@ -22,16 +22,6 @@ jQuery(document).ready(function () {
 </ul>
 <?php endif; ?>
 
-<div id="window">
-<h3 class="toggle">Unallocated Adjudicators</h3>
-<div class="toggle-window">
-	<?php foreach($unallocatedAdjudicators as $anAdjudicator):?>
-	<?php echo $anAdjudicator->getInfoPlus(); ?>
-	<br/>
-	
-	<?php endforeach; ?>
-</div>	
-</div>
 <br clear="all">
 <table id="display">
     <thead>

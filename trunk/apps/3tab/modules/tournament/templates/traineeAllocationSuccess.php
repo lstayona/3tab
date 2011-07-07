@@ -42,7 +42,9 @@ foreach($round->getDebates() as $number => $debate):
 					  'getInfo',
 					  $sf_request->getParameter("trainees[$number][0]"),
 					  'include_blank = true'
-					)) ?>
+					), array("class" => "adjudicator_selector")) ?>
+            <?php echo input_hidden_tag("previous_adjudicator_value[$number][0]"); ?>
+            <?php echo input_hidden_tag("previous_adjudicator_text[$number][0]"); ?>
 			</td>
 			<td>
 			<?php echo select_tag("trainees[$number][1]", objects_for_select(
@@ -51,7 +53,9 @@ foreach($round->getDebates() as $number => $debate):
 					  'getInfo',
 					  $sf_request->getParameter("trainees[$number][1]"),
 					  'include_blank = true'
-					)) ?>
+					), array("class" => "adjudicator_selector")) ?>
+            <?php echo input_hidden_tag("previous_adjudicator_value[$number][1]"); ?>
+            <?php echo input_hidden_tag("previous_adjudicator_text[$number][1]"); ?>
 			</td>
 			<td>
 			<?php echo select_tag("trainees[$number][2]", objects_for_select(
@@ -60,7 +64,9 @@ foreach($round->getDebates() as $number => $debate):
 					  'getInfo',
 					  $sf_request->getParameter("trainees[$number][2]"),
 					  'include_blank = true'
-					)) ?>
+					), array("class" => "adjudicator_selector")) ?>            
+            <?php echo input_hidden_tag("previous_adjudicator_value[$number][2]"); ?>
+            <?php echo input_hidden_tag("previous_adjudicator_text[$number][2]"); ?>
 			</td>
         </tr>
 <?php

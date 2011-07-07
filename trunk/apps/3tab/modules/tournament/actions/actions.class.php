@@ -80,9 +80,9 @@ class tournamentActions extends sfActions
 		if($this->getRequestParameter("skipProcessing"))
 		{
 			$this->adjudicatorAllocations = $this->getRequestParameter("allocations");
-			$this->unallocatedAdjudicators = $this->getUnallocatedAdjudicators($this->adjudicatorAllocations);
 			return sfView::SUCCESS;
         }
+
 		if($this->round->getType() == Round::ROUND_TYPE_RANDOM)
 		{		
 			$allocator->setup($debates, $adjudicators, true, false);
@@ -99,8 +99,8 @@ class tournamentActions extends sfActions
 			$allocator->setup($debates, $adjudicators, false, true);	
 			$allocator->setDebateEnergies($debateEnergies);
 		}
+
 		$this->adjudicatorAllocations = $allocator->allocate();
-		$this->unallocatedAdjudicators = $this->getUnallocatedAdjudicators($this->adjudicatorAllocations);
         $this->adjudicators = $adjudicators;
     }
 
@@ -973,29 +973,5 @@ class tournamentActions extends sfActions
 			}
 		}
 		return $debates;
-	}
-    
-	public function getUnallocatedAdjudicators($allocations)
-	{
-		$allocatedAdjudicators = array();
-		foreach($allocations as $anAllocation)
-		{
-			foreach($anAllocation as $adjAllocation)
-			{
-				$allocatedAdjudicators[] = $adjAllocation->getAdjudicator();
-			}
-		}
-		$c = new Criteria();
-		$c->add(AdjudicatorPeer::ACTIVE, true);
-		$adjudicators = AdjudicatorPeer::doSelect($c);
-		$unallocatedAdjudicators = array();
-		foreach($adjudicators as $anAdjudicator)
-		{
-			if(!in_array($anAdjudicator, $allocatedAdjudicators))
-			{
-				$unallocatedAdjudicators[] = $anAdjudicator;
-			}
-		}
-		return $unallocatedAdjudicators;
 	}
 }
