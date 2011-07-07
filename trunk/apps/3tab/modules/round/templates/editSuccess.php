@@ -19,9 +19,7 @@
 </tr>
 <tr>
   <th>Type <span class="red">*</span> :</th>
-  <td><?php echo object_input_tag($round, 'getType', array (
-  'size' => 7,
-)) ?></td>
+  <td><?php echo select_tag("type", options_for_select(array(Round::ROUND_TYPE_RANDOM => "Random", Round::ROUND_TYPE_PRELIMINARY => "Preliminary", Round::ROUND_TYPE_BUBBLE => "Bubble"), $sf_request->getParameter('type', $round->getType()))); ?></td>
 </tr>
 <tr>
   <th>Feedback Weightage <span class="red">*</span> :</th>
