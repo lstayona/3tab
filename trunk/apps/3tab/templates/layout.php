@@ -20,7 +20,7 @@
 
 <br clear="all" />
 <!-- nav bar -->
-<?php if (!in_array($sf_request->getParameter('module'), array('post_tournament', 'checkin'))):?>
+<?php if (!in_array($sf_request->getParameter('module'), array('post_tournament', 'checkin')) and !isset($hideNavigationBar)): ?>
 <div id="navigation">
 <ul id="nav">
 	<li><?php echo link_to("Tournament", "tournament/index", array('title' => 'Tournament', 'absolute' => true)); ?></li>

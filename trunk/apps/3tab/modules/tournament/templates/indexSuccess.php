@@ -72,11 +72,15 @@ foreach($rounds as $round)
             {
 				$link = "tournament/viewMatchups?id=".$round->getId();
                 echo link_to("View matchups", $link);
+                echo ' | ';
+                echo link_to("View matchups (Briefing room)", "tournament/viewMatchupsWithAdjudicatorsLess?id=" . $round->getId());
             }
 			else if($round->getStatus() > Round::ROUND_STATUS_MATCHUPS_CONFIRMED)
             {
 				$link = "tournament/viewMatchupsWithAdjudicators?id=".$round->getId();
                 echo link_to("View matchups", $link);
+                echo ' | ';
+                echo link_to("View matchups (Briefing room)", "tournament/viewMatchupsWithAdjudicatorsLess?id=" . $round->getId());
             }
             ?>
         </td>
