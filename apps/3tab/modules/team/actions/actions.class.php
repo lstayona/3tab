@@ -34,6 +34,18 @@ class teamActions extends sfActions
 	$this->speakerScores = SpeakerScorePeer::getDebatersInOrder();
   }
 
+  public function executeViewTeamScoreConfirmation()
+  {
+      $c = new Criteria();
+      $c->add(TeamPeer::ACTIVE, true);
+      $c->addAscendingOrderByColumn(TeamPeer::NAME);
+
+      $this->teams = TeamPeer::doSelect($c);
+      $this->hideNavigationBar = true;
+
+      return sfView::SUCCESS;
+  }
+
   public function executeList()
   {
     $this->teams = TeamPeer::doSelect(new Criteria());

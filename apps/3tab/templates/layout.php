@@ -24,6 +24,7 @@
 <div id="navigation">
 <ul id="nav">
 	<li><?php echo link_to("Tournament", "tournament/index", array('title' => 'Tournament', 'absolute' => true)); ?></li>
+    <li><?php echo link_to("Team > Wins Confirmation", "team/viewTeamScoreConfirmation", array('title' => 'Team > Wins Confirmation', 'absolute' => true)); ?></li>
 	<li><?php echo link_to("Team > Rankings", "team/viewRankings", array('title' => 'Team > View Rankings', 'absolute' => true)); ?></li>
 	<li><?php echo link_to("Team > Speaker Rankings", "team/viewSpeakerRankings", array('title' => 'Team > View Speaker Rankings')); ?></li>
 	<li class="nav-admin"><?php echo link_to("Control Panel", "#", array('title' => 'Control Panel View')); ?></li>
