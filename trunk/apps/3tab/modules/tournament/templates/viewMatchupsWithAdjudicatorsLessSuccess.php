@@ -19,7 +19,9 @@ jQuery(document).ready(function () {
     </thead>
     <tbody>
 <?php
-foreach($round->getDebates() as $number => $debate):
+$c = new Criteria();
+$c->addAscendingOrderByColumn("RANDOM()");
+foreach($round->getDebates($c) as $number => $debate):
 ?>
         <tr>
             <td style="font-size: 140%">
