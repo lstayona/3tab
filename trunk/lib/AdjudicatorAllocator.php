@@ -57,8 +57,8 @@ class AdjudicatorAllocator{
 			//if clash, try to swap the panel with the panels below
 			
 			$count = 0;
-			while($this->checkConflicts($this->debates[$i]->getTeamIds(), $this->panels[$i+$count])
-			|| $this->checkConflicts($this->debates[$i+$count]->getTeamIds(), $this->panels[$i]))
+			while(($this->checkConflicts($this->debates[$i]->getTeamIds(), $this->panels[$i+$count]) or $this->checkSeenBefore($this->debates[$i]->getTeamIds(), $this->panels[$i+$count]))
+			or ($this->checkConflicts($this->debates[$i+$count]->getTeamIds(), $this->panels[$i]) or $this->checkSeenBefore($this->debates[$i+$count]->getTeamIds(), $this->panels[$i])))
 			{
 				$count++;
 				if(($count + $i) >= count($this->debates) || $count  > 10)
@@ -71,8 +71,8 @@ class AdjudicatorAllocator{
 			
 			//if still clash, try to swap the panel with the  panels above
 			$count = 0;
-			while($this->checkConflicts($this->debates[$i]->getTeamIds(), $this->panels[$i-$count])
-			|| $this->checkConflicts($this->debates[$i-$count]->getTeamIds(), $this->panels[$i]))
+			while(($this->checkConflicts($this->debates[$i]->getTeamIds(), $this->panels[$i-$count]) or $this->checkSeenBefore($this->debates[$i]->getTeamIds(), $this->panels[$i-$count]))
+			or ($this->checkConflicts($this->debates[$i-$count]->getTeamIds(), $this->panels[$i]) or $this->checkSeenBefore($this->debates[$i-$count]->getTeamIds(), $this->panels[$i])))
 			{
 				$count++;
 				if(($i - $count) < 0 || $count > 10)
@@ -113,6 +113,33 @@ class AdjudicatorAllocator{
 		return ($conn->executeQuery($query, ResultSet::FETCHMODE_ASSOC)->getRecordCount() != 0) ? true : false; 
 	}
 	
+    protected function checkSeenBefore($teamIds, $panel, $conn = null)
+    {
+        if(is_null($conn))
+        {
+            $conn = Propel::getConnection();
+        }
+        
+        $query = 'SELECT * FROM adjudicator_allocations ' .
+        'JOIN debates ON debates.id = adjudicator_allocations.debate_id ' .
+        'JOIN debates_teams_xrefs ON debates_teams_xrefs.debate_id = debates.id ' .
+        'WHERE (debates_teams_xrefs.team_id = %d OR debates_teams_xrefs.team_id = %d) AND ' .
+        '(adjudicator_allocations.adjudicator_id = %d OR ' .
+        'adjudicator_allocations.adjudicator_id = %d OR ' .
+        'adjudicator_allocations.adjudicator_id = %d)';
+
+        if(!$panel->isPanel())
+		{
+			$query = sprintf($query, $teamIds[0], $teamIds[1], $panel->getMember(0), $panel->getMember(0), $panel->getMember(0));
+		}
+		else
+		{
+			$query = sprintf($query, $teamIds[0], $teamIds[1], $panel->getMember(0), $panel->getMember(1), $panel->getMember(2));
+		}
+        
+		return ($conn->executeQuery($query, ResultSet::FETCHMODE_ASSOC)->getRecordCount() != 0) ? true : false; 
+    }
+
 	protected function swapPanels($pos1, $pos2)
 	{
 		$temp = $this->panels[$pos1];
