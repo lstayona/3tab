@@ -11,19 +11,28 @@ class Debater extends BaseDebater
 {
 	public function save($con = null)
 	{
-		parent::save($con);
-			
-		if(!$this->getSpeakerScores())
+		if($this->countSpeakerScores(new Criteria(), true, $con) == 0)
 		{
 			$speakerScore = new SpeakerScore();
 			$speakerScore->setDebater($this);
-			$speakerScore->save($con);
 			$this->addSpeakerScore($speakerScore);			
-			parent::save($con);
 		}
-		
+        parent::save($con);
 	}
 	
+    public function getSpeakerScore($con = null)
+    {
+        $speakerScores = $this->getSpeakerScores(null, $con);
+
+        if (count($speakerScores) > 1) {
+            throw new Exception("More than one object found. There should only one and only one entry in the speaker_scores table per debater.");
+        } else if (count($speakerScores) < 1) {
+            throw new Exception("No objects found.");
+        } else {
+            return $speakerScores[0];
+        }
+    }
+
     public function deriveTotalSpeakerScore($con = null)
     {
         if (!($con instanceof Connection)) {
