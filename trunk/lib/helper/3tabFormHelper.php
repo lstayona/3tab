@@ -1,12 +1,20 @@
 <?php
-function adjudicator_select_tag($name, $selected = null, $include_blank = true, $html_options = array())
+function get_adjudicator_select_options($adjudicators = array())
 {
     $select_options = array();
 
-    
-    foreach(AdjudicatorPeer::getAdjudicatorsByTestScore() as $adjudicator)
+    foreach($adjudicators as $adjudicator)
     {
         $select_options[$adjudicator->getId()] = $adjudicator->getInfoPlus();
+    }
+
+    return $select_options;
+}
+
+function adjudicator_select_tag($name, $select_options = null, $selected = null, $include_blank = true, $html_options = array())
+{
+    if (is_null($select_options)) {
+        $select_options = get_adjudicator_select_options(AdjudicatorPeer::getAdjudicatorsByTestScore());
     }
 
     if ($include_blank) {
