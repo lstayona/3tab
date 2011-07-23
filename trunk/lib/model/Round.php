@@ -30,22 +30,34 @@ class Round extends BaseRound
     public function isCurrentRound($propelConn = null)
     {
         $previousRound = $this->getRoundRelatedByPrecededByRoundId($propelConn);
-        /* It's the first round */
+        /* If it is the first round */
         if(is_null($previousRound) and 
-            ($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE)
+          ($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE)
         )
         {
             return true;
         }
-        /* It's any round but the first round */
+        /* If it is any round but the first round */
         else if(($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE) and
-		($previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE))
+		  ($previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE))
         {
             return true;
         }
         else
         {
-            return false;
+            /*
+             * If this round is the final round (i.e. no other round has it as 
+             * a preceding round) it is the current round regardless of its
+             * status.
+             */
+            $c = new Criteria();
+            $c->add(RoundPeer::PRECEDED_BY_ROUND_ID, $this->getId());
+            if (RoundPeer::doCount($c, false, $propelConn) == 0 and 
+              $previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE) {
+                return true; 
+            } else {
+                return false;
+            }
         }
     }
     

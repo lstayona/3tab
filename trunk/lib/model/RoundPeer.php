@@ -11,25 +11,26 @@ class RoundPeer extends BaseRoundPeer
 {
     public static function getRoundsInSequence($propelConn = null)
     {
-        $criteria = new Criteria();
-        $criteria->addAscendingOrderByColumn(RoundPeer::PRECEDED_BY_ROUND_ID);
-        $unorderedRounds = RoundPeer::doSelect($criteria, $propelConn);
-        /*
-         * The rounds come back with the first round (preceded by null) at the
-         * thoe bottom of the list.  Therefore, we have to insert that round
-         * at the top of the returned list, followed by all the other rounds,
-         * which are ordered correctly.
-         */
         $rounds = array();
-        if(count($unorderedRounds) > 0)
-        {
-            array_push($rounds, $unorderedRounds[count($unorderedRounds)-1]);
-            for($count = 0; $count < count($unorderedRounds) - 1; $count++)
-            {
-                array_push($rounds, $unorderedRounds[$count]);
+        $hasRetrievedAllRounds = false;
+        $precededByRoundId = null;
+
+        while (!$hasRetrievedAllRounds) {
+            $c = new Criteria();
+            if (is_null($precededByRoundId)) {
+                $c->add(RoundPeer::PRECEDED_BY_ROUND_ID, null, Criteria::ISNULL);
+            } else {
+                $c->add(RoundPeer::PRECEDED_BY_ROUND_ID, $precededByRoundId);
+            }
+            $round = RoundPeer::doSelectOne($c, $propelConn);
+            if (!is_null($round)) {
+                array_push($rounds, $round);
+                $precededByRoundId = $round->getId();
+            } else {
+                $hasRetrievedAllRounds = true;
             }
         }
-        
+                
         return $rounds;
     }
 	
@@ -39,13 +40,13 @@ class RoundPeer extends BaseRoundPeer
 		$rounds = RoundPeer::getRoundsInSequence($conn);
 		foreach($rounds as $round)
 		{
-			if($round->isCurrentRound())
+			if($round->isCurrentRound($conn))
 			{
 				return $round;
 			}
 		}
 		
-		throw new Exception('All rounds have been completed, or there is an error with the rounds');		
+		throw new Exception('Unable to find current round.');		
 	}	
 
 	public static function retrieveByName($name, $conn = null)
