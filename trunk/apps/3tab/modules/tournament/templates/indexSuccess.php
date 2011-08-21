@@ -47,18 +47,7 @@ foreach($rounds as $round)
 					$link = "tournament/traineeAllocation?id=".$round->getId();
                     echo link_to("Allocate Trainees", $link);
                 }
-				/*
-                else if($round->getStatus() == Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED)
-                {
-					$link = "tournament/resultsEntry?id=".$round->getId();
-                    echo link_to("Enter results", $link);
-                }*/
 				else if($round->getStatus() == Round::ROUND_STATUS_TRAINEE_ALLOCATIONS_CONFIRMED)
-                {
-					$link = "tournament/resultsEntry?id=".$round->getId();
-                    echo link_to("Enter results", $link);
-                }
-				else if($round->getStatus() == Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE)
                 {
 					$link = "tournament/resultsEntry?id=".$round->getId();
                     echo link_to("Enter results", $link);
