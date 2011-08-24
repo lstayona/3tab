@@ -26,7 +26,25 @@ class Round extends BaseRound
     const ROUND_STATUS_COMPLETE = 256;
     const ROUND_STATUS_CANCELLED  = 1024;
 	
-   	
+   	public function getAllPrecedingRounds($con = null)
+    {
+        $precedingRounds = array();
+        $previous = $this->getRoundRelatedByPrecededByRoundId($con);
+        while (!is_null($previous)) {
+            $precedingRounds[] = $previous;
+            $previous = $previous->getRoundRelatedByPrecededByRoundId($con);
+        }
+
+        return $precedingRounds;
+    }
+
+    public function isFinalRound($con = null)
+    {
+       $roundsInSequence = RoundPeer::getRoundsInSequence($con);
+
+       return $roundsInSequence[count($roundsInSequence)-1]->getId() === $this->getId();
+    }
+
     public function isCurrentRound($propelConn = null)
     {
         $previousRound = $this->getRoundRelatedByPrecededByRoundId($propelConn);

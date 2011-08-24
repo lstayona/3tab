@@ -150,26 +150,36 @@ class Debate extends BaseDebate
 	
 	public function getBracket($con = null)
 	{
-		if(is_null($con))
+        if (is_null($this->getRound($con)->getPrecededByRoundId())) 
         {
-            $con = Propel::getConnection();
+            return 0;
         }
-		$stmt = $con->createStatement();
-		$query = "SELECT  team_scores.* FROM team_scores, ".
-						"teams WHERE teams.id = team_scores.team_id AND (team_scores.team_id = %d OR ".
-						"team_scores.team_id = %d) ORDER BY team_scores.total_team_score DESC, ".
-						"team_scores.total_speaker_score DESC, team_scores.total_margin DESC";
-		//echo $this->getTeam(1, $con)->getName()."-".$this->getTeam(2, $con)->getName().'<br>';
-		//echo $this->getTeam(1, $con)->getId()."-".$this->getTeam(2, $con)->getId().'<br>';
-		$query = sprintf($query, $this->getTeam(1, $con)->getId(), $this->getTeam(2, $con)->getId());
-		$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-		$teamScores = TeamScorePeer::populateObjects($rs);
-		$teamGovScore = $teamScores[0]->getTotalTeamScore($con);
-		$teamOppScore = $teamScores[1]->getTotalTeamScore($con);
-		//$teamGovScore = $this->getTeam(1, $conn)->getTotalTeamScore($conn);
-		//$teamOppScore = $this->getTeam(2, $conn)->getTotalTeamScore($conn);
-		
-		return ($teamGovScore > $teamOppScore) ? $teamGovScore : $teamOppScore;		
+        else if ($this->getRound($con)->isCurrentRound($con) and 
+          !($this->getRound($con)->isFinalRound($con) and $this->getRound($con)->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE))
+        {
+            $bracket = 0;
+            foreach($this->getDebateTeamXrefs(null, $con) as $debateTeamXref) {
+                $score = $debateTeamXref->getTeam($con)->getTotalTeamScore($con); 
+                if ($score > $bracket) {
+                    $bracket = $score;
+                }
+            }
+
+            return $bracket;
+        }
+        else 
+        {
+            $previousRound = $this->getRound($con)->getRoundRelatedByPrecededByRoundId($con);
+            $bracket = 0;
+            foreach($this->getDebateTeamXrefs(null, $con) as $debateTeamXref) {
+                $score = $debateTeamXref->getTeam($con)->getTotalTeamScoreAtRound($previousRound, $con); 
+                if ($score > $bracket) {
+                    $bracket = $score;
+                }
+            }
+
+            return $bracket;
+        }
 	}
 	
 	public function getEnergy($bubble=false, $conn=null)

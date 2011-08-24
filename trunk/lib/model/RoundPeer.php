@@ -34,7 +34,6 @@ class RoundPeer extends BaseRoundPeer
         return $rounds;
     }
 	
-	 
 	public static function getCurrentRound($conn=null)
 	{
 		$rounds = RoundPeer::getRoundsInSequence($conn);
