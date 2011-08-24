@@ -14,12 +14,12 @@ class DebatePeer extends BaseDebatePeer
         $debates = array();
         if($round->getType() == Round::ROUND_TYPE_RANDOM)
         {
-            $debates = DebatePeer::generateRandomDrawDebates($con);
+            $debates = DebatePeer::generateRandomDrawDebates($round, $con);
             DebatePeer::doOneUpOneDown($debates, $oneUpOneDownOnSameInstitution, $oneUpOneDownOnMetBefore, $con);
         }
         else if($round->getType() == Round::ROUND_TYPE_PRELIMINARY || $round->getType() == Round::ROUND_TYPE_BUBBLE)
         {
-            $debates = DebatePeer::generateMatchedDrawDebates();
+            $debates = DebatePeer::generateMatchedDrawDebates($round, $con);
             foreach($debates as $debate)
             {
                 $brackets[$debate->getBracket()][] = $debate;
@@ -42,7 +42,7 @@ class DebatePeer extends BaseDebatePeer
         return $debates;
     }
 
-    public static function generateRandomDrawDebates($conn = null)
+    public static function generateRandomDrawDebates($round, $conn = null)
     {
         $teams = TeamPeer::getTeamsInRandomOrder(true, $conn);
         $debates = array();
@@ -51,7 +51,7 @@ class DebatePeer extends BaseDebatePeer
         {
             for($walker = 0; $walker < count($teams); $walker+=2)
             {
-                array_push($debates, DebatePeer::createDebate($teams[$walker]->getId(), $teams[$walker+1]->getId(), $venues[$walker / 2]));
+                array_push($debates, DebatePeer::createDebate($teams[$walker]->getId(), $teams[$walker+1]->getId(), $venues[$walker / 2], $round));
             }
         }
         else
@@ -62,7 +62,7 @@ class DebatePeer extends BaseDebatePeer
         return $debates;
     }
 	
-	public static function generateMatchedDrawDebates($conn = null)
+	public static function generateMatchedDrawDebates($round, $conn = null)
 	{
 		$teamScores = TeamScorePeer::getTeamsInRankedOrder(true, $conn);
 		$teams = array();
@@ -125,7 +125,7 @@ class DebatePeer extends BaseDebatePeer
                      * the higher ranked team and the team that is put in the 
                      * negative is the lower ranked team.
                      */
-					array_push($debates, DebatePeer::createDebate($teams[$i], $teams[$i+$numDebates], $venues[$counter]));
+					array_push($debates, DebatePeer::createDebate($teams[$i], $teams[$i+$numDebates], $venues[$counter], $round));
 					$counter++;
 				}
 			}
@@ -138,12 +138,13 @@ class DebatePeer extends BaseDebatePeer
 		return $debates;
 	}
     
-    public static function createDebate($affirmativeTeamId, $negativeTeamId, $venue = null)
+    public static function createDebate($affirmativeTeamId, $negativeTeamId, $venue = null, $round = null)
 	{
         $debate = new Debate();
         DebateTeamXrefPeer::createDebateTeamXref($debate, $affirmativeTeamId, DebateTeamXref::AFFIRMATIVE);
         DebateTeamXrefPeer::createDebateTeamXref($debate, $negativeTeamId, DebateTeamXref::NEGATIVE);
         $debate->setVenue($venue);
+        $debate->setRound($round);
         
 		return $debate;		
 	}

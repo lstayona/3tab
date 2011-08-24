@@ -151,6 +151,35 @@ class Team extends BaseTeam
         return $debate->getDebateTeamXrefForTeam($this->getId(), $con)->getTeamResult($con)->getMajorityTeamScore();
 	}
 	
+    public function getTotalTeamScoreAtRound($round, $con = null)
+    {
+        if (!($con instanceof Connection)) {
+            $con = Propel::getConnection();
+        }
+
+        $rounds = array_merge(array($round), $round->getAllPrecedingRounds($con));
+        $roundIds = array();
+        foreach ($rounds as $round) {
+            $roundIds[] = $round->getId();
+        }
+
+        $sql = <<<EOD
+SELECT SUM(COALESCE(team_margins.majority_team_score, 0)) AS total_team_score
+FROM team_margins
+LEFT JOIN debates_teams_xrefs ON debates_teams_xrefs.id = team_margins.debate_team_xref_id
+LEFT JOIN debates ON debates.id = debates_teams_xrefs.debate_id
+WHERE debates.round_id = ANY(?) AND debates_teams_xrefs.team_id = ?
+EOD;
+
+        $stmt = $con->prepareStatement($sql);
+        $stmt->setArray(1, $roundIds);
+        $stmt->setInt(2, $this->getId());
+        $rs = $stmt->executeQuery();
+        $rs->next();
+
+        return $rs->getInt('total_team_score');
+    }
+
 	public function getTotalTeamScore($propelConn = null)
 	{
 		$score = $this->getTeamScores();
