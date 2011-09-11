@@ -27,6 +27,7 @@
     # Start->postgresql8.4->pgAdminIII
     # Connect to the server ‘postgreSQL 8.4’(password should be postgres), right click database, and create a new database. The database name must be called '3tab'
     # Right click database stab, select ‘create script’ (or execute arbitrary SQL queries)
-    # Click file->open, select ‘lib.model.schema.sql’. Do the same for the 'views.sql' file. It can be also found at C:\WAMP\www\3tab_full\3tab\data\sql
+    # Click file->open, select ‘lib.model.schema.sql’. Do the same for the 'views.sql' file. It can be found in the C:\WAMP\www\3tab_full\3tab\data\sql
     # Query-> execute pgScript (or press F6)
+    # Repeat the two steps above for the 'views.sql' file. It can be also found at C:\WAMP\www\3tab_full\3tab\data\sql folder.
   # Access http://localhost/3tab_full/3tab/web/stab_dev.php/tournament . If the page is displayed, you’re done!
