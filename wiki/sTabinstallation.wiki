@@ -1,61 +1,33 @@
-stuff to know
+=Stuff to know=
+  * Tested on Windows 7, Windows XP
+  * Software uses PHP, Apache, PostgreSQL
 
-	Tested on win7, winXP
+=What you need=
+  * WAMP
+  * PostgreSQL
 
-	Software uses php, mysql, postgreSQL
-
-What you need
-
-	WAMP 2.0c
-
-	postgreSQL8.4.7
-
-how to install
-
-1	install the required software & moving the script
-
-1.1	WAMP. The installation directory must be C:\wamp
-
-1.2	postgreSQL. Set the password to postgres. If asked, set the username to postgres as well
-
-1.3	move the folders ‘stab’ and ‘symfony-1.0’ to C:\wamp\www\
-
-1.4	the settings of directories and passwords can be found in databases.yml 
-and config.php under stab\config\
-
-2	fixing the corrupt dll files in WAMP
-
-2.1	exit WAMP
-
-2.2	WAMP 2.0c uses php5.2.6. The dll files for pgsql in this version are broken
-
-2.3	Go to C:\wamp\bin\php\php5.2.6\ext, and replace php_pdo_pgsql.dll and php_pgsql.dll with the files in the installation package (dll files)
-
-2.4	Start WAMP, left click the system tray icon, click on start services. After that, left click again and go to PHP->PHP extensions. Make sure php_pgsql and php_pdo_pgsql have checkmarks next to them
-
-2.5	Go to http://localhost/?phpinfo=1 and if you see pdo_pgsql and pgsql, you’ve done it correctly
-
-3	Changing timeout settings for WAMP
-
-3.1	As rounds progress, it will take a longer time to confirm the results after inputting all the data. The current WAMP settings set a timeout limit to 30 seconds, which needs to be changed to 0 (=unlimited)
-
-3.2	Go to Wamp\bin\apache\apache2.2.8\bin\php.ini. Change the value of max_execution_time and max_input_time to 0 from 30 and 60 respectively.
-
-3.3	Change settings for Wamp\bin\php\php5.2.6\php.ini as well. It is necessary 
-to change both files.
-
-3.4	Click on restart all services->start all services. Make sure the system tray icon turns white (from red, then yellow)
-
-4	Setting up postgreSQL
-
-4.1	Start->postgresql8.4->pgAdminIII
-
-4.2	Connect to the server ‘postgreSQL 8.4’(password should be postgres), right click database, and create a new database. The database name must be called ‘stab’
-
-4.3	Right click database stab, select ‘create script’ (or execute arbitrary SQL queries)
-
-4.4	Click file->open, select ‘lib.model.schema.sql’. It can be also found at C:\WAMP\www\stab\data\sql
-
-4.5	Query-> execute pgScript (or press F6)
-
-5	Access http://localhost/stab/web/stab_dev.php/tournament . If the page is displayed, you’re done!
+=How to install=
+  # install the required software & moving the script
+    # WAMP. The installation directory must be C:\wamp
+    # PostgreSQL. Set the password to postgres. If asked, set the username to postgres as well
+    # Move the folder 3tab_full to C:\wamp\www\
+    # The settings of directories and passwords can be found in databases.yml 
+and config.php under 3tab_full\3tab\config\
+  # Fixing the corrupt dll files in WAMP
+    # Exit WAMP
+    # WAMP 2.0c uses php5.2.6. The dll files for pgsql in this version are broken
+    # Go to C:\wamp\bin\php\php5.2.6\ext, and replace php_pdo_pgsql.dll and php_pgsql.dll with the files in the installation package (dll files)
+    # Start WAMP, left click the system tray icon, click on start services. After that, left click again and go to PHP->PHP extensions. Make sure php_pgsql and php_pdo_pgsql have checkmarks next to them
+    # Go to http://localhost/?phpinfo=1 and if you see pdo_pgsql and pgsql, you’ve done it correctly
+  # Changing timeout settings for WAMP
+    # As rounds progress, it will take a longer time to confirm the results after inputting all the data. The current WAMP settings set a timeout limit to 30 seconds, which needs to be changed to 0 (=unlimited)
+    # Go to Wamp\bin\apache\apache2.2.8\bin\php.ini. Change the value of max_execution_time and max_input_time to 0 from 30 and 60 respectively.
+    # Change settings for Wamp\bin\php\php5.2.6\php.ini as well. It is necessary to change both files.
+    # Click on restart all services->start all services. Make sure the system tray icon turns white (from red, then yellow)
+  # Setting up postgreSQL
+    # Start->postgresql8.4->pgAdminIII
+    # Connect to the server ‘postgreSQL 8.4’(password should be postgres), right click database, and create a new database. The database name must be called '3tab'
+    # Right click database stab, select ‘create script’ (or execute arbitrary SQL queries)
+    # Click file->open, select ‘lib.model.schema.sql’. Do the same for the 'views.sql' file. It can be also found at C:\WAMP\www\3tab_full\3tab\data\sql
+    # Query-> execute pgScript (or press F6)
+# Access http://localhost/3tab_full/3tab/web/stab_dev.php/tournament . If the page is displayed, you’re done!
