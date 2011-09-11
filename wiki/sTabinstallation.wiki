@@ -11,8 +11,7 @@
     # WAMP. The installation directory must be C:\wamp
     # PostgreSQL. Set the password to postgres. If asked, set the username to postgres as well
     # Move the folder 3tab_full to C:\wamp\www\
-    # The settings of directories and passwords can be found in databases.yml 
-and config.php under 3tab_full\3tab\config\
+    # The settings of directories and passwords can be found in databases.yml and config.php under 3tab_full\3tab\config\
   # Fixing the corrupt dll files in WAMP
     # Exit WAMP
     # WAMP 2.0c uses php5.2.6. The dll files for pgsql in this version are broken
