@@ -49,34 +49,40 @@ class Round extends BaseRound
     {
         $previousRound = $this->getRoundRelatedByPrecededByRoundId($propelConn);
         /* If it is the first round */
-        if(is_null($previousRound) and 
-          ($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE)
-        )
+        if(is_null($previousRound))
         {
-            return true;
-        }
-        /* If it is any round but the first round */
-        else if(($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE) and
-		  ($previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE))
-        {
-            return true;
-        }
-        else
-        {
-            /*
-             * If this round is the final round (i.e. no other round has it as 
-             * a preceding round) it is the current round regardless of its
-             * status.
-             */
-            $c = new Criteria();
-            $c->add(RoundPeer::PRECEDED_BY_ROUND_ID, $this->getId());
-            if (RoundPeer::doCount($c, false, $propelConn) == 0 and 
-              $previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE) {
-                return true; 
-            } else {
-                return false;
+            if ($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE)
+            {
+                return true;
             }
         }
+        /* If it is any round but the first round */
+        else
+        {
+            if(($this->getStatus() < Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE) and
+              ($previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE))
+            {
+                return true;
+            }
+            else
+            {
+                /*
+                 * If this round is the final round (i.e. no other round has it as 
+                 * a preceding round) it is the current round regardless of its
+                 * status.
+                 */
+                $c = new Criteria();
+                $c->add(RoundPeer::PRECEDED_BY_ROUND_ID, $this->getId());
+                if (RoundPeer::doCount($c, false, $propelConn) == 0 and 
+                  $previousRound->getStatus() >= Round::ROUND_STATUS_RESULT_ENTRY_COMPLETE) {
+                    return true; 
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
     }
     
     public function getTypeText($type = null)
