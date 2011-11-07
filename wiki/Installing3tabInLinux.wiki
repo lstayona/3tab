@@ -72,3 +72,7 @@ To dump database
 
 To create database
 `createdb -U postgres 3tab-ytn_hs`
+
+To password protect your installation
+ * http://wiki.dreamhost.com/Htaccess_file_overview
+ * http://wiki.dreamhost.com/Password-protecting_directories
