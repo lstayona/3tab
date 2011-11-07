@@ -19,9 +19,11 @@ useful links
  * Checkout Symfony 1.0 (svn co http://svn.symfony-project.com/branches/1.0)
  * Checkout 3tab. (svn checkout http://3tab.googlecode.com/svn/trunk/ 3tab-read-only)
  * Directory structure should be (symfony and 3tab on the same level)
-{{{- Parent
+{{{
+- Parent
 - - symfony
-- - 3tab}}}
+- - 3tab
+}}}
 
 3. Create database 
  * Create the database you want to use. Create a user and grant permissions to the database
