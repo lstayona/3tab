@@ -8,10 +8,10 @@ A description on how to install 3tab.
 
 1. Setup Postgres, PHP and Apache
 useful links
-*To install and configure Postgres https://help.ubuntu.com/8.04/serverguide/C/postgresql.html
-*How to install Postgres on Dreamhost VPS http://discussion.dreamhost.com/thread-128619.html
-*Postgres Documentation http://www.postgresql.org/docs/8.3/static/admin.html
-*sudo apt-get install php5-pgsql if having problems with postgres
+* To install and configure Postgres https://help.ubuntu.com/8.04/serverguide/C/postgresql.html
+* How to install Postgres on Dreamhost VPS http://discussion.dreamhost.com/thread-128619.html
+* Postgres Documentation http://www.postgresql.org/docs/8.3/static/admin.html
+* sudo apt-get install php5-pgsql if having problems with postgres
 
 2. Intall symfony and 3tab
 
