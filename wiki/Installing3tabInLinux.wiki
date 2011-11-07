@@ -1,0 +1,27 @@
+#summary Installing 3tab on Linux
+
+= Introduction =
+
+A description on how to install 3tab.
+
+= Details =
+
+1. Setup Postgres, PHP and Apache
+useful links
+*To install and configure Postgres https://help.ubuntu.com/8.04/serverguide/C/postgresql.html
+*How to install Postgres on Dreamhost VPS http://discussion.dreamhost.com/thread-128619.html
+*Postgres Documentation http://www.postgresql.org/docs/8.3/static/admin.html
+
+2. Install Symfony from http://www.symfony-project.org/installation/1_0 . Best to use SVN.
+
+Checkout Symfony 1.0
+Checkout 3tab. 
+Directory structure should be (symfony and 3tab on the same level)
+- Parent
+- - symfony
+- - 3tab
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
