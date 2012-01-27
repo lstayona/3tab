@@ -164,11 +164,11 @@ class Team extends BaseTeam
         }
 
         $sql = <<<EOD
-SELECT SUM(COALESCE(team_margins.majority_team_score, 0)) AS total_team_score
-FROM team_margins
-LEFT JOIN debates_teams_xrefs ON debates_teams_xrefs.id = team_margins.debate_team_xref_id
+SELECT SUM(COALESCE(debates_teams_xrefs.majority_team_score, 0)) AS total_team_score
+FROM teams
+LEFT JOIN debates_teams_xrefs ON debates_teams_xrefs.team_id = teams.id
 LEFT JOIN debates ON debates.id = debates_teams_xrefs.debate_id
-WHERE debates.round_id = ANY(?) AND debates_teams_xrefs.team_id = ?
+WHERE debates.round_id = ANY(?) AND teams.id = ?
 EOD;
 
         $stmt = $con->prepareStatement($sql);

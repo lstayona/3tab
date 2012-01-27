@@ -13,7 +13,7 @@ abstract class BaseDebateTeamXrefPeer {
 	const CLASS_DEFAULT = 'lib.model.DebateTeamXref';
 
 	
-	const NUM_COLUMNS = 6;
+	const NUM_COLUMNS = 9;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -32,6 +32,15 @@ abstract class BaseDebateTeamXrefPeer {
 	const POSITION = 'debates_teams_xrefs.POSITION';
 
 	
+	const MAJORITY_TEAM_SCORE = 'debates_teams_xrefs.MAJORITY_TEAM_SCORE';
+
+	
+	const TEAM_SPEAKER_SCORE = 'debates_teams_xrefs.TEAM_SPEAKER_SCORE';
+
+	
+	const MARGIN = 'debates_teams_xrefs.MARGIN';
+
+	
 	const CREATED_AT = 'debates_teams_xrefs.CREATED_AT';
 
 	
@@ -43,18 +52,18 @@ abstract class BaseDebateTeamXrefPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'DebateId', 'TeamId', 'Position', 'CreatedAt', 'UpdatedAt', ),
-		BasePeer::TYPE_COLNAME => array (DebateTeamXrefPeer::ID, DebateTeamXrefPeer::DEBATE_ID, DebateTeamXrefPeer::TEAM_ID, DebateTeamXrefPeer::POSITION, DebateTeamXrefPeer::CREATED_AT, DebateTeamXrefPeer::UPDATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'debate_id', 'team_id', 'position', 'created_at', 'updated_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'DebateId', 'TeamId', 'Position', 'MajorityTeamScore', 'TeamSpeakerScore', 'Margin', 'CreatedAt', 'UpdatedAt', ),
+		BasePeer::TYPE_COLNAME => array (DebateTeamXrefPeer::ID, DebateTeamXrefPeer::DEBATE_ID, DebateTeamXrefPeer::TEAM_ID, DebateTeamXrefPeer::POSITION, DebateTeamXrefPeer::MAJORITY_TEAM_SCORE, DebateTeamXrefPeer::TEAM_SPEAKER_SCORE, DebateTeamXrefPeer::MARGIN, DebateTeamXrefPeer::CREATED_AT, DebateTeamXrefPeer::UPDATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'debate_id', 'team_id', 'position', 'majority_team_score', 'team_speaker_score', 'margin', 'created_at', 'updated_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'DebateId' => 1, 'TeamId' => 2, 'Position' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-		BasePeer::TYPE_COLNAME => array (DebateTeamXrefPeer::ID => 0, DebateTeamXrefPeer::DEBATE_ID => 1, DebateTeamXrefPeer::TEAM_ID => 2, DebateTeamXrefPeer::POSITION => 3, DebateTeamXrefPeer::CREATED_AT => 4, DebateTeamXrefPeer::UPDATED_AT => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'debate_id' => 1, 'team_id' => 2, 'position' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'DebateId' => 1, 'TeamId' => 2, 'Position' => 3, 'MajorityTeamScore' => 4, 'TeamSpeakerScore' => 5, 'Margin' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+		BasePeer::TYPE_COLNAME => array (DebateTeamXrefPeer::ID => 0, DebateTeamXrefPeer::DEBATE_ID => 1, DebateTeamXrefPeer::TEAM_ID => 2, DebateTeamXrefPeer::POSITION => 3, DebateTeamXrefPeer::MAJORITY_TEAM_SCORE => 4, DebateTeamXrefPeer::TEAM_SPEAKER_SCORE => 5, DebateTeamXrefPeer::MARGIN => 6, DebateTeamXrefPeer::CREATED_AT => 7, DebateTeamXrefPeer::UPDATED_AT => 8, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'debate_id' => 1, 'team_id' => 2, 'position' => 3, 'majority_team_score' => 4, 'team_speaker_score' => 5, 'margin' => 6, 'created_at' => 7, 'updated_at' => 8, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
 	);
 
 	
@@ -115,6 +124,12 @@ abstract class BaseDebateTeamXrefPeer {
 		$criteria->addSelectColumn(DebateTeamXrefPeer::TEAM_ID);
 
 		$criteria->addSelectColumn(DebateTeamXrefPeer::POSITION);
+
+		$criteria->addSelectColumn(DebateTeamXrefPeer::MAJORITY_TEAM_SCORE);
+
+		$criteria->addSelectColumn(DebateTeamXrefPeer::TEAM_SPEAKER_SCORE);
+
+		$criteria->addSelectColumn(DebateTeamXrefPeer::MARGIN);
 
 		$criteria->addSelectColumn(DebateTeamXrefPeer::CREATED_AT);
 

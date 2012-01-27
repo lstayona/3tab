@@ -25,6 +25,18 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 
 	
+	protected $majority_team_score;
+
+
+	
+	protected $team_speaker_score;
+
+
+	
+	protected $margin;
+
+
+	
 	protected $created_at;
 
 
@@ -117,6 +129,27 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 	{
 
 		return $this->position;
+	}
+
+	
+	public function getMajorityTeamScore()
+	{
+
+		return $this->majority_team_score;
+	}
+
+	
+	public function getTeamSpeakerScore()
+	{
+
+		return $this->team_speaker_score;
+	}
+
+	
+	public function getMargin()
+	{
+
+		return $this->margin;
 	}
 
 	
@@ -228,6 +261,40 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setMajorityTeamScore($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->majority_team_score !== $v) {
+			$this->majority_team_score = $v;
+			$this->modifiedColumns[] = DebateTeamXrefPeer::MAJORITY_TEAM_SCORE;
+		}
+
+	} 
+	
+	public function setTeamSpeakerScore($v)
+	{
+
+		if ($this->team_speaker_score !== $v) {
+			$this->team_speaker_score = $v;
+			$this->modifiedColumns[] = DebateTeamXrefPeer::TEAM_SPEAKER_SCORE;
+		}
+
+	} 
+	
+	public function setMargin($v)
+	{
+
+		if ($this->margin !== $v) {
+			$this->margin = $v;
+			$this->modifiedColumns[] = DebateTeamXrefPeer::MARGIN;
+		}
+
+	} 
+	
 	public function setCreatedAt($v)
 	{
 
@@ -274,15 +341,21 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 
 			$this->position = $rs->getInt($startcol + 3);
 
-			$this->created_at = $rs->getTimestamp($startcol + 4, null);
+			$this->majority_team_score = $rs->getInt($startcol + 4);
 
-			$this->updated_at = $rs->getTimestamp($startcol + 5, null);
+			$this->team_speaker_score = $rs->getFloat($startcol + 5);
+
+			$this->margin = $rs->getFloat($startcol + 6);
+
+			$this->created_at = $rs->getTimestamp($startcol + 7, null);
+
+			$this->updated_at = $rs->getTimestamp($startcol + 8, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 6; 
+						return $startcol + 9; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating DebateTeamXref object", $e);
 		}
@@ -590,9 +663,18 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 				return $this->getPosition();
 				break;
 			case 4:
-				return $this->getCreatedAt();
+				return $this->getMajorityTeamScore();
 				break;
 			case 5:
+				return $this->getTeamSpeakerScore();
+				break;
+			case 6:
+				return $this->getMargin();
+				break;
+			case 7:
+				return $this->getCreatedAt();
+				break;
+			case 8:
 				return $this->getUpdatedAt();
 				break;
 			default:
@@ -609,8 +691,11 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 			$keys[1] => $this->getDebateId(),
 			$keys[2] => $this->getTeamId(),
 			$keys[3] => $this->getPosition(),
-			$keys[4] => $this->getCreatedAt(),
-			$keys[5] => $this->getUpdatedAt(),
+			$keys[4] => $this->getMajorityTeamScore(),
+			$keys[5] => $this->getTeamSpeakerScore(),
+			$keys[6] => $this->getMargin(),
+			$keys[7] => $this->getCreatedAt(),
+			$keys[8] => $this->getUpdatedAt(),
 		);
 		return $result;
 	}
@@ -639,9 +724,18 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 				$this->setPosition($value);
 				break;
 			case 4:
-				$this->setCreatedAt($value);
+				$this->setMajorityTeamScore($value);
 				break;
 			case 5:
+				$this->setTeamSpeakerScore($value);
+				break;
+			case 6:
+				$this->setMargin($value);
+				break;
+			case 7:
+				$this->setCreatedAt($value);
+				break;
+			case 8:
 				$this->setUpdatedAt($value);
 				break;
 		} 	}
@@ -655,8 +749,11 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setDebateId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setTeamId($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setPosition($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+		if (array_key_exists($keys[4], $arr)) $this->setMajorityTeamScore($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setTeamSpeakerScore($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setMargin($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
 	}
 
 	
@@ -668,6 +765,9 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(DebateTeamXrefPeer::DEBATE_ID)) $criteria->add(DebateTeamXrefPeer::DEBATE_ID, $this->debate_id);
 		if ($this->isColumnModified(DebateTeamXrefPeer::TEAM_ID)) $criteria->add(DebateTeamXrefPeer::TEAM_ID, $this->team_id);
 		if ($this->isColumnModified(DebateTeamXrefPeer::POSITION)) $criteria->add(DebateTeamXrefPeer::POSITION, $this->position);
+		if ($this->isColumnModified(DebateTeamXrefPeer::MAJORITY_TEAM_SCORE)) $criteria->add(DebateTeamXrefPeer::MAJORITY_TEAM_SCORE, $this->majority_team_score);
+		if ($this->isColumnModified(DebateTeamXrefPeer::TEAM_SPEAKER_SCORE)) $criteria->add(DebateTeamXrefPeer::TEAM_SPEAKER_SCORE, $this->team_speaker_score);
+		if ($this->isColumnModified(DebateTeamXrefPeer::MARGIN)) $criteria->add(DebateTeamXrefPeer::MARGIN, $this->margin);
 		if ($this->isColumnModified(DebateTeamXrefPeer::CREATED_AT)) $criteria->add(DebateTeamXrefPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(DebateTeamXrefPeer::UPDATED_AT)) $criteria->add(DebateTeamXrefPeer::UPDATED_AT, $this->updated_at);
 
@@ -705,6 +805,12 @@ abstract class BaseDebateTeamXref extends BaseObject  implements Persistent {
 		$copyObj->setTeamId($this->team_id);
 
 		$copyObj->setPosition($this->position);
+
+		$copyObj->setMajorityTeamScore($this->majority_team_score);
+
+		$copyObj->setTeamSpeakerScore($this->team_speaker_score);
+
+		$copyObj->setMargin($this->margin);
 
 		$copyObj->setCreatedAt($this->created_at);
 
