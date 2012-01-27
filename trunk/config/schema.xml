@@ -135,6 +135,9 @@
             <reference local="team_id" foreign="id"/>
         </foreign-key>
         <column name="position" type="INTEGER" required="true" />
+        <column name="majority_team_score" type="INTEGER" />
+        <column name="team_speaker_score" type="NUMERIC" />
+        <column name="margin" type="NUMERIC" />
         <column name="created_at" type="TIMESTAMP" />
         <column name="updated_at" type="TIMESTAMP" />
         <unique name="debates_teams_xrefs_debate_id_team_id">

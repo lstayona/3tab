@@ -557,7 +557,7 @@ class tournamentActions extends sfActions
             
             foreach($this->getRequestParameter('adjudicator_votes') as $adjudicatorAllocationId => $winningTeamId)
             {
-				 foreach($debate->getDebateTeamXrefs(null, $propelConn) as $debateTeamXref)
+                foreach($debate->getDebateTeamXrefs(null, $propelConn) as $debateTeamXref)
                 {
                     $teamScoreSheet = new TeamScoreSheet();
                     $teamScoreSheet->setAdjudicatorAllocationId($adjudicatorAllocationId);
@@ -604,6 +604,7 @@ class tournamentActions extends sfActions
 
             TeamScorePeer::flushAndRepopulate($propelConn);
             SpeakerScorePeer::flushAndRepopulate($propelConn);
+            DebateTeamXrefPeer::populateResultInformationForRound($this->getRequestParameter('id'), $propelConn);
 
             $round = RoundPeer::retrieveByPk($this->getRequestParameter('id'));
             $round->setStatus(ROUND::ROUND_STATUS_RESULT_ENTRY_COMPLETE);
