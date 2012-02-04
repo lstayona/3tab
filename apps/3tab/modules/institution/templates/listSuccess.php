@@ -17,8 +17,8 @@
 <tbody>
 <?php foreach ($institutions as $institution): ?>
 <tr>
-    <td><?php echo link_to($institution->getId(), 'institution/show?id='.$institution->getId()) ?></td>
-      <td><?php echo $institution->getCode() ?></td>
+    <td><?php echo $institution->getId()?>
+    <td><?php echo link_to($institution->getCode(), 'institution/show?id='.$institution->getId()) ?></td>
       <td><?php echo $institution->getName() ?></td>
       <td><?php echo $institution->getCreatedAt() ?></td>
       <td><?php echo $institution->getUpdatedAt() ?></td>

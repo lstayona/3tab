@@ -18,8 +18,8 @@
 <tbody>
 <?php foreach ($teams as $team): ?>
 <tr>
-    <td><?php echo link_to($team->getId(), 'team/show?id='.$team->getId()) ?></td>
-      <td><?php echo $team->getName() ?></td>
+	<td><?php echo $team->getId()?>
+    <td><?php echo link_to($team->getName(), 'team/show?id='.$team->getId()) ?></td>
       <td><?php echo $team->getInstitutionId() ?></td>
 	  <td><?php echo $team->getInstitution()->getName() ?> </td>
       <td><?php echo $team->getSwing() ?></td>
