@@ -18,8 +18,8 @@
 <tbody>
 <?php foreach ($debaters as $debater): ?>
 <tr>
-    <td><?php echo link_to($debater->getId(), 'debater/show?id='.$debater->getId()) ?></td>
-      <td><?php echo $debater->getName() ?></td>
+    <td> <?php echo $debater->getId() ?>
+    <td><?php echo link_to($debater->getName(), 'debater/show?id='.$debater->getId()) ?></td>
       <td><?php echo $debater->getTeamId() ?></td>
 	  <td><?php echo $debater->getTeam()->getName() ?></td>
       <td><?php echo $debater->getCreatedAt() ?></td>

@@ -21,8 +21,8 @@
 <tbody>
 <?php foreach ($venues as $venue): ?>
 <tr>
-    <td><?php echo link_to($venue->getId(), 'venue/show?id='.$venue->getId()) ?></td>
-      <td><?php echo $venue->getName() ?></td>
+	<td><?php echo $venue->getId()?>
+    <td><?php echo link_to($venue->getName(), 'venue/show?id='.$venue->getId()) ?></td>
       <td><?php echo $venue->getActive() ?></td>
       <td><?php echo $venue->getPriority() ?></td>
       <td><?php echo $venue->getCreatedAt() ?></td>
