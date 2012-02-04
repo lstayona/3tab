@@ -30,7 +30,7 @@
 	
 ?>
 <?php foreach ($adjScores as $number => $sScore): ?>
-<?php $adjudicator = $adjudicators[$number];?zzz>
+<?php $adjudicator = $adjudicators[$number];?>
 <tr>
     <td><?php echo link_to($adjudicator->getId(), 'adjudicator/show?id='.$adjudicator->getId()) ?></td>
       <td><?php echo $adjudicator->getName() ?></td>
