@@ -65,7 +65,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 5. Restart your Wamp Server by clicking on restart all services. If the restart is successful, your Wamp Server icon should be green.
 
-6. Click on the Wamp Server icon and go back to *PHP->PHP extensions* menu, make sure that *php_pgsql* and php_pdo_pgsql* have ticks next to them.
+6. Click on the Wamp Server icon and go back to *PHP->PHP extensions* menu, make sure that *php_pgsql* and *php_pdo_pgsql* have ticks next to them.
 
 7.  Create a new file in your *c:\wamp\www* directory called *phpinfo.php*. Insert this line *<?php phpinfo() ?> and save the file.
 
