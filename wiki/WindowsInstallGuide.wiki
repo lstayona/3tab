@@ -69,7 +69,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 7.  Create a new file in your *c:\wamp\www* directory called *phpinfo.php*. Insert this line *<?php phpinfo() ?> and save the file.
 
-8. Open your web browser and go to *http://localhost/phpinfo.php*. Scroll down and look for *pdo_pgsql* and *pgsql* sections. (use ctrl-f)
+8. Open your web browser and go to http://localhost/phpinfo.php. Scroll down and look for *pdo_pgsql* and *pgsql* sections. (use ctrl-f)
 
 9.If you see them both, your Wamp Server is properly set up for PostgreSQL.
 
