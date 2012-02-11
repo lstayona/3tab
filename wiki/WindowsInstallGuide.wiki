@@ -8,7 +8,7 @@
 
 [http://code.google.com/p/3tab/downloads/list 3tab Zip Package]
 
-/(Newer versions should also work fine)
+(Newer versions should also work fine)
 
 
 = Install Wamp Server =
@@ -27,16 +27,23 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 6. Wamp Server is installed properly if you see that page.
 
 
+
 = Install PostgreSQL Server =
 
 1. Download the PosgreSQL package
-2. Double click on the downloaded file to begin installation
-3. Follow the on screen instructions, install in any directory, and you can also choose any directory to store the PostgreSQL data
-4. Set your password *Please Remember this for the 3tab set up later*
-5. Leave the port number as "5432", *If you decide to change it, please remember it for the 3tab set up later*
-6. Deselect Launch Stack Builder at exit
-7. Test your postgreSQL installation by launching the pgAdminIII application 
-8. Double click on the server (PostgreSQL8.4 (localhost:5432) and you will be prompted for your password. 
-9. Enter your password to connect (default username is "postgres" if reauired), you should see one database "postgres" already created, *Do Not Delete this Database*
 
-4. 
+2. Double click on the downloaded file to begin installation
+
+3. Follow the on screen instructions, install in any directory, and you can also choose any directory to store the PostgreSQL data
+
+4. Set your password *Please Remember this for the 3tab set up later*
+
+5. Leave the port number as "5432", *If you decide to change it, please remember it for the 3tab set up later*
+
+6. Deselect Launch Stack Builder at exit
+
+7. Test your postgreSQL installation by launching the pgAdminIII application 
+
+8. Double click on the server (PostgreSQL8.4 (localhost:5432) and you will be prompted for your password. 
+
+9. Enter your password to connect (default username is "postgres" if required), you should see one database "postgres" already created, *Do Not Delete this Database*
