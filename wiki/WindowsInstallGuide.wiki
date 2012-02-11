@@ -1,2 +1,4 @@
+#summary Windows Install Guide for 3tab+Wamp Server+PostgreSQL
 #labels Phase-Deploy,Featured
+
 Instructions on how to setup Wamp Server, PostgreSQL and 3tab on Windows
