@@ -2,13 +2,13 @@
 #labels Phase-Deploy,Featured
 
 = Download the 3 required components =
-   [http://www.wampserver.com/en/ Wamp Server] (Based on 2.2c)
+[http://www.wampserver.com/en/ Wamp Server] (Based on 2.2c)
 
-   [http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
+[http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
 
-   [http://code.google.com/p/3tab/downloads/list 3tab] (Based on r71)
+[http://code.google.com/p/3tab/downloads/list 3tab Zip Package]
 
-   (Newer versions should also work fine)
+(Newer versions should also work fine)
 
 = Install Wamp Server =
    
