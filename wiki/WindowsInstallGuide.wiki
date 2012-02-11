@@ -93,7 +93,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 1. Open pgAdmin III again. Select your server and connect with your username and password. 
 
-2. Right click on *Databases* under your server and select *New Database*. Leave everything as default and *enter the name as _3tab_* (or any name of your choice, but please remember this)
+2. Right click on *Databases* under your server and select *New Database*. Leave everything as default and *enter the name as _3tab_* (or any name of your choice, but please remember this). If you changed the port (not using 5432, add  *":_port"* behind localhost, with _port being your port number
 
 3. Right click on the new database *3tab* and select *CREATE Script*, select *File->Open* and go to the *c:\wamp\www\3tab_full\3tab\data\sql* folder.
 
