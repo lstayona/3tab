@@ -121,3 +121,5 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 3. To make sure your database is connected properly, open pgAdmin III onace again, and go to *3tab->Schemas->Tables->Institutions and click the *button to the right of SQL pen and paper button* to view the contents of the institutions table.
 
 4. You should see one row with the details of the institution you just created, if you see this, you're good to go!
+
+5. Look out for the user guide in the wiki section for further 3tab usage instructions.
