@@ -1,10 +1,10 @@
 #summary Windows Install Guide for 3tab+Wamp Server+PostgreSQL
 #labels Phase-Deploy,Featured
 
-1. Download the 3 required components:
+1. =Download the 3 required components=
    a.[http://www.wampserver.com/en/ Wamp Server] (Based on 2.2c)
    b.[http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
    c.[http://code.google.com/p/3tab/downloads/list 3tab] (Based on r71)
-     *newer versions should also work fine
+     (Newer versions should also work fine)
 
-2. Install Wamp Server - 
+2. =Install Wamp Server=
