@@ -2,23 +2,30 @@
 #labels Phase-Deploy,Featured
 
 = Download the 3 required components =
-/[http://www.wampserver.com/en/ Wamp Server] (Based on 2.2c)
+[http://www.wampserver.com/en/ Wamp Server] (Based on 2.2c)
 
-/[http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
+[http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
 
-/[http://code.google.com/p/3tab/downloads/list 3tab Zip Package]
+[http://code.google.com/p/3tab/downloads/list 3tab Zip Package]
 
 /(Newer versions should also work fine)
 
 
 = Install Wamp Server =
 
-/1. Download the Wamp Server package
-/2. Double click on the downloaded file to begin installation
-/3. Follow the on screen instructions and *make sure you set the installation directory to _"c:\wamp"_*
+1. Download the Wamp Server package
+
+2. Double click on the downloaded file to begin installation
+
+3. Follow the on screen instructions and *make sure you set the installation directory to _"c:\wamp"_*
+
 /4. You should now see a Wamp Server icon in the system tray icons area (usually bottom right of your screen.
-/5. To make sure Wamp Server is installed correctly, left click on the Wamp Server icon and click on Localhost. You should see a page that shows "Server Configuration Apache Version etc. You can also type http://localhost in your browser to see this page.
-/6. Wamp Server is installed properly if you see that page.
+
+5. To make sure Wamp Server is installed correctly, left click on the 
+Wamp Server icon and click on Localhost. You should see a page that shows "Server Configuration Apache Version etc. You can also type http://localhost in your browser to see this page.
+
+6. Wamp Server is installed properly if you see that page.
+
 
 = Install PostgreSQL Server =
 
