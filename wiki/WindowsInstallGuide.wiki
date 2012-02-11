@@ -47,3 +47,29 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 8. Double click on the server (PostgreSQL8.4 (localhost:5432) and you will be prompted for your password. 
 
 9. Enter your password to connect (default username is "postgres" if required), you should see one database "postgres" already created, *Do Not Delete this Database*
+
+
+= Connect Wamp Server to PostgreSQL Server =
+
+1. Go to *c:\wamp\bin\php\php5.3.9* (might be different for newer Wamp Server versions), copy libpq.dll 
+
+2. Paste libpq.dll in *c:\wamp\bin\apache\apache2.2.21\bin* (might be different for newer Wamp Server Versions
+
+3. Leftlick on the Wamp Server system tray icon, and go to the *PHP->PHP extensions* menu
+
+4. Click on *php_pgsql* and *php_pdo_pgsql* to enable it. 
+
+5. Restart your Wamp Server by clicking on restart all services. If the restart is successful, your Wamp Server icon should be green.
+
+6. Click on the Wamp Server icon and go back to *PHP->PHP extensions* menu, make sure that *php_pgsql* and php_pdo_pgsql* have ticks next to them.
+
+7.  Create a new file in your *c:\wamp\www* directory called *phpinfo.php*. Insert this line *<?php phpinfo() ?> and save the file.
+
+8. Open your web browser and go to *http://localhost/phpinfo.php*. Scroll down and look for *pdo_pgsql* and *pgsql* sections. (use ctrl-f)
+
+9.If you see them both, your Wamp Server is properly set up for PostgreSQL.
+
+
+= Setting up 3tab = 
+
+ 
