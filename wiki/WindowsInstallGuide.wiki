@@ -10,5 +10,9 @@
 
 (Newer versions should also work fine)
 
+
 = Install Wamp Server =
-   
+
+1. Download the Wamp Server package
+2. Double click on the downloaded file to begin installation
+3. Follow the on screen instructions and *make sure you set the installation directory to _c:\wamp_*
