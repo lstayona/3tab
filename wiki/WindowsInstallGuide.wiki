@@ -11,6 +11,7 @@
 (Newer versions should also work fine)
 
 
+
 = Install Wamp Server =
 
 1. Download the Wamp Server package
@@ -25,6 +26,7 @@
 Wamp Server icon and click on Localhost. You should see a page that shows "Server Configuration Apache Version etc. You can also type http://localhost in your browser to see this page.
 
 6. Wamp Server is installed properly if you see that page.
+
 
 
 
@@ -49,11 +51,13 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 9. Enter your password to connect (default username is "postgres" if required), you should see one database "postgres" already created, *Do Not Delete this Database*
 
 
+
+
 = Connect Wamp Server to PostgreSQL Server =
 
-1. Go to *c:\wamp\bin\php\php5.3.9* (might be different for newer Wamp Server versions), copy libpq.dll 
+1. Go to *c:\wamp\bin\php\php5.3.9* (might be different for newer Wamp Server versions), copy the file *libpq.dll* 
 
-2. Paste libpq.dll in *c:\wamp\bin\apache\apache2.2.21\bin* (might be different for newer Wamp Server Versions
+2. Paste the file *libpq.dll* in *c:\wamp\bin\apache\apache2.2.21\bin* (might be different for newer Wamp Server Versions
 
 3. Leftlick on the Wamp Server system tray icon, and go to the *PHP->PHP extensions* menu
 
@@ -70,6 +74,50 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 9.If you see them both, your Wamp Server is properly set up for PostgreSQL.
 
 
-= Setting up 3tab = 
 
- 
+
+= Unzip (install) 3tab = 
+
+1. Download the latest 3tab package
+
+2. Unzip the zip file to the *c:\wamp\www* folder
+
+3. the folder should now contain a folder *3tab_full*
+
+4. Go to your web browser and enter *http://localhost/3tab_full/3tab/web/index.php*, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a file not found error, make sure you've unzipped correctly before proceeding
+
+
+
+
+= Create and link your 3tab database to 3tab = 
+
+1. Open pgAdmin III again. Select your server and connect with your username and password. 
+
+2. Right click on *Databases* under your server and select *New Database*. Leave everything as default and *enter the name as _3tab_* (or any name of your choice, but please remember this)
+
+3. Right click on the new database *3tab* and select *CREATE Script*, select *File->Open* and go to the *c:\wamp\www\3tab_full\3tab\data\sql* folder.
+
+4. Open the file *lib.model.schema.sql* and execute (press the start button or press f6)
+
+5. Repeat step 3, open the file *views.sql* and execute as well
+
+6. If you go to *3tab->Schemas->Tables* and you should see 18 tables (debaters, debates, rounds, teams etc.)
+
+7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and open *databases.yml*
+
+8. You only need to edit one line *"dsn:         pgsql://postgres:hammie@localhost:1337/3tab"*, *replace _username with your username* (postgres if you didn't set any), *replace _password with your password* chosen during the PostgreSQL installation and *replace _dbname with your database name* chosen earlier (3tab if you followed our recommendation*
+
+9. Save the *databases.yml* file, go to your browser and open *http://localhost/3tab_full/3tab/web/index.php/tournament* If you see a screen with 3tab and several button like Tournament, Team Rankings and Contol Panel, *CONGRATULATIONS, you've successfully installed 3tab!*
+
+
+
+
+= Using 3tab for the first time = 
+
+1. You should start by registering your institutions by going to *Control Panel -> Institutions*
+
+2. Click on create and enter your first institution.
+
+3. To make sure your database is connected properly, open pgAdmin III onace again, and go to *3tab->Schemas->Tables->Institutions and click the *button to the right of SQL pen and paper button* to view the contents of the institutions table.
+
+4. You should see one row with the details of the institution you just created, if you see this, you're good to go!
