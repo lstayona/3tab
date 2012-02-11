@@ -1,0 +1,2 @@
+#labels Phase-Deploy,Featured
+Instructions on how to setup Wamp Server, PostgreSQL and 3tab on Windows
