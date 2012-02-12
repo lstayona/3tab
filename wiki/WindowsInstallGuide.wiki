@@ -84,7 +84,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 3. the folder should now contain a folder *3tab_full*
 
-4. Go to your web browser and enter http://localhost/3tab_full/3tab/web/index.php, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a file not found error, make sure you've unzipped correctly before proceeding
+4. Go to your web browser and enter http://localhost/3tab_full/3tab/web/index.php, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a normal web server error (white page, black text), make sure you've unzipped correctly before proceeding
 
 
 
