@@ -109,6 +109,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 // symfony directories
 $sf_symfony_lib_dir  = dirname(__FILE__) . '/../../symfony/lib';
 $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
+
 }}}
 
 *note change symfony to whatever export directory name you set in step 6
