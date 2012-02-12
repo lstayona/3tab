@@ -42,7 +42,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 5. Leave the port number as "5432", *If you decide to change it, please remember it for the 3tab set up later*
 
-6. Deselect Launch Stack Builder at exit
+6. Deselect Launch Stack Builder at exit (ignore if you don't see this, or just close stack builder if it launches
 
 7. Test your postgreSQL installation by launching the pgAdminIII application 
 
