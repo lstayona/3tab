@@ -6,7 +6,7 @@
 
 [http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
 
-[httpp://tortoisesvn.net Tortoise SVN]
+[http://tortoisesvn.net Tortoise SVN]
 
 (Newer versions should also work fine)
 
