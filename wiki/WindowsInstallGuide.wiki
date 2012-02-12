@@ -103,7 +103,9 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 7. Go to c:\wamp\www\config and create a new text file called *config.php*
 
-8. Enter this inside and save it {{{
+8. Enter this inside and save it 
+
+{{{
 <?php
 
 // symfony directories
