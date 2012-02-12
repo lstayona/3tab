@@ -105,7 +105,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and open *databases.yml* with any text editor
 
-8. You only need to edit one line *"dsn:         pgsql://postgres:hammie@localhost:1337/3tab"*, *replace _username with your username* (postgres if you didn't set any), *replace _password with your password* chosen during the PostgreSQL installation and *replace _dbname with your database name* chosen earlier (3tab if you followed our recommendation*
+8. You only need to edit one line *"dsn:         pgsql://_username:_password@localhost/dbname"*, *replace _username with your username* (postgres if you didn't set any), *replace _password with your password* chosen during the PostgreSQL installation and *replace _dbname with your database name* chosen earlier (3tab if you followed our recommendation*
 
 9. Save the *databases.yml* file, go to your browser and open http://localhost/3tab_full/3tab/web/index.php/tournament If you see a screen with 3tab and several button like Tournament, Team Rankings and Contol Panel, *CONGRATULATIONS, you've successfully installed 3tab!*
 
