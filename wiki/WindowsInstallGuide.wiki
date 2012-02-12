@@ -101,9 +101,9 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 5. Repeat step 3, open the file *views.sql* and execute as well
 
-6. If you go to *3tab->Schemas->Tables* and you should see 18 tables (debaters, debates, rounds, teams etc.)
+6. If you go to *3tab->Schemas->Public->Tables* (Hint: Click on the "+ button on th left of each) you should see 18 tables (debaters, debates, rounds, teams etc.)
 
-7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and open *databases.yml*
+7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and open *databases.yml* with any text editor
 
 8. You only need to edit one line *"dsn:         pgsql://postgres:hammie@localhost:1337/3tab"*, *replace _username with your username* (postgres if you didn't set any), *replace _password with your password* chosen during the PostgreSQL installation and *replace _dbname with your database name* chosen earlier (3tab if you followed our recommendation*
 
