@@ -93,11 +93,11 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 2. Right click anywhere and select *TortoiseSVN-> Export*
 
-3. Enter the URL of repository as *http://3tab.googlecode.com/svn/trunk/*
+3. Enter the URL of repository as http://3tab.googlecode.com/svn/trunk/
 
 4. Set the export directory to *c:\wamp\www\3tab*
 
-5. Repeast step 2 & 3 but now set the repository as *http://svn.symfony-project.com/branches/1.0*
+5. Repeast step 2 & 3 but now set the repository as http://svn.symfony-project.com/branches/1.0
 
 6. Set the export directory to *c:\wamp\www\symfony*
 
