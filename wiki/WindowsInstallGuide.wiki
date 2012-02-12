@@ -114,7 +114,7 @@ $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
 
 }}}
 
-*note change symfony to whatever export directory name you set in step 6
+*Change symfony to whatever export directory name you set in step 6
 *
 
 
@@ -137,11 +137,23 @@ $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
 
 6. If you go to *3tab->Schemas->Public->Tables* (Hint: Click on the "+ button on th left of each) you should see 18 tables (debaters, debates, rounds, teams etc.)
 
-7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and open *databases.yml* with any text editor
+7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and create a new file *databases.yml*, copy and paste this inside:
 
-8. You only need to edit one line *"dsn:         pgsql://_username:_password@localhost/dbname"*, *replace _username with your username* (postgres if you didn't set any), *replace _password with your password* chosen during the PostgreSQL installation and *replace _dbname with your database name* chosen earlier (3tab if you followed our recommendation). If you changed the port (not using 5432, add  *":_port"* behind localhost, with _port being your port number
+{{{
+all:
+  propel:
+    class:          sfPropelDatabase
+    param:
+      dsn:          pgsql://user:pass@localhost/3tab
 
-9. Save the *databases.yml* file, go to your browser and open http://localhost/3tab_full/3tab/web/index.php/tournament If you see a screen with 3tab and several button like Tournament, Team Rankings and Contol Panel, *CONGRATULATIONS, you've successfully installed 3tab!*
+}}}
+
+set *user* to your postgreSQL username and *pass* to your postgreSQL password. 
+-If you used a different database name, replace *3tab* with your database name. 
+-If you did not use the default port, add *:00000* behind localhost with your port number replacing 00000.
+
+
+8. Save the *databases.yml* file, go to your browser and open http://localhost/3tab_full/3tab/web/index.php/tournament If you see a screen with 3tab and several button like Tournament, Team Rankings and Contol Panel, *CONGRATULATIONS, you've successfully installed 3tab!*
 
 
 
