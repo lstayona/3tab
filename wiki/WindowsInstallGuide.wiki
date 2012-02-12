@@ -1,4 +1,4 @@
-#summary Windows Install Guide for 3tab+Wamp Server+PostgreSQL
+#summary Windows Install Guide for 3tab+Wamp Server+PostgreSQL+TortoiseSVN
 #labels Phase-Deploy,Featured
 
 = Download the 3 required components =
@@ -6,7 +6,7 @@
 
 [http://www.postgresql.org/ PostgreSQL] (Based on 8.4)
 
-[http://code.google.com/p/3tab/downloads/list 3tab Zip Package]
+[httpp://tortoisesvn.net Tortoise SVN]
 
 (Newer versions should also work fine)
 
@@ -25,7 +25,7 @@
 5. To make sure Wamp Server is installed correctly, left click on the 
 Wamp Server icon and click on Localhost. You should see a page that shows "Server Configuration Apache Version etc. You can also type http://localhost in your browser to see this page.
 
-6. Wamp Server is installed properly if you see that page.
+6. Wamp Server is installed properly if you see that page. If you get an access forbidden error, just swap *http://localhost* with *http://127.0.0.1* from now on and you should be fine.
 
 
 
@@ -76,15 +76,46 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 
 
-= Unzip (install) 3tab = 
+= Install TortoiseSVN =
 
-1. Download the latest 3tab package
+1. Download the TortoiseSVN package from the link up top
 
-2. Unzip the zip file to the *c:\wamp\www* folder
+2. Click on the TortoiseSVN file to begin installation.
 
-3. the folder should now contain a folder *3tab_full*
+3. You don't have to configure anything, just use the default settings.
 
-4. Go to your web browser and enter http://localhost/3tab_full/3tab/web/index.php, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a normal web server error (white page, black text), make sure you've unzipped correctly before proceeding
+
+
+
+= Export 3tab and symfony to your PC with tortoiseSVN = 
+
+1. Go to you *c:\wamp\www* folder
+
+2. Right click anywhere and select *TortoiseSVN-> Export*
+
+3. Enter the URL of repository as *http://3tab.googlecode.com/svn/trunk/*
+
+4. Set the export directory to *c:\wamp\www\3tab*
+
+5. Repeast step 2 & 3 but now set the repository as *http://svn.symfony-project.com/branches/1.0*
+
+6. Set the export directory to *c:\wamp\www\symfony*
+
+7. Go to c:\wamp\www\config and create a new text file called *config.php*
+
+8. Enter this inside and save it {{{
+<?php
+
+// symfony directories
+$sf_symfony_lib_dir  = dirname(__FILE__) . '/../../symfony/lib';
+$sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
+}}}
+
+*note change symfony to whatever export directory name you set in step 6
+*
+
+
+9. Go to your web browser and enter http://localhost/3tab_full/3tab/web/index.php, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a normal web server error (white page, black text), make sure you've unzipped correctly before proceeding
 
 
 
