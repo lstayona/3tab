@@ -149,7 +149,9 @@ all:
 }}}
 
 set *user* to your postgreSQL username and *pass* to your postgreSQL password. 
+
 -If you used a different database name, replace *3tab* with your database name. 
+
 -If you did not use the default port, add *:00000* behind localhost with your port number replacing 00000.
 
 
