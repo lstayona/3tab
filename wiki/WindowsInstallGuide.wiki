@@ -118,7 +118,7 @@ $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
 *
 
 
-9. Go to your web browser and enter http://localhost/3tab_full/3tab/web/index.php, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a normal web server error (white page, black text), make sure you've unzipped correctly before proceeding
+9. Go to your web browser and enter http://localhost/3tab/web/index.php, if you see anything related to symfony or 3tab it means you've unzipped it to the correct folder, otherwise if you get a normal web server error (white page, black text), make sure you've unzipped correctly before proceeding
 
 
 
@@ -155,7 +155,7 @@ set *user* to your postgreSQL username and *pass* to your postgreSQL password.
 -If you did not use the default port, add *:00000* behind localhost with your port number replacing 00000.
 
 
-8. Save the *databases.yml* file, go to your browser and open http://localhost/3tab_full/3tab/web/index.php/tournament If you see a screen with 3tab and several button like Tournament, Team Rankings and Contol Panel, *CONGRATULATIONS, you've successfully installed 3tab!*
+8. Save the *databases.yml* file, go to your browser and open http://localhost/3tab/web/index.php/tournament If you see a screen with 3tab and several button like Tournament, Team Rankings and Contol Panel, *CONGRATULATIONS, you've successfully installed 3tab!*
 
 
 
