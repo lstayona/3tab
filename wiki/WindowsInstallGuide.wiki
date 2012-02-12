@@ -101,7 +101,7 @@ Wamp Server icon and click on Localhost. You should see a page that shows "Serve
 
 6. Set the export directory to *c:\wamp\www\symfony*
 
-7. Go to c:\wamp\www\config and create a new text file called *config.php*
+7. Go to c:\wamp\www\3tab\config and create a new text file called *config.php*
 
 8. Enter this inside and save it 
 
@@ -129,7 +129,7 @@ $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
 
 2. Right click on *Databases* under your server and select *New Database*. Leave everything as default and *enter the name as _3tab_* (or any name of your choice, but please remember this).
 
-3. Right click on the new database *3tab* and select *CREATE Script*, select *File->Open* and go to the *c:\wamp\www\3tab_full\3tab\data\sql* folder.
+3. Right click on the new database *3tab* and select *CREATE Script*, select *File->Open* and go to the *c:\wamp\www\3tab\data\sql* folder.
 
 4. Open the file *lib.model.schema.sql* and execute (press the start button or press f6)
 
@@ -137,7 +137,7 @@ $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
 
 6. If you go to *3tab->Schemas->Public->Tables* (Hint: Click on the "+ button on th left of each) you should see 18 tables (debaters, debates, rounds, teams etc.)
 
-7. Go to the folder *c:\wamp\www\3tab_full\3tab\config* and create a new file *databases.yml*, copy and paste this inside:
+7. Go to the folder *c:\wamp\www\3tab\config* and create a new file *databases.yml*, copy and paste this inside:
 
 {{{
 all:
