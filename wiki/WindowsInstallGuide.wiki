@@ -118,7 +118,7 @@ $sf_symfony_data_dir = dirname(__FILE__) . '/../../symfony/data';
 *
 
 
-9. Go to your web browser and enter http://localhost/3tab/web/index.php, if you see a screen that says " 500 error ...oops ...." the you've exported correctly, otherwise if you get a normal web server error (white page, black text), make sure you've exported correctly before proceeding, just delete the folders in c:\wamp\www and start over from the top of this section.
+9. Go to your web browser and enter http://localhost/3tab/web/index.php, if you see a screen that says *"500 error ...oops ...."* the you've exported correctly, otherwise if you get a normal web server error (white page, black text), make sure you've exported correctly before proceeding, just delete the folders in c:\wamp\www and start over from the top of this section.
 
 
 
