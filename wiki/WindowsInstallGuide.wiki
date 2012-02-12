@@ -16,7 +16,7 @@
 
 1. Download the Wamp Server package
 
-2. Double click on the downloaded file to begin installation
+2. Double click on the downloaded file to begin installation (I suggest you switch off any security / antivirus software temporarily while installing Wamp Server as it needs to make some system changes that might be blocked by the security software)
 
 3. Follow the on screen instructions and *make sure you set the installation directory to _"c:\wamp"_*
 
