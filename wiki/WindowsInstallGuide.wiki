@@ -171,3 +171,5 @@ set *user* to your postgreSQL username and *pass* to your postgreSQL password.
 4. You should see one row with the details of the institution you just created, if you see this, you're good to go!
 
 5. Look out for the user guide in the wiki section for further 3tab usage instructions.
+
+6. *You neeed to create a round before you can add adjudicators. This is a bug that we're looking to address soon.  
