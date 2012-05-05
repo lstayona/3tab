@@ -1,0 +1,21 @@
+fields:
+    name:
+        required:
+            msg: Please fill in a name.
+        sfPropelUniqueValidator:
+            class: Round
+            column: name
+            unique_error: A round with this name already exists.
+    type:
+        required:
+            msg: Please fill in a type.
+    feedback_weightage:
+        required:
+            msg: Please fill in the feedback weightage.
+    preceded_by_round_id:
+        sfPropelUniqueValidator:
+            class: Round
+            column: preceded_by_round_id
+            unique_error: Another round already comes immediately after the selected round.
+fillin:
+    enabled: true

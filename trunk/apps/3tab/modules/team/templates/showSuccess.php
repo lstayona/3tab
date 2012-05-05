@@ -3,41 +3,38 @@
 // date: 2008/04/20 18:59:53
 ?>
 <h1>View Team</h1>
-<hr />
-<table id="form">
-<tbody>
-<tr>
-<th>Id: </th>
-<td><?php echo $team->getId() ?></td>
-</tr>
-<tr>
-<th>Name: </th>
-<td><?php echo $team->getName() ?></td>
-</tr>
-<tr>
-<th>Institution Id: </th>
-<td><?php echo $team->getInstitutionId() ?></td>
-</tr>
-<tr>
-<th>Institution Name: </th>
-<td><?php echo $team->getInstitution()->getName() ?></td>
-</tr>
-<tr>
-<th>Swing: </th>
-<td><?php echo $team->getSwing() ?></td>
-</tr>
-<tr>
-<th>Created at: </th>
-<td><?php echo $team->getCreatedAt() ?></td>
-</tr>
-<tr>
-<th>Updated at: </th>
-<td><?php echo $team->getUpdatedAt() ?></td>
-</tr>
-</tbody>
-</table>
-<hr />
+
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<div class="row">
+    <div class="span-one-third"><strong>Id</strong></div>
+    <div class="span-two-thirds"><?php echo $team->getId(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Name</strong></div>
+    <div class="span-two-thirds"><?php echo $team->getName(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Institution name</strong></div>
+    <div class="span-two-thirds"><?php echo link_to($team->getInstitution()->getName(), 'institution/show?id='. $team->getInstitutionId()); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Swing</strong></div>
+    <div class="span-two-thirds"><?php echo $team->getSwing() ? $team->getSwing() : "&nbsp;"; ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Created at</strong></div>
+    <div class="span-two-thirds"><?php echo $team->getCreatedAt(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Updated at</strong></div>
+    <div class="span-two-thirds"><?php echo $team->getUpdatedAt(); ?></div>
+</div>
 <div id="button">
-<?php echo link_to('Edit', 'team/edit?id='.$team->getId()) ?>
-&nbsp;<?php echo link_to('List', 'team/list') ?>
+<?php echo link_to('Edit', 'team/edit?id='.$team->getId(), array('class' => 'btn')) ?>
+&nbsp;<?php echo link_to('List', 'team/list', array('class' => 'btn')) ?>
 </div>

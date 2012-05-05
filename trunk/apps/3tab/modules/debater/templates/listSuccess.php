@@ -4,13 +4,18 @@
 ?>
 <h1>Debater</h1>
 
-<table>
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<table class="bordered-table zebra-striped">
 <thead>
 <tr>
   <th>Id</th>
   <th>Name</th>
-  <th>Team Id</th>
-  <th>Team Name</th>
+  <th>Team</th>
   <th>Created at</th>
   <th>Updated at</th>
 </tr>
@@ -20,14 +25,13 @@
 <tr>
     <td> <?php echo $debater->getId() ?>
     <td><?php echo link_to($debater->getName(), 'debater/show?id='.$debater->getId()) ?></td>
-      <td><?php echo $debater->getTeamId() ?></td>
-	  <td><?php echo $debater->getTeam()->getName() ?></td>
-      <td><?php echo $debater->getCreatedAt() ?></td>
-      <td><?php echo $debater->getUpdatedAt() ?></td>
+	  <td><?php echo link_to($debater->getTeam()->getName(), 'team/show?id='.$debater->getTeamId()) ?></td>
+    <td><?php echo $debater->getCreatedAt() ?></td>
+    <td><?php echo $debater->getUpdatedAt() ?></td>
   </tr>
 <?php endforeach; ?>
 </tbody>
 </table>
 <div id="button">
-	<?php echo link_to ('Create', 'debater/create') ?> &nbsp; <?php echo link_to ('Import from CSV', 'import/index?target_model=Debater'); ?>
+	<?php echo link_to ('Create', 'debater/create', array("class" => "btn")) ?> &nbsp; <?php echo link_to ('Import from CSV', 'import/index?target_model=Debater', array("class" => "btn")); ?>
 </div>

@@ -19,6 +19,12 @@ class Debater extends BaseDebater
 		}
         parent::save($con);
 	}
+
+    public function delete($con = null)
+    {
+        $this->getSpeakerScore($con)->delete($con);
+        parent::delete($con);
+    }
 	
     public function getSpeakerScore($con = null)
     {

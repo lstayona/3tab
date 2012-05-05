@@ -4,32 +4,38 @@
 ?>
 <h1>Round</h1>
 
-<table>
-<thead>
-<tr>
-  <th>Id</th>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Preceded by round</th>
-  <th>Feedback weightage</th>
-  <th>Created at</th>
-  <th>Updated at</th>
-</tr>
-</thead>
-<tbody>
-<?php foreach ($rounds as $round): ?>
-<tr>
-    <td><?php echo $round->getId()?></td>
-    <td><?php echo link_to($round->getName(), 'round/show?id='.$round->getId()) ?></td>
-      <td><?php echo $round->getTypeText() ?></td>
-      <td><?php echo $round->getPrecededByRoundId() ?></td>
-	  <td><?php echo $round->getFeedbackWeightage() ?></td>
-      <td><?php echo $round->getCreatedAt() ?></td>
-      <td><?php echo $round->getUpdatedAt() ?></td>
-  </tr>
-<?php endforeach; ?>
-</tbody>
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<table class="bordered-table zebra-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Preceded by round</th>
+            <th>Feedback weightage</th>
+            <th>Created at</th>
+            <th>Updated at</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rounds as $round): ?>
+        <tr>
+            <td><?php echo $round->getId()?></td>
+            <td><?php echo link_to($round->getName(), 'round/show?id='.$round->getId()) ?></td>
+            <td><?php echo $round->getTypeText() ?></td>
+            <td><?php echo $round->getPrecededByRoundId() > 0 ? $round->getRoundRelatedByPrecededByRoundId()->getName() : null ?></td>
+            <td><?php echo $round->getFeedbackWeightage() ?></td>
+            <td><?php echo $round->getCreatedAt() ?></td>
+            <td><?php echo $round->getUpdatedAt() ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>
 <div id="button">
-<?php echo link_to ('Create', 'round/create') ?>
+<?php echo link_to ('Create', 'round/create', array('class' => 'btn')) ?>
 </div>

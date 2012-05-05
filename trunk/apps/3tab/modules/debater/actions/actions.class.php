@@ -43,6 +43,18 @@ class debaterActions extends sfActions
     $this->forward404Unless($this->debater);
   }
 
+  public function handleErrorUpdate()
+  {
+    if (!$this->getRequestParameter('id'))
+    {
+      $this->forward('debater', 'create');
+    }
+    else
+    {
+      $this->forward('debater', 'edit');
+    }
+  }
+
   public function executeUpdate()
   {
     if (!$this->getRequestParameter('id'))
@@ -59,6 +71,8 @@ class debaterActions extends sfActions
     $debater->setName($this->getRequestParameter('name'));
     $debater->setTeamId($this->getRequestParameter('team_id') ? $this->getRequestParameter('team_id') : null);
 
+    $this->setFlash("success", "Debater was successfully saved.");
+
     $debater->save();
 
     return $this->redirect('debater/show?id='.$debater->getId());
@@ -71,6 +85,8 @@ class debaterActions extends sfActions
     $this->forward404Unless($debater);
 
     $debater->delete();
+
+    $this->setFlash("success", "Debater ".$debater->getName()." was deleted.");
 
     return $this->redirect('debater/list');
   }

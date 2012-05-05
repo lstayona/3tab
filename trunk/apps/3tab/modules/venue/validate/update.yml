@@ -1,0 +1,13 @@
+fields:
+    name:
+        required:
+            msg: Please fill in a name.
+        sfPropelUniqueValidator:
+            class: Venue
+            column: name
+            unique_error: A venue with this name already exists.
+    priority:
+        required:
+            msg: Please fill in a priority.
+fillin:
+    enabled: true

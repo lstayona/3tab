@@ -4,7 +4,13 @@
 ?>
 <h1>Institution</h1>
 
-<table>
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<table class="bordered-table zebra-striped">
 <thead>
 <tr>
   <th>Id</th>
@@ -17,8 +23,8 @@
 <tbody>
 <?php foreach ($institutions as $institution): ?>
 <tr>
-    <td><?php echo $institution->getId()?>
-    <td><?php echo link_to($institution->getCode(), 'institution/show?id='.$institution->getId()) ?></td>
+      <td><?php echo $institution->getId()?>
+      <td><?php echo link_to($institution->getCode(), 'institution/show?id='.$institution->getId()) ?></td>
       <td><?php echo $institution->getName() ?></td>
       <td><?php echo $institution->getCreatedAt() ?></td>
       <td><?php echo $institution->getUpdatedAt() ?></td>
@@ -28,5 +34,5 @@
 </table>
 
 <div id="button">
-<?php echo link_to ('Create', 'institution/create') ?> &nbsp; <?php echo link_to ('Import from CSV', 'import/index?target_model=Institution'); ?>
+<?php echo link_to ('Create', 'institution/create', array("class" => "btn")) ?> &nbsp; <?php echo link_to ('Import from CSV', 'import/index?target_model=Institution', array("class" => "btn")); ?>
 </div>

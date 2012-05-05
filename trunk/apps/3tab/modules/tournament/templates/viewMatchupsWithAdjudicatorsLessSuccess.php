@@ -7,7 +7,7 @@ jQuery(document).ready(function () {
 });
 </script>
 <h1>Matchups for <?php echo $round->getName();?></h1>
-<table id="big">
+<table id="big" class="zebra-striped bordered-table">
     <thead>
         <tr>
             <th>Venue</th>
@@ -85,6 +85,3 @@ endforeach;
 ?>
     </tbody>
 </table>
-<div id="button">
-<?php echo link_to("Back", 'tournament/index'); ?>
-</div>

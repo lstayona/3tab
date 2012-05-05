@@ -1,0 +1,18 @@
+fields:
+    code:
+        required:
+            msg: Please fill in a code.
+        sfStringValidator:
+            min:       2
+            min_error: This code is too short (2 characters minimum).
+            max:       10 
+            max_error: This name is too long (10 characters maximum).
+        sfPropelUniqueValidator:
+            class: Institution
+            column: code
+            unique_error: An institution with this code already exists.
+    name:
+        required:
+            msg: Please fill in a name.
+fillin:
+    enabled: true

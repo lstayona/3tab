@@ -1,0 +1,26 @@
+fields:
+    name:
+        required:
+            msg: Please fill in a name.
+        sfStringValidator:
+            min:       2
+            min_error: This code is too short (2 characters minimum).
+            max:       40
+            max_error: This name is too long (40 characters maximum).
+        sfPropelUniqueValidator:
+            class: Adjudicator
+            column: name
+            unique_error: An adjudicator with this name already exists.
+    test_score:
+        required:
+            msg: Please fill in a test score.
+        sfNumberValidator:
+            max: 5
+            max_error: Test score must be less than or equal to 5
+            min: 1
+            min_error: Test score must be greater than or equal to 1
+    institution_id:
+        required:
+            msg: Please fill in an institution.
+fillin:
+    enabled: true

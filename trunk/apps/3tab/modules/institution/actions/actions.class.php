@@ -43,6 +43,18 @@ class institutionActions extends sfActions
     $this->forward404Unless($this->institution);
   }
 
+  public function handleErrorUpdate()
+  {
+    if (!$this->getRequestParameter('id'))
+    {
+      $this->forward('institution', 'create');
+    }
+    else
+    {
+      $this->forward('institution', 'edit');
+    }
+  }
+
   public function executeUpdate()
   {
     if (!$this->getRequestParameter('id'))
@@ -61,6 +73,8 @@ class institutionActions extends sfActions
 
     $institution->save();
 
+    $this->setFlash("success", "Institution was successfully saved.");
+
     return $this->redirect('institution/show?id='.$institution->getId());
   }
 
@@ -71,6 +85,8 @@ class institutionActions extends sfActions
     $this->forward404Unless($institution);
 
     $institution->delete();
+    
+    $this->setFlash("success", "Institution ".$institution->getName()." was deleted.");
 
     return $this->redirect('institution/list');
   }
