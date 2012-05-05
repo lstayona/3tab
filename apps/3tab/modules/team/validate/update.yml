@@ -1,0 +1,13 @@
+fields:
+    name:
+        required:
+            msg: Please fill in a name.
+        sfPropelUniqueValidator:
+            class: Team
+            column: name
+            unique_error: A team with this name already exists.
+    institution_id:
+        required:
+            msg: Please fill in an institution.
+fillin:
+    enabled: true

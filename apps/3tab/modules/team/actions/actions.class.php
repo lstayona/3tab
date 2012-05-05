@@ -75,6 +75,51 @@ class teamActions extends sfActions
     $this->team = TeamPeer::retrieveByPk($this->getRequestParameter('id'));
     $this->forward404Unless($this->team);
   }
+  
+  public function validateUpdate()
+  {
+    $debaters = $this->getRequestParameter('debaters');
+    $debaterErrors = array();
+
+    foreach ($debaters as $count => $debater)
+    {
+      if (strlen($debater['name']) < 1)
+      {
+        $debaterErrors[$count]['name'] = 'Please fill in a name.';
+      }
+
+      $c = new Criteria();
+      $c->add(DebaterPeer::NAME, $debater['name']);
+      if (is_numeric($debater['debater_id']) and (int)$debater['debater_id'] > 0)
+      {
+        $c->add(DebaterPeer::ID, $debater['debater_id'], Criteria::NOT_EQUAL);
+      }
+
+      if (DebaterPeer::doCount($c) > 0)
+      {
+        $debaterErrors[$count]['name'] = 'A debater with this name already exists.';
+      }
+    }
+
+    if (count($debaterErrors) > 0)
+    {
+      $this->getRequest()->setError('debaters', $debaterErrors);
+    }
+
+    return !$this->getRequest()->hasErrors();
+  }
+
+  public function handleErrorUpdate()
+  {
+    if (!$this->getRequestParameter('id'))
+    {
+      $this->forward('team', 'create');
+    }
+    else
+    {
+      $this->forward('team', 'edit');
+    }
+  }
 
   public function executeUpdate()
   {
@@ -117,6 +162,7 @@ class teamActions extends sfActions
         }		
         
         $propelConn->commit();
+        $this->setFlash("success", "Team was successfully saved.");
     }
     catch(Exception $e)
     {
@@ -134,6 +180,8 @@ class teamActions extends sfActions
     $this->forward404Unless($team);
 		
     $team->delete();
+
+    $this->setFlash("success", "Team ".$team->getName(). " was deleted.");
 
     return $this->redirect('team/list');
   }

@@ -4,7 +4,13 @@
 ?>
 <h1>Adjudicator</h1>
 
-<table>
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<table class="bordered-table zebra-striped">
 <thead>
 <tr>
   <th>Id</th>
@@ -32,20 +38,20 @@
 <?php foreach ($adjScores as $number => $sScore): ?>
 <?php $adjudicator = $adjudicators[$number];?>
 <tr>
-    <td><?php echo link_to($adjudicator->getId(), 'adjudicator/show?id='.$adjudicator->getId()) ?></td>
-      <td><?php echo $adjudicator->getName() ?></td>
-      <td><?php echo $adjudicator->getTestScore() ?></td>
+    <td><?php echo $adjudicator->getId() ?></td>
+    <td><?php echo link_to($adjudicator->getName(), 'adjudicator/show?id='.$adjudicator->getId()) ?></td>
+    <td><?php echo $adjudicator->getTestScore() ?></td>
 	  <td><?php echo $adjudicator->getScore($round) ?></td>
-      <td><?php echo $adjudicator->getInstitutionId() ?></td>
+    <td><?php echo $adjudicator->getInstitutionId() ?></td>
 	  <td><?php echo $adjudicator->getInstitution()->getName() ?> </td>
-      <td><?php echo $adjudicator->getActive() ?></td>
-      <td><?php echo $adjudicator->getCreatedAt() ?></td>
-      <td><?php echo $adjudicator->getUpdatedAt() ?></td>
+    <td><?php echo $adjudicator->getActive() ?></td>
+    <td><?php echo $adjudicator->getCreatedAt() ?></td>
+    <td><?php echo $adjudicator->getUpdatedAt() ?></td>
   </tr>
 <?php endforeach; ?>
 </tbody>
 </table>
 
 <div id="button">
-<?php echo link_to ('Create', 'adjudicator/create') ?>&nbsp;<?php echo link_to ('Import from CSV', 'import/index?target_model=Adjudicator'); ?>
+<?php echo link_to ('Create', 'adjudicator/create', array('class' => 'btn')) ?>&nbsp;<?php echo link_to ('Import from CSV', 'import/index?target_model=Adjudicator', array('class' => 'btn')); ?>
 </div>

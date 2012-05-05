@@ -1,11 +1,3 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
 <h1>Draft matchups for <?php echo $round->getName();?></h1>
 <?php 
 if ($sf_request->hasErrors()): 
@@ -23,7 +15,7 @@ if ($sf_request->hasErrors()):
 endif;
 ?>
 <?php echo form_tag('tournament/confirmMatchups'); ?>
-<table>
+<table class="bordered-table zebra-striped">
     <thead>
         <tr>
             <th>Venue</th>
@@ -64,6 +56,6 @@ endforeach;
 </table>
 <div id="button">
     <?php echo input_hidden_tag('id', $round->getId()); ?>
-    <?php echo submit_tag("Confirm");?>
+    <?php echo submit_tag("Confirm", array("class" => "btn primary"));?>
 </div>
 </form>

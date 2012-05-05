@@ -3,32 +3,37 @@
 // date: 2008/04/20 18:59:53
 ?>
 <h1>Team</h1>
-<table>
-<thead>
-<tr>
-  <th>Id</th>
-  <th>Name</th>
-  <th>Institution Id</th>
-  <th>Institution Name</th>
-  <th>Swing</th>
-  <th>Created at</th>
-  <th>Updated at</th>
-</tr>
-</thead>
-<tbody>
-<?php foreach ($teams as $team): ?>
-<tr>
-	<td><?php echo $team->getId()?>
-    <td><?php echo link_to($team->getName(), 'team/show?id='.$team->getId()) ?></td>
-      <td><?php echo $team->getInstitutionId() ?></td>
-	  <td><?php echo $team->getInstitution()->getName() ?> </td>
-      <td><?php echo $team->getSwing() ?></td>
-      <td><?php echo $team->getCreatedAt() ?></td>
-      <td><?php echo $team->getUpdatedAt() ?></td>
-  </tr>
-<?php endforeach; ?>
-</tbody>
+
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<table class="bordered-table zebra-striped">
+    <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Institution Name</th>
+          <th>Swing</th>
+          <th>Created at</th>
+          <th>Updated at</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($teams as $team): ?>
+        <tr>
+            <td><?php echo $team->getId()?>
+            <td><?php echo link_to($team->getName(), 'team/show?id='.$team->getId()) ?></td>
+              <td><?php echo $team->getInstitution()->getName() ?> </td>
+              <td><?php echo $team->getSwing() ?></td>
+              <td><?php echo $team->getCreatedAt() ?></td>
+              <td><?php echo $team->getUpdatedAt() ?></td>
+          </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>
 <div id="button">
-<?php echo link_to ('Create', 'team/create') ?>&nbsp;<?php echo link_to ('Import from CSV', 'import/index?target_model=Team'); ?>
+<?php echo link_to ('Create', 'team/create', array('class' => 'btn')) ?>&nbsp;<?php echo link_to ('Import from CSV', 'import/index?target_model=Team', array('class' => 'btn')); ?>
 </div>

@@ -1,5 +1,5 @@
 <h1>Team Rankings</h1>
-<table>
+<table class="bordered-table zebra-striped">
     <thead>
     <tr>
         <th>No</th>
@@ -20,6 +20,6 @@
 <?php endforeach; ?>
 </tbody>
 </table>
-<div id="button">
-<?php echo link_to ('Back', 'tournament/index') ?>
+<div>
+<?php echo link_to ('Back', 'tournament/index', array('class' => 'btn')) ?>
 </div>

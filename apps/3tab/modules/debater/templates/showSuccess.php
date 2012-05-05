@@ -3,38 +3,35 @@
 // date: 2008/06/28 16:36:40
 ?>
 <h1>View Debater</h1>
-<hr />
 
-<table id="form">
-<tbody>
-<tr>
-<th>Id: </th>
-<td><?php echo $debater->getId() ?></td>
-</tr>
-<tr>
-<th>Name: </th>
-<td><?php echo $debater->getName() ?></td>
-</tr>
-<tr>
-<th>Team Id: </th>
-<td><?php echo $debater->getTeamId() ?></td>
-</tr>
-<tr>
-<th>Team Name: </th>
-<td><?php echo $debater->getTeam()->getName() ?></td>
-</tr>
-<tr>
-<th>Created at: </th>
-<td><?php echo $debater->getCreatedAt() ?></td>
-</tr>
-<tr>
-<th>Updated at: </th>
-<td><?php echo $debater->getUpdatedAt() ?></td>
-</tr>
-</tbody>
-</table>
-<hr />
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<div class="row">
+    <div class="span-one-third"><strong>Id</strong></div>
+    <div class="span-two-thirds"><?php echo $debater->getId(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Name</strong></div>
+    <div class="span-two-thirds"><?php echo $debater->getName(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Team name</strong></div>
+    <div class="span-two-thirds"><?php echo link_to($debater->getTeam()->getName(), "team/show?id=" . $debater->getTeamId()); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Created at</strong></div>
+    <div class="span-two-thirds"><?php echo $debater->getCreatedAt(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Updated at</strong></div>
+    <div class="span-two-thirds"><?php echo $debater->getUpdatedAt(); ?></div>
+</div>
+
 <div id="button">
-<?php echo link_to('Edit', 'debater/edit?id='.$debater->getId()) ?>
-&nbsp;<?php echo link_to('List', 'debater/list') ?>
+<?php echo link_to('Edit', 'debater/edit?id='.$debater->getId(), array('class' => 'btn')) ?>
+&nbsp;<?php echo link_to('List', 'debater/list', array('class' => 'btn')) ?>
 </div>

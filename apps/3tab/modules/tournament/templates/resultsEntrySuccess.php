@@ -1,14 +1,6 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
 <h1>Results entry for <?php echo $round->getName();?></h1>
 <?php echo form_tag('tournament/confirmRoundResults'); ?>
-<table>
+<table class="zebra-striped bordered-table">
     <thead>
         <tr>
             <th>Venue</th>
@@ -104,7 +96,7 @@ endforeach;
 	<?php
 		if($completedCount == count($round->getDebates()))
 		{	
-			echo submit_tag("Confirm");
+			echo submit_tag("Confirm", array('class' => 'btn large primary'));
 		}
 	?>
 </form>

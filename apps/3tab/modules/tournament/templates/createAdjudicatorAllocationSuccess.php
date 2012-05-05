@@ -1,24 +1,16 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
 <?php use_helper('Object'); ?>
 <?php use_helper('3tabForm'); ?>
 <h1>Draft matchups for <?php echo $round->getName();?></h1>
-<?php echo form_tag('tournament/confirmAdjudicatorAllocation'); ?>
 <?php if ($sf_request->hasErrors()):?>
-<ul class="error">
-<?php foreach($sf_request->getErrors() as $name => $error): ?>
-    <li id="<?php echo $name; ?>"><?php echo $error; ?></li>
-<?php endforeach; ?>
-</ul>
+<div class="alert-message error">
+    <?php foreach($sf_request->getErrors() as $name => $error): ?>
+    <span id="<?php echo $name; ?>"><?php echo $error; ?></span><br />
+    <?php endforeach; ?>
+</div>
 <?php endif; ?>
+<?php echo form_tag('tournament/confirmAdjudicatorAllocation'); ?>
 <br clear="all">
-<table id="display">
+<table id="display" class="zebra-striped bordered-table">
     <thead>
         <tr>
             <th>Venue</th>
@@ -90,6 +82,6 @@ endforeach;
 </table>
 <div align="center">
     <?php echo input_hidden_tag('id', $round->getId()); ?>
-    <?php echo submit_tag("Confirm");?>
+    <?php echo submit_tag("Confirm", array('class' => 'btn primary'));?>
 </div>	
 </form>

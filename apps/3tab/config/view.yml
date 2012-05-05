@@ -9,9 +9,9 @@ default:
     keywords:     symfony, project
     language:     en
 
-  stylesheets:    [main]
+  stylesheets:    [../bootstrap/bootstrap, style]
 
-  javascripts:    [libs/jquery-1.6.2.js, libs/tablesorter/jquery.tablesorter.js, libs/firebug/firebug.js, libs/preload.js]
+  javascripts:    [libs/jquery-1.6.2.js, libs/tablesorter/jquery.tablesorter.js, libs/firebug/firebug.js, libs/preload.js, ../bootstrap/js/bootstrap-dropdown]
 
   has_layout:     on
   layout:         layout

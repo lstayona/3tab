@@ -3,41 +3,42 @@
 // date: 2008/04/20 19:00:01
 ?>
 <h1>View Round</h1>
-<hr />
-<table id="form">
-<tbody>
-<tr>
-<th>Id: </th>
-<td><?php echo $round->getId() ?></td>
-</tr>
-<tr>
-<th>Name: </th>
-<td><?php echo $round->getName() ?></td>
-</tr>
-<tr>
-<th>Type: </th>
-<td><?php echo $round->getTypeText() ?></td>
-</tr>
-<tr>
-<th>Preceded by round: </th>
-<td><?php echo $round->getPrecededByRoundId() ?></td>
-</tr>
-<tr>
-<th>Feedback Weightage: </th>
-<td><?php echo $round->getFeedbackWeightage() ?></td>
-</tr>
-<tr>
-<th>Created at: </th>
-<td><?php echo $round->getCreatedAt() ?></td>
-</tr>
-<tr>
-<th>Updated at: </th>
-<td><?php echo $round->getUpdatedAt() ?></td>
-</tr>
-</tbody>
-</table>
-<hr />
+
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<div class="row">
+    <div class="span-one-third"><strong>Id</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getId(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Name</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getName(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Type</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getTypeText(); ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Preceded by round</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getPrecededByRoundId() > 0 ? link_to($round->getRoundRelatedByPrecededByRoundId()->getName(), 'round/show?id=' . $round->getPrecededByRoundId()) : '&nbsp;'; ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Feedback weightage</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getFeedbackWeightage() ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Created at</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getCreatedAt() ?></div>
+</div>
+<div class="row">
+    <div class="span-one-third"><strong>Updated at</strong></div>
+    <div class="span-two-thirds"><?php echo $round->getUpdatedAt() ?></div>
+</div>
 <div id="button">
-<?php echo link_to('Edit', 'round/edit?id='.$round->getId()) ?>
-&nbsp;<?php echo link_to('List', 'round/list') ?>
+<?php echo link_to('Edit', 'round/edit?id='.$round->getId(), array('class' => 'btn')) ?>
+&nbsp;<?php echo link_to('List', 'round/list', array('class' => 'btn')) ?>
 </div>

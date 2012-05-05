@@ -21,13 +21,14 @@ class adjudicatorActions extends sfActions
 
   public function executeList()
   {
-	$this->round = RoundPeer::getCurrentRound();
+    $this->round = RoundPeer::getCurrentRound();
+
     $this->adjudicators = AdjudicatorPeer::doSelect(new Criteria());
   }
   
   public function executeViewTeamsAdjudicated()
   {
-	$this->adjudicators = AdjudicatorPeer::doSelect(new Criteria());
+    $this->adjudicators = AdjudicatorPeer::doSelect(new Criteria());
   }
 
   public function executeShow()
@@ -49,6 +50,18 @@ class adjudicatorActions extends sfActions
     $this->forward404Unless($this->adjudicator);
   }
 
+  public function handleErrorUpdate()
+  {
+    if (!$this->getRequestParameter('id'))
+    {
+      $this->forward('adjudicator', 'create');
+    }
+    else
+    {
+      $this->forward('adjudicator', 'edit');
+    }
+  }
+
   public function executeUpdate()
   {
     if (!$this->getRequestParameter('id'))
@@ -65,9 +78,11 @@ class adjudicatorActions extends sfActions
     $adjudicator->setName($this->getRequestParameter('name'));
     $adjudicator->setTestScore($this->getRequestParameter('test_score'));
     $adjudicator->setInstitutionId($this->getRequestParameter('institution_id') ? $this->getRequestParameter('institution_id') : null);
-    $adjudicator->setActive($this->getRequestParameter('active', 0));	
+    $adjudicator->setActive($this->getRequestParameter('active', 0)); 
 
     $adjudicator->save();
+
+    $this->setFlash("success", "Adjudicator was successfully saved.");
 
     return $this->redirect('adjudicator/show?id='.$adjudicator->getId());
   }
@@ -77,54 +92,56 @@ class adjudicatorActions extends sfActions
     $adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
 
     $this->forward404Unless($adjudicator);
-	
+  
     $adjudicator->delete();
+
+    $this->setFlash("success", "Adjudicator was successfully deleted.");
 
     return $this->redirect('adjudicator/list');
   }
   
   public function executeDeleteConflict()
   {
-	$conflict = AdjudicatorConflictPeer::retrieveByPk($this->getRequestParameter('conflictId'));
-	$adjudicator = $conflict->getAdjudicator();
-	
-	$this->forward404Unless($conflict);
-	
-	$conflict->delete();
-	
-	return $this->redirect('adjudicator/edit?id='.$adjudicator->getId());
+    $conflict = AdjudicatorConflictPeer::retrieveByPk($this->getRequestParameter('conflictId'));
+    $adjudicator = $conflict->getAdjudicator();
+
+    $this->forward404Unless($conflict);
+
+    $conflict->delete();
+
+    $this->setFlash("success", "The adjudicator conflict was successfully deleted.");
+
+    return $this->redirect('adjudicator/edit?id='.$adjudicator->getId());
   }
   
   public function executeAddConflict()
   {
-	$this->adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
-	
-	$this->forward404Unless($this->adjudicator);
-	
-	$this->teams = TeamPeer::doSelect(new Criteria());
+    $this->adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
+
+    $this->forward404Unless($this->adjudicator);
+
+    $this->teams = TeamPeer::doSelect(new Criteria());
   }
   
   public function executeCreateConflict()
   {
-	$adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
-	$team = TeamPeer::retrieveByPk($this->getRequestParameter('teamId'));
-	$conflict = $adjudicator->createConflict($team);
-	if($conflict)
-	{
-		$adjudicator->addAdjudicatorConflict($conflict);
-	}
-	$adjudicator->save();
-	return $this->redirect('adjudicator/edit?id='.$adjudicator->getId());
+    $adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
+    $team = TeamPeer::retrieveByPk($this->getRequestParameter('teamId'));
+    $conflict = $adjudicator->createConflict($team);
+    if($conflict)
+    {
+      $adjudicator->addAdjudicatorConflict($conflict);
+    }
+    $adjudicator->save();
+
+    $this->setFlash("success", "The adjudicator conflict was successfully created.");
+
+    return $this->redirect('adjudicator/edit?id='.$adjudicator->getId());
   }
   
   public function executeShowFeedback()
   {
-	$this->adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
-	$this->feedbackSheets = $this->adjudicator->getAdjudicatorFeedbackSheets();  
+    $this->adjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->feedbackSheets = $this->adjudicator->getAdjudicatorFeedbackSheets();  
   }
-  
-  public function executeEditFeedback()
-  {
-  
-  }	
 }

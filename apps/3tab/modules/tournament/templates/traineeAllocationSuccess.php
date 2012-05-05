@@ -1,22 +1,14 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
 <?php use_helper('Object') ?>
 <h1>Draft Trainee Allocations For <?php echo $round->getName();?></h1>
-<?php echo form_tag('tournament/confirmTraineeAllocation'); ?>
-<?php if ($sf_request->hasErrors()): ?>
-<ul class="error">
-<?php foreach($sf_request->getErrors() as $name => $error): ?>
-    <li id="<?php echo $name; ?>"><?php echo $error; ?></li>
-  <?php endforeach; ?>
-</ul>
+<?php if ($sf_request->hasErrors()):?>
+<div class="alert-message error">
+    <?php foreach($sf_request->getErrors() as $name => $error): ?>
+    <span id="<?php echo $name; ?>"><?php echo $error; ?></span><br />
+    <?php endforeach; ?>
+</div>
 <?php endif; ?>
-<table>
+<?php echo form_tag('tournament/confirmTraineeAllocation'); ?>
+<table class="zebra-striped bordered-table">
     <thead>
         <tr>
 			<th>Debate</th>
@@ -76,6 +68,6 @@ endforeach;
 </table>
 <div align="center">
     <?php echo input_hidden_tag('id', $round->getId()); ?>
-    <?php echo submit_tag("Confirm");?>
+    <?php echo submit_tag("Confirm", array('class' => 'btn primary'));?>
 </div>	
 </form>

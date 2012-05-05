@@ -1,14 +1,5 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
-
 <h1>Tournament Management</h1>
-<table>
+<table class="zebra-striped bordered-table">
     <thead>
         <tr>
             <th>Round</th>

@@ -43,6 +43,18 @@ class venueActions extends sfActions
     $this->forward404Unless($this->venue);
   }
 
+  public function handleErrorUpdate()
+  {
+    if (!$this->getRequestParameter('id'))
+    {
+      $this->forward('venue', 'create');
+    }
+    else
+    {
+      $this->forward('venue', 'edit');
+    }
+  }
+
   public function executeUpdate()
   {
     if (!$this->getRequestParameter('id'))
@@ -62,6 +74,8 @@ class venueActions extends sfActions
 
     $venue->save();
 
+    $this->setFlash("success", "Venue was successfully saved.");
+
     return $this->redirect('venue/show?id='.$venue->getId());
   }
 
@@ -72,6 +86,8 @@ class venueActions extends sfActions
     $this->forward404Unless($venue);
 
     $venue->delete();
+
+    $this->setFlash("success", "Venue ".$venue->getName()." was deleted.");
 
     return $this->redirect('venue/list');
   }

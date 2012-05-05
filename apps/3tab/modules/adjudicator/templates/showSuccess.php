@@ -3,61 +3,62 @@
 // date: 2008/06/28 16:50:23
 ?>
 <h1>View Details</h1>
-<hr />
-<table id="form">
-<tbody>
-<tr>
-<th>Id: </th>
-<td><?php echo $adjudicator->getId() ?></td>
-</tr>
-<tr>
-<th>Name: </th>
-<td><?php echo $adjudicator->getName() ?></td>
-</tr>
-<tr>
-<th>Test score: </th>
-<td><?php echo $adjudicator->getTestScore() ?></td>
-</tr>
-<tr>
-<th>Institution Id: </th>
-<td><?php echo $adjudicator->getInstitutionId() ?></td>
-</tr>
-<tr>
-<th>Institution Name: </th>
-<td><?php echo $adjudicator->getInstitution()->getName() ?></td>
-</tr>
-<tr>
-<th>Active: </th>
-<td><?php echo $adjudicator->getActive() ?></td>
-</tr>
-<tr>
-<th>Created at: </th>
-<td><?php echo $adjudicator->getCreatedAt() ?></td>
-</tr>
-<tr>
-<th>Updated at: </th>
-<td><?php echo $adjudicator->getUpdatedAt() ?></td>
-</tr>
-<tr>
-	<th>Conflicts: </th>
-	<td>
-	<table>
-		<?php $conflicts = $adjudicator->getAdjudicatorConflicts() ?>
-		<?php foreach($conflicts as $aConflict): ?>
-		<tr>
-			<td> <?php echo $aConflict->getId(); ?> </td>
-			<td> <?php echo	$aConflict->getTeam()->getName(); ?> </td>
-			<td> <?php echo $aConflict->getTeam()->getInstitution()->getName(); ?> </td>
-		</tr>
-		<?php endforeach; ?>	  
-	</table>
-	</td>
-</tr>
-</tbody>
-</table>
-<hr />
+
+<?php if ($sf_flash->has("success")): ?>
+<div class="alert-message success">
+    <?php echo $sf_flash->get("success"); ?>
+</div>
+<?php endif; ?>
+
+<div class="row">
+	<div class="span-one-third"><strong>Id:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getId() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Name:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getName() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Test score:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getTestScore() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Institution Id:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getInstitutionId() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Institution Name:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getInstitution()->getName() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Active:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getActive() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Created at:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getCreatedAt() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Updated at:</strong></div>
+	<div class="span-two-thirds"><?php echo $adjudicator->getUpdatedAt() ?></div>
+</div>
+<div class="row">
+	<div class="span-one-third"><strong>Conflicts:</strong></div>
+	<div class="span-two-thirds">
+		<table class="bordered-table zebra-striped">
+			<?php $conflicts = $adjudicator->getAdjudicatorConflicts() ?>
+			<?php foreach($adjudicator->getAdjudicatorConflicts() as $conflict): ?>
+			<tr>
+				<td> <?php echo $conflict->getId(); ?> </td>
+				<td> <?php echo	link_to($conflict->getTeam()->getName(), 'team/show?id=' . $conflict->getTeamId()); ?> </td>
+				<td> <?php echo $conflict->getTeam()->getInstitution()->getName(); ?> </td>
+			</tr>
+			<?php endforeach; ?>	  
+		</table>
+	</div>
+</div>
 <div id="button">
-<?php echo link_to('Edit', 'adjudicator/edit?id='.$adjudicator->getId()) ?>
-&nbsp;<?php echo link_to('List', 'adjudicator/list') ?>
-&nbsp;<?php echo link_to('Show Feedback', 'adjudicator/showFeedback?id='.$adjudicator->getId()) ?>
+	<?php echo link_to('Edit', 'adjudicator/edit?id='.$adjudicator->getId(), array('class' => 'btn')) ?>
+	&nbsp;<?php echo link_to('List', 'adjudicator/list', array('class' => 'btn')) ?>
+	&nbsp;<?php echo link_to('Show Feedback', 'adjudicator/showFeedback?id='.$adjudicator->getId(), array('class' => 'btn')) ?>
 </div>
