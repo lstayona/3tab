@@ -22,6 +22,7 @@ $errors = $sf_request->getErrors();
             }
             
             $adjudicatorVotes = $sf_request->getParameter('adjudicator_votes', array());
+            $tabindex = 1;
             foreach($adjudicatorAllocations as $adjudicatorAllocation):
             ?>
             <td>
@@ -35,8 +36,17 @@ $errors = $sf_request->getErrors();
                         (isset($adjudicatorVotes[$adjudicatorAllocation->getId()]) ? 
                         $adjudicatorAllocation->getId() : null)
                     ),
-                    array('class' => 'adjudicator_votes span3')
+                    array('class' => 'adjudicator_votes span3', 'tabindex' => $tabindex)
                 );
+                if ($tabindex == 1) 
+                {
+                    $tabindex += 17;
+                }
+                else
+                {
+                    $tabindex += 9;
+                }
+               
                 ?>
                 <span class="error"><?php echo isset($errors['adjudicator_votes'][$adjudicatorAllocation->getId()]) ? $errors['adjudicator_votes'][$adjudicatorAllocation->getId()] : null; ?></span>
             </td>
@@ -67,9 +77,11 @@ $errors = $sf_request->getErrors();
     </thead>
     <tbody>
     <?php
+    $count = 0;
     foreach(SpeakerScoreSheet::getSpeakerPositions() as $speakerPosition => $description)
     {
-        speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $sf_request->getParameter('speaker_scores'), $errors);
+        speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $sf_request->getParameter('speaker_scores'), $errors, $count);
+        $count++;
     }
     ?>
         <tr>
@@ -91,7 +103,7 @@ $errors = $sf_request->getErrors();
 <?php echo input_hidden_tag("negative_team_id", $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getTeamId()); ?>
 <?php echo input_hidden_tag("affirmative_debate_team_xref_id", $debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()); ?>
 <?php echo input_hidden_tag("negative_debate_team_xref_id", $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()); ?>
-<?php echo submit_tag("Save changes", array("class" => "btn primary")); ?>
+<?php echo submit_tag("Save changes", array("class" => "btn primary", 'tabindex' => 36)); ?>
 </form>
 
 <?php
@@ -105,7 +117,7 @@ function debater_select_tag($name, $debaters, $selectedDebaterId, $options = arr
     return select_tag($name, options_for_select($opts, !is_null($selectedDebaterId) ? $selectedDebaterId : null), $options);
 }
 
-function speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $speakerScores, $errors)
+function speaker_entry_row($speakerPosition, $description, $debate, $adjudicatorAllocations, $speakerScores, $errors, $count)
 {
 ?>
         <tr>
@@ -119,11 +131,14 @@ function speaker_entry_row($speakerPosition, $description, $debate, $adjudicator
                     $debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getSpeaker($speakerPosition)->getId() :
                     (isset($speakerScores[$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['debater_id']) ? 
                     $speakerScores[$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['debater_id'] : null),
-                    array('class' => 'span4')
+                    array('class' => 'span4', "tabindex" => 2 + $count)
                 ); 
                 ?>
                 <span class="error"><?php echo isset($errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['debater_id']) ? $errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['debater_id'] : null; ?></span>
             </td>
+            <?php
+                $affHorizontalIndex = 6;
+            ?>
             <?php foreach($adjudicatorAllocations as $adjudicatorAllocation):?>
             <td>
                 <?php
@@ -140,8 +155,17 @@ function speaker_entry_row($speakerPosition, $description, $debate, $adjudicator
                     )->getScore() : 
                     (isset($speakerScores[$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()]) ?
                     $speakerScores[$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()] : 0),
-                    array('size' => 3, 'class' => "span2 speaker_scores speaker_scores_" . $debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId() . "_" . $adjudicatorAllocation->getId() . " speaker_scores_for_average_" . $debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId() . "_" . $speakerPosition)
-                ); 
+                    array('size' => 3, 'tabindex' => $affHorizontalIndex + $count, 'class' => "span2 speaker_scores speaker_scores_" . $debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId() . "_" . $adjudicatorAllocation->getId() . " speaker_scores_for_average_" . $debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId() . "_" . $speakerPosition)
+                );
+
+                    if ($affHorizontalIndex == 6)
+                    {
+                        $affHorizontalIndex += 13; 
+                    }
+                    else
+                    {
+                        $affHorizontalIndex += 9;
+                    }
                 ?>
                 <span class="error"><?php echo isset($errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()]) ? $errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::AFFIRMATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()] : null; ?></span>
             </td> 
@@ -158,11 +182,14 @@ function speaker_entry_row($speakerPosition, $description, $debate, $adjudicator
                     $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getSpeaker($speakerPosition)->getId() :
                     (isset($speakerScores[$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['debater_id']) ? 
                     $speakerScores[$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['debater_id'] : null),
-                    array('class' => 'span4')
+                    array('class' => 'span4', 'tabindex' => 10 + $count)
                 ); 
                 ?>
                 <span class="error"><?php echo isset($errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['debater_id']) ? $errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['debater_id'] : null; ?></span>
             </td>
+            <?php
+                $negHorizontalIndex = 14;
+            ?>
             <?php foreach($adjudicatorAllocations as $adjudicatorAllocation):?>
             <td>
                 <?php
@@ -179,8 +206,9 @@ function speaker_entry_row($speakerPosition, $description, $debate, $adjudicator
                     )->getScore() :                     
                     (isset($speakerScores[$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()]) ?
                     $speakerScores[$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()] : 0),
-                    array('size' => 3, 'class' => "span2 speaker_scores speaker_scores_" . $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId() . "_" . $adjudicatorAllocation->getId() . " speaker_scores_for_average_" . $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId() . "_" . $speakerPosition)
-                ); 
+                    array('size' => 3, 'tabindex' => $negHorizontalIndex + $count, 'class' => "span2 speaker_scores speaker_scores_" . $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId() . "_" . $adjudicatorAllocation->getId() . " speaker_scores_for_average_" . $debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId() . "_" . $speakerPosition)
+                );
+                $negHorizontalIndex += 9; 
                 ?>
                 <span class="error"><?php echo isset($errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()]) ? $errors['speaker_scores'][$debate->getDebateTeamXref(DebateTeamXref::NEGATIVE)->getId()][$speakerPosition]['scores'][$adjudicatorAllocation->getId()] : null; ?></span>
             </td> 
