@@ -22,7 +22,9 @@ class tournamentActions extends sfActions
     public function executeCreateMatchups()
     {
         $this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-        $this->debates = DebatePeer::doDraw($this->round);
+        $this->debates = DebatePeer::doDraw($this->round, 
+        	sfConfig::get('app_on_same_institution', false) == 1 ? true : false, 
+        	sfConfig::get('app_on_have_met_before', false) == 1 ? true : false);
     }
     
     public function validateConfirmMatchups()
