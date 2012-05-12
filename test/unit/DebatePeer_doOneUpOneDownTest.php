@@ -8,7 +8,7 @@ require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.D
 
 sfContext::getInstance();
 
-$t = new lime_test(56, new lime_output_color());
+$t = new lime_test(64, new lime_output_color());
 
 $con = Propel::getConnection();
 $con->begin();
@@ -195,4 +195,29 @@ foreach ($debates as $index => $debate)
     $t->is($debate->getTeam(DebateTeamXref::NEGATIVE)->getName(), $expectedResults[$index][1], "-> Correct team found in lower-rank slot for debate number $index.");
 }
 
+$t->diag("Verify correct behaviour when one-up-one-down is disabled.");
+/*
+ * Test data scenario:
+ * Debate 1: MMU A vs FOO A
+ * Debate 2: BAR A vs SHIT A
+ * Debate 3: SMU A C A vs SWING A
+ * Debate 4: NTU A vs NTU B
+ */
+$debates = array();
+$debates[] = DebatePeer::createDebate(TeamPeer::retrieveByName("MMU A")->getId(), TeamPeer::retrieveByName("FOO A")->getId());
+$debates[] = DebatePeer::createDebate(TeamPeer::retrieveByName("BAR A")->getId(), TeamPeer::retrieveByName("SHIT A")->getId());
+$debates[] = DebatePeer::createDebate(TeamPeer::retrieveByName("SMU A")->getId(), TeamPeer::retrieveByName("SWING A")->getId());
+$debates[] = DebatePeer::createDebate(TeamPeer::retrieveByName("NTU A")->getId(), TeamPeer::retrieveByName("NTU B")->getId());
+DebatePeer::doOneUpOneDown($debates, false, false, $con);
+$expectedResults = array(
+    array('MMU A', 'FOO A'),
+    array('BAR A', 'SHIT A'),
+    array('SMU A', 'SWING A'),
+    array('NTU A', 'NTU B')
+);
+foreach ($debates as $index => $debate)
+{
+    $t->is($debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getName(), $expectedResults[$index][0], "-> Correct team found in higher-rank slot for debate number $index.");
+    $t->is($debate->getTeam(DebateTeamXref::NEGATIVE)->getName(), $expectedResults[$index][1], "-> Correct team found in lower-rank slot for debate number $index.");
+}
 $con->rollback();
