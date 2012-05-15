@@ -624,152 +624,35 @@ class tournamentActions extends sfActions
 	public function executeFeedbackEntry()
 	{
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-		$this->adjudicators = AdjudicatorFeedbackSheet::getAdjudicatorsToReceiveFeedback($this->round);
-	}
-	
-	public function executeSelectFeedbackSource()
-	{
-		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-		$this->adjudicator = AdjudicatorPeer::retrieveByPK($this->getRequestParameter("adjudicator"));
-		$this->source = $this->getRequestParameter("source");
-		if(!$this->source)
-		{
-			throw new Exception("Please choose select the source of the feedback before hitting submit");
-		}
-		else if($this->source == 1)
-		{
-			/*
-			$con = Propel::getConnection();
-			$stmt = $con->createStatement();
-			//get debate_team_xrefs for this adjudicator in this round
-			
-		
-			$query = "SELECT debates_teams_xrefs.* FROM adjudicator_allocations,debates, debates_teams_xrefs, ".
-			"adjudicator_feedback_sheets WHERE adjudicator_allocations.adjudicator_id = %d AND ".
-			"adjudicator_allocations.debate_id = debates.id and debates.round_id = %d AND debates_teams_xrefs.debate_id ".
-			" = debates.id";
-			$query = sprintf($query, $this->adjudicator->getId(), $this->round->getId());
-			$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-			$debateTeamXrefs = DebateTeamXrefPeer::populateObjects($rs);
-			if($debateTeamXrefs == null)
-			{
-				throw new Exception("All feedback from teams adjudicated have been received.");
-			}
-			$this->teams = array();
-			foreach($debateTeamXrefs as $xref)
-			{
-				$query2 = "SELECT * from adjudicator_feedback_sheets WHERE adjudicator_feedback_sheets.debate_team_xref_id = %d";
-				$query2 = sprintf($query2, $xref->getId($con));
-				$rs = $stmt->executeQuery($query2, ResultSet::FETCHMODE_NUM);
-				$feedbackSheet = AdjudicatorFeedbackSheetPeer::populateObjects($rs);
-				if($feedbackSheet == null)
-				{
-					$this->teams[] = $xref->getTeam($con);
-				}
-			}*/
-			$this->teams = AdjudicatorFeedbackSheet::getFeedbackingTeams($this->adjudicator, $this->round);
-			if(count($this->teams) == 0)
-			{
-				throw new Exception("All feedback from teams adjudicated have been received.");
-			}
-		}
-		else if($this->source == 2)
-		{
-			/*
-			$con = Propel::getConnection();
-			$stmt = $con->createStatement();
-			$query = "SELECT debates.* FROM adjudicator_allocations,debates WHERE ".
-			"adjudicator_id = %d AND adjudicator_allocations.debate_id = debates.id and debates.round_id = %d";
-			$query = sprintf($query, $this->adjudicator->getId(), $this->round->getId());
-			$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-			$debate = DebatePeer::populateObjects($rs);
-			$query2 = "SELECT adjudicator_allocations.* FROM adjudicator_allocations, ".
-			"adjudicator_feedback_sheets WHERE adjudicator_allocations.debate_id = %d AND ".
-			"adjudicator_allocations.adjudicator_id != %d";
-			$query2 = sprintf($query2, $debate[0]->getId(), $this->adjudicator->getId());
-			$rs = $stmt->executeQuery($query2, ResultSet::FETCHMODE_NUM);
-			$adjudicatorAllocations = AdjudicatorAllocationPeer::populateObjects($rs);
-			if($adjudicatorAllocations == null)
-			{
-				throw new Exception("All feedback from panelists have been entered.");
-			}			
-			$this->feedbackingAdjudicators = array();
-			foreach($adjudicatorAllocations as $allocation)
-			{	
-				$query3 = "SELECT * FROM adjudicator_feedback_sheets WHERE adjudicator_allocation_id = %d ".
-								 "AND adjudicator_id = %d";
-				$query3 = sprintf($query3, $allocation->getId(), $this->adjudicator->getId());
-				$rs = $stmt->executeQuery($query3, ResultSet::FETCHMODE_NUM);
-				$feedbackSheet = AdjudicatorFeedbackSheetPeer::populateObjects($rs);
-				if($feedbackSheet == null)
-				{
-					$this->feedbackingAdjudicators[] = $allocation->getAdjudicator();
-				}
-			}*/
-			$this->feedbackingAdjudicators = AdjudicatorFeedbackSheet::getFeedbackingAdjudicators($this->adjudicator, $this->round);
-			if(count($this->feedbackingAdjudicators) == 0)
-			{
-				throw new Exception("All feedback from panelists have been entered.");
-			}
-		}
-	}
+                $this->teams = AdjudicatorFeedbackSheet::getTeamsWithPendingFeedback($this->round);
+	}	
 	
 	public function executeEnterFeedback()
 	{
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-		$this->adjudicator = AdjudicatorPeer::retrieveByPK($this->getRequestParameter("adjudicator"));
-		$this->source = $this->getRequestParameter("source");
-		$this->comments = $this->getRequestParameter("comments");
-		if($this->source == 1)
-		{
-			$this->team = TeamPeer::retrieveByPk($this->getRequestParameter("team"));
-			$con = Propel::getConnection();
-			$stmt = $con->createStatement();
-			$query = "SELECT debates_teams_xrefs.* from debates, debates_teams_xrefs WHERE ".
-			"debates_teams_xrefs.team_id = %d AND debates.round_id=%d AND debates.id = debates_teams_xrefs.debate_id";
-			$query = sprintf($query, $this->getRequestParameter("team"), $this->getRequestParameter("id"));
-			$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-			$this->feedbackFrom = DebateTeamXrefPeer::populateObjects($rs);				
-		}
-		else if($this->source == 2)
-		{
-			$this->feedbackingAdjudicator = AdjudicatorPeer::retrieveByPk($this->getRequestParameter("feedbackingAdjudicator"));
-			$con = Propel::getConnection();
-			$stmt = $con->createStatement();
-			$query = "SELECT adjudicator_allocations.* from debates, adjudicator_allocations WHERE ".
-			"adjudicator_allocations.adjudicator_id = %d AND debates.round_id=%d AND debates.id = adjudicator_allocations.debate_id";
-			$query = sprintf($query, $this->getRequestParameter("feedbackingAdjudicator"), $this->getRequestParameter("id"));
-			$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-			$this->feedbackFrom = AdjudicatorAllocationPeer::populateObjects($rs);	
-		}
+		$this->team = TeamPeer::retrieveByPK($this->getRequestParameter("team"));
+                $this->adjudicatorsToFeedback = AdjudicatorFeedbackSheet::getFeedbacksExpected($this->round, $this->team);		
 	}
 	
-	public function validateConfirmFeedback()
+		public function validateConfirmFeedback()
 	{
-		$score = $this->getRequestParameter("score");
-		if($score < 1 || $score > 5)
-		{
-			$this->getRequest()->setError("scoreError", "The scores entered for this adjudicator were not within range");
-			return false;
-		}
-		return true;
+                $adjCount = $this->getRequestParameter("adjCount");
+                for($i = 1; $i < $adjCount; $i++){
+                    $score = $this->getRequestParameter("score".$i);
+                    if( $score == 0) return true;
+                    else if($score < 1 || $score > 5){
+                        $this->getRequest()->setError("scoreError", "The scores entered for adjudicator ".
+                                                                     $i." were not within range");
+                        return false;
+                    }                    
+                }
+                return true;                
 	}
 	
 	public function handleErrorConfirmFeedback()
 	{
-		$source = $this->getRequestParameter("source");
-		if($source == 1)
-		{
-			$this->getRequest()->setParameter("team", $this->getRequestParameter("team"));
-		}
-		else if($source == 2)
-		{
-			$this->getRequest()->setParameter("feedbackingAdjudicator", $this->getRequestParameter("feedbackingAdjudicator"));
-		}
-		$this->getRequest()->setParameter("adjudicator",$this->getRequestParameter("adjudicator"));
+		$this->getRequest()->setParameter("team",$this->getRequestParameter("team"));
 		$this->getRequest()->setParameter("id", $this->getRequestParameter("id"));
-		$this->getRequest()->setParameter("source", $source);
-		$this->getRequest()->setParameter("comments", $this->getRequestParameter("comments"));
 		$this->forward('tournament', 'enterFeedback');
 	}
 	
@@ -777,47 +660,46 @@ class tournamentActions extends sfActions
 	{
 		$round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
 		$propelConn = Propel::getConnection();
-        try
-        {			
-            $propelConn->begin();
-            $feedback = new AdjudicatorFeedbackSheet();
-			$feedback->setAdjudicatorId($this->getRequestParameter("adjudicator"));
-			if($this->getRequestParameter("source") == 1)
-			{
-				$feedback->setDebateTeamXrefId($this->getRequestParameter("sourceId"));
-			}
-			else if($this->getRequestParameter("source") == 2)
-			{
-				$feedback->setAdjudicatorAllocationId($this->getRequestParameter("sourceId"));
-			}
-			$feedback->setComments($this->getRequestParameter("comments"));
-			$feedback->setScore($this->getRequestParameter("score"));
-            $feedback->save($propelConn);
-			
-			if(AdjudicatorFeedbackSheet::feedbackComplete($round, $propelConn))
-			{
-				if($round->getStatus == Round::ROUND_STATUS_TRAINEE_FEEDBACK_ENTRY_COMPLETE)
-				{
-					$round->setStatus(Round::ROUND_STATUS_COMPLETE);
-				}
-				else
-				{
-					$round->setStatus(Round::ROUND_STATUS_ADJUDICATOR_FEEDBACK_ENTRY_COMPLETE);
-				}
-				$round->save($propelConn);
-				$propelConn->commit();
-				$this->redirect("tournament/index");
-			}
-            $propelConn->commit();
-        }
-        catch(Exception $e)
-        {
-            $propelConn->rollback();
-            throw $e;
-        }
-		
-		$link = "tournament/feedbackEntry?id=".$round->getId();
-        $this->redirect($link);
+                try
+                {			
+                    $propelConn->begin();
+                    $team = TeamPeer::retrieveByPK($this->getRequestParameter("team"));
+                    $debateTeamXref = $team->getDebate($round->getId())->getDebateTeamXrefForTeam($team->getId());
+                    $adjCount = $this->getRequestParameter("adjCount");
+                    for($i = 1; $i < $adjCount; $i++){
+                        $feedback = new AdjudicatorFeedbackSheet();
+                        $feedback->setAdjudicatorId($this->getRequestParameter("adjudicator".$i));                        
+                        $feedback->setDebateTeamXref($debateTeamXref);
+                        $feedback->setComments($this->getRequestParameter("comments".$i));
+                        //only save if a score entered
+                        $score =$this->getRequestParameter("score".$i);
+                        $feedback->setScore($score);
+                        if($score) $feedback->save($propelConn);
+                    }
+                }
+                catch(Exception $e)
+                {
+                    $propelConn->rollback();
+                    throw $e;
+                }
+                
+                if(AdjudicatorFeedbackSheet::feedbackComplete($round, $propelConn))
+                {
+                        if($round->getStatus == Round::ROUND_STATUS_TRAINEE_FEEDBACK_ENTRY_COMPLETE)
+                        {
+                                $round->setStatus(Round::ROUND_STATUS_COMPLETE);
+                        }
+                        else
+                        {
+                                $round->setStatus(Round::ROUND_STATUS_ADJUDICATOR_FEEDBACK_ENTRY_COMPLETE);
+                        }
+                        $round->save($propelConn);
+                        $propelConn->commit();
+                        $this->redirect("tournament/index");
+                }
+                $propelConn->commit();
+                $link = "tournament/feedbackEntry?id=".$round->getId();
+                $this->redirect($link);
 	}
 	
 	public function executeTraineeFeedbackEntry()

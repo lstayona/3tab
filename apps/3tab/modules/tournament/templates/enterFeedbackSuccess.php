@@ -15,59 +15,55 @@ jQuery(document).ready(function () {
 
 <?php echo form_tag('tournament/confirmFeedback') ?>
 
-<h1> Feeback Entry Form for <?php echo $adjudicator->getName(); ?></h1>
+<h1> Feedback forms from <?php echo $team->getName(); ?> for <?php echo $round->getName();?></h1>
 <hr />
 <?php foreach($sf_request->getErrors() as $name => $error): ?>
     <li><h2>Error: <?php echo $error ?></h2></li>
-  <?php endforeach; ?>
+  <?php endforeach; 
+        //keep tracks of the number of adjudicators being feedbacked in this form
+        $adjCount = 1;      
+  ?>
 <table id="form">
 <tbody>
+<?php foreach ($adjudicatorsToFeedback as $adjudicator): ?>
 <tr>
 	<td>		
-		<?php
-			echo "Feedback From:   ";
-			if($source == 1)
-			{
-				echo $team->getName();
-				echo input_hidden_tag('team', $team->getId());
-			}
-			if($source == 2)
-			{
-				echo $feedbackingAdjudicator->getName();		
-				echo input_hidden_tag('feedbackingAdjudicator',  $feedbackingAdjudicator->getId());			
-			}
+		<?php                        
+                        echo "<h2>Adjudicator  ". $adjCount. ": ";                        
+			echo $adjudicator->getAdjudicator()->getName();
+			echo "</h2>" 
 		?>
 	</td>
 </tr>
 <tr>
 	<td>
 		<?php 
-			echo "Score:    ";
-			echo input_tag('score', '0', 'maxlength=1');
+			echo "<strong>Score:    </strong>";
+                        //each judge being feedbacked receives his own score
+			echo input_tag('score'.$adjCount, '', 'maxlength=1');
 		?>
 	</td>
 </tr>
 <tr>
 	<td>
 		<?php 
-			echo "Comments:    ";
-			if(!$comments)
-			{
-				$comments = "No Comment";
-			}
-			echo input_tag('comments', $comments, 'size=40x40') ;
-		?>
+                        echo "<strong>Comments:    </strong>";
+                        //each judge being feedbacked receives his own comment
+			echo textarea_tag('comments'.$adjCount, "No Comment", 'size=60x10') ;
+                 ?>
+            <br><br>
 	</td>
 </tr>
 
-
+<?php         
+        echo input_hidden_tag('adjudicator'.$adjCount, $adjudicator->getAdjudicatorId()); 
+        $adjCount++;
+        endforeach;
+        echo input_hidden_tag('adjCount', $adjCount);
+?>
 
 </tbody>
 </table>
 <?php echo input_hidden_tag('id', $round->getId()); ?>
-<?php echo input_hidden_tag('adjudicator', $adjudicator->getId()); ?>
-
-<?php echo input_hidden_tag('source', $source) ?>
-<?php echo input_hidden_tag('sourceId', $feedbackFrom[0]->getId()) ?>
+<?php echo input_hidden_tag('team', $team->getId());?>
 <?php echo submit_tag('Submit Feedback') ?>
-

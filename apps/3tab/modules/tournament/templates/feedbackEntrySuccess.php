@@ -13,37 +13,23 @@ jQuery(document).ready(function () {
 
 <?php use_helper('Object') ?>
 
-<?php echo form_tag('tournament/selectFeedbackSource') ?>
+<?php echo form_tag('tournament/EnterFeedback') ?>
 
-<h1> Select an Adjudicator </h1>
-<hr />
+<h1> Select the team where feedback is from: </h1>
 <table id="form">
 <tbody>
 <tr>
-	<th> Adjudicator Name </th>
-	<th> Feedback Source </th>
-<tr>
 	<td valign="top">
 		<?php 
-			echo select_tag('adjudicator', objects_for_select($adjudicators, 'getId', 'getName'));
+			echo select_tag('team', objects_for_select($teams, 'getId', 'getName'));
 		?>
 	</td>
-	<td>
-		<?php 
-			echo radiobutton_tag('source', '1', false);			
-			echo "   Teams Adjudicated ";
-			echo '<br/><br/>';
-		?>
-		<?php
-			echo radiobutton_tag('source', '2', false);			
-			echo "   Fellow Panelists ";
-		?>
-	</td>
+	
 </tr>
 
 
 </tbody>
 </table>
 <?php echo input_hidden_tag('id', $round->getId()); ?>
-<?php echo submit_tag('select') ?>
+<?php echo submit_tag('Select') ?>
 
