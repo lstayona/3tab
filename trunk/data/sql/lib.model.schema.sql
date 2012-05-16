@@ -286,6 +286,8 @@ CREATE INDEX "adjudicator_allocations_debate_id_idx" ON "adjudicator_allocations
 
 CREATE INDEX "adjudicator_allocations_adjudicator_id_idx" ON "adjudicator_allocations" ("adjudicator_id");
 
+CREATE INDEX "adjudicator_allocations_type_idx" ON "adjudicator_allocations" ("type");
+
 ALTER TABLE "adjudicator_allocations" ADD CONSTRAINT "adjudicator_allocations_FK_1" FOREIGN KEY ("debate_id") REFERENCES "debates" ("id");
 
 ALTER TABLE "adjudicator_allocations" ADD CONSTRAINT "adjudicator_allocations_FK_2" FOREIGN KEY ("adjudicator_id") REFERENCES "adjudicators" ("id");

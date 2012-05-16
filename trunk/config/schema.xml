@@ -178,6 +178,9 @@
         <index name="adjudicator_allocations_adjudicator_id_idx">
             <index-column name="adjudicator_id"/>
         </index>
+        <index name="adjudicator_allocations_type_idx">
+            <index-column name="type"/>
+        </index>
     </table>
 	
 	<table name="trainee_allocations" idMethod="native" phpName="TraineeAllocation">

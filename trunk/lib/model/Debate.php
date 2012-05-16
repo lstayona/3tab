@@ -124,7 +124,8 @@ class Debate extends BaseDebate
 	
 	public function getUnscoredAdjudicatorAllocations($conn=null)
 	{
-		$allocations = $this->getAdjudicatorAllocations($conn);
+
+		$allocations = $this->getAdjudicatorAllocations(null, $conn);
 		$unscoredAllocations = array();
 		foreach($allocations as $allocation)
 		{
@@ -191,22 +192,26 @@ class Debate extends BaseDebate
     
     public function resultsEntered($conn = null)
     {
-        foreach($this->getAdjudicatorAllocations(new Criteria(), $conn) as $adjudicatorAllocation)
+    	$c = new Criteria();
+    	$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+        foreach($this->getAdjudicatorAllocations($c, $conn) as $adjudicatorAllocation)
         {
-            if($adjudicatorAllocation->countTeamScoreSheets(new Criteria(), $conn) < 2)
+        	$teamScoreSheetCount = $adjudicatorAllocation->countTeamScoreSheets(new Criteria(), $conn);
+            if($teamScoreSheetCount < 2)
             {
                 return false;
             }
-            else if($adjudicatorAllocation->countTeamScoreSheets(new Criteria(), $conn) > 2)
+            else if($teamScoreSheetCount > 2)
             {
                 throw new Exception("More than 2 team score sheets.");
             }
             
-            if($adjudicatorAllocation->countSpeakerScoreSheets(new Criteria(), $conn) < 8)
+            $speakerScoreSheetCount = $adjudicatorAllocation->countSpeakerScoreSheets(new Criteria(), $conn);
+            if($speakerScoreSheetCount < 8)
             {
                 return false;
             }
-            else if($adjudicatorAllocation->countSpeakerScoreSheets(new Criteria(), $conn) > 8)
+            else if($speakerScoreSheetCount > 8)
             {
                 throw new Exception("More than 8 speaker score sheets");
             }
@@ -220,24 +225,18 @@ class Debate extends BaseDebate
     {
         if($this->resultsEntered($conn))
 		{
-			$affXref = $this->getDebateTeamXref(1, $conn);
-			$negXref = $this->getDebateTeamXref(2, $conn);
-			if($affXref->isWinner($conn))
-			{
-				$winnerXref = $affXref;
-				$loserXref = $negXref;
-			}
-			else if($negXref->isWinner($conn))
-			{
-				$winnerXref = $negXref;
-				$loserXref = $affXref;
-			}	
-			return $winner ? $winnerXref : $loserXref;
+			$c = new Criteria();
+			$c->addJoin(TeamResultPeer::DEBATE_TEAM_XREF_ID, DebateTeamXrefPeer::ID);
+			$c->add(DebateTeamXrefPeer::DEBATE_ID, $this->getId());
+			$c->add(TeamResultPeer::MAJORITY_TEAM_SCORE, 1);
+			$winningDebateTeamResult = TeamResultPeer::doSelectOne($c, $conn);
+		
+			return $winner ? $winningDebateTeamResult->getDebateTeamXrefRelatedByDebateTeamXrefId($conn) : 
+			$winningDebateTeamResult->getDebateTeamXrefRelatedByOpponentDebateTeamXrefId($conn);
 		}
 		else
 		{
-			return "No Results Yet";
-			//throw new Exception("The results have not been entered yet");
+			return null;
 		}
     }
 	//gets the majority adjudicator allocations as default, if want to get minority, pass in false as the first argument	
@@ -245,38 +244,26 @@ class Debate extends BaseDebate
 	{
 		if($this->resultsEntered($conn))
 		{
-			$affXref = $this->getDebateTeamXref(1, $conn);
-			$majorityScoreSheets = $affXref->getTeamScoreSheetsInMajority($conn);
-			$majorityAllocations = array();
-			$majId = array();
-			foreach($majorityScoreSheets as $aScoreSheet)
+			$c = new Criteria();
+			$c->addJoin(TeamResultPeer::DEBATE_TEAM_XREF_ID, DebateTeamXrefPeer::ID);
+			$c->add(DebateTeamXrefPeer::DEBATE_ID, $this->getId());	
+			$c->add(TeamResultPeer::MAJORITY_TEAM_SCORE, 1);
+			$c->addJoin(TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID, TeamResultPeer::DEBATE_TEAM_XREF_ID);
+			$c->addJoin(TeamScoreSheetPeer::ADJUDICATOR_ALLOCATION_ID, AdjudicatorAllocationPeer::ID);
+			if ($majority)
 			{
-				$majorityAllocations[] = $aScoreSheet->getAdjudicatorAllocation($conn);
-				$majId[] = $aScoreSheet->getId();
-			}
-			
-			if($majority)
-			{				
-				return $majorityAllocations;
+				$c->add(TeamScoreSheetPeer::SCORE, 1);
 			}
 			else
 			{
-				$minorityAllocations = array();
-				$allScoreSheets = $affXref->getTeamScoreSheets($conn);
-				foreach($allScoreSheets as $aScoreSheet)
-				{
-					if(!in_array($aScoreSheet->getId(), $majId))
-					{
-						$minorityAllocations[] = $aScoreSheet->getAdjudicatorAllocation($conn);
-					}				
-				}
-				return $minorityAllocations;
-			}			
+				$c->add(TeamScoreSheetPeer::SCORE, 0);	
+			}
+
+			return AdjudicatorAllocationPeer::doSelect($c, $conn);
 		}
 		else
 		{
-			return "No Results Yet";
-			//throw new Exception("The results have not been entered yet");
+			return null;
 		}
 	}
 	
@@ -284,17 +271,17 @@ class Debate extends BaseDebate
 	{
 		if($this->resultsEntered($conn))
 		{
-			if(count($this->getAdjudicatorAllocations()) >
-			   count($this->getAdjudicatorAllocationsInMajority()))
-			{
-				return true;
-			}
-			return false;
+			$c = new Criteria();
+			$c->addJoin(TeamResultPeer::DEBATE_TEAM_XREF_ID, DebateTeamXrefPeer::ID);
+			$c->add(DebateTeamXrefPeer::DEBATE_ID, $this->getId());
+			$c->add(TeamResultPeer::MAJORITY_TEAM_SCORE, 0);
+			$c->add(TeamResultPeer::TEAM_VOTE_COUNT, 0, Criteria::GREATER_THAN);
+
+			return TeamResultPeer::doCount($c, true, $conn) > 0 ? true : false;
 		}
 		else
 		{
-			return "No Results Yet";
-			//throw new Exception("The results have not been entered yet");
+			return null;
 		}
 	
 	}

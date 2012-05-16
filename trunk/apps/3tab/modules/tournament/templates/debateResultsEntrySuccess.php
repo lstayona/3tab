@@ -1,5 +1,9 @@
 <?php 
-$adjudicatorAllocations = $debate->getAdjudicatorAllocations(); 
+$c = new Criteria();
+$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::TYPE);
+$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::ID);
+$adjudicatorAllocations = $debate->getAdjudicatorAllocations($c); 
 $errors = $sf_request->getErrors();
 ?>
 <h1><?php echo $debate->getRound()->getName(); ?>- <?php echo $debate->getVenue()->getName();?>: <?php echo $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getName();?> (Affirmative) - <?php echo $debate->getTeam(DebateTeamXref::NEGATIVE)->getName();?> (Negative)</h1>
@@ -57,8 +61,8 @@ $errors = $sf_request->getErrors();
 <table class="zebra-striped bordered-table condensed-table">
     <thead>
         <tr>
-            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations()); ?>">AFFIRMATIVE</th>
-            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations()); ?>">NEGATIVE</th>
+            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations($c)); ?>">AFFIRMATIVE</th>
+            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations($c)); ?>">NEGATIVE</th>
         </tr>
         <tr>
             <th id="<?php echo "team_name_" + $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getId();?>"><?php echo $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getName();?></th>

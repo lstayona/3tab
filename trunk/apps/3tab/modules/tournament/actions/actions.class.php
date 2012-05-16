@@ -75,35 +75,62 @@ class tournamentActions extends sfActions
     public function executeCreateAdjudicatorAllocation()
     {
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));		
-		$debates = $this->round->getDebates();		
-		$adjudicators = AdjudicatorPeer::getAdjudicatorsByTestScore();
-		$allocator = new AdjudicatorAllocator();
-		
+		$this->adjudicators = AdjudicatorPeer::getAdjudicatorsByTestScore();
+	
+		// If there is an error with the submission, use this to repopulate 
+		// form data.	
 		if($this->getRequestParameter("skipProcessing"))
 		{
 			$this->adjudicatorAllocations = $this->getRequestParameter("allocations");
-			return sfView::SUCCESS;
         }
+        // The request is coming from pre-allocation form or tournament 
+        // management screen.
+        else
+        {
+        	$debates = $this->round->getDebates();		
+        	if ($this->round->getStatus() >= Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED)
+        	{
+        		$panels = array();
+        		foreach ($debates as $number => $debate)
+        		{
+        			$panels[$number] = array();
+        			$c = new Criteria();
+        			$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+        			$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::TYPE);
+        			$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::ID);
 
-		if($this->round->getType() == Round::ROUND_TYPE_RANDOM)
-		{		
-			$allocator->setup($debates, $adjudicators, true, false);
-		}
-		else if($this->round->getType() == Round::ROUND_TYPE_PRELIMINARY)
-		{
-			$debateEnergies = $this->getRequestParameter("debateEnergies");
-			$allocator->setup($debates, $adjudicators, false, false);
-			$allocator->setDebateEnergies($debateEnergies);
-		}		
-		else if($this->round->getType() == Round::ROUND_TYPE_BUBBLE)
-		{
-			$debateEnergies = $this->getRequestParameter("debateEnergies");
-			$allocator->setup($debates, $adjudicators, false, true);	
-			$allocator->setDebateEnergies($debateEnergies);
-		}
+        			foreach ($debate->getAdjudicatorAllocations($c) as $adjudicatorAllocation)
+        			{
+        				$panels[$number][] = $adjudicatorAllocation;
+        			}
+        		}
 
-		$this->adjudicatorAllocations = $allocator->allocate();
-        $this->adjudicators = $adjudicators;
+				$this->adjudicatorAllocations = $panels;
+        	}
+        	else
+        	{
+        		$allocator = new AdjudicatorAllocator();
+
+        		if($this->round->getType() == Round::ROUND_TYPE_RANDOM)
+        		{		
+        			$allocator->setup($debates, $this->adjudicators, true, false);
+        		}
+        		else if($this->round->getType() == Round::ROUND_TYPE_PRELIMINARY)
+        		{
+        			$debateEnergies = $this->getRequestParameter("debateEnergies");
+        			$allocator->setup($debates, $this->adjudicators, false, false);
+        			$allocator->setDebateEnergies($debateEnergies);
+        		}		
+        		else if($this->round->getType() == Round::ROUND_TYPE_BUBBLE)
+        		{
+        			$debateEnergies = $this->getRequestParameter("debateEnergies");
+        			$allocator->setup($debates, $this->adjudicators, false, true);	
+        			$allocator->setDebateEnergies($debateEnergies);
+        		}
+
+        		$this->adjudicatorAllocations = $allocator->allocate();
+        	}
+        }
     }
 
 	public function executePreAdjudicatorAllocation()
@@ -111,13 +138,16 @@ class tournamentActions extends sfActions
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
 		$this->debates = $this->round->getDebates();
 		$this->debateEnergies = array();
+
+		if ($this->round->getStatus() >= Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED or 
+			$this->round->getType() == Round::ROUND_TYPE_RANDOM) 
+		{
+			$this->redirect('tournament/createAdjudicatorAllocation?id=' . $this->getRequestParameter("id"));
+		}
+
 		foreach($this->debates as $aDebate)
 		{
-			if($this->round->getType() == Round::ROUND_TYPE_RANDOM)
-			{
-                $this->redirect('tournament/createAdjudicatorAllocation?id=' . $this->getRequestParameter("id"));
-			}
-			else if($this->round->getType() == Round::ROUND_TYPE_PRELIMINARY)
+			if($this->round->getType() == Round::ROUND_TYPE_PRELIMINARY)
 			{	
 				$this->debateEnergies[] = $aDebate->getEnergy();
 			}
@@ -135,6 +165,12 @@ class tournamentActions extends sfActions
 		$debateIds = $this->getRequestParameter('debateId');
 		$round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
 		
+		if ($round->hasResultsEntered())
+		{
+			throw new Exception("Cannot change adjudicator allocations when " .
+				"results have already been entered for the round.");
+		}	
+
 		$adjudicators = array();
 		$hasError = false;
 		$count = 0;
@@ -253,12 +289,22 @@ class tournamentActions extends sfActions
         {
             $propelConn->begin();
             $round = RoundPeer::retrieveByPK($this->getRequestParameter("id"), $propelConn);
+
+            // Delete all allocations
+            foreach ($round->getDebates(null, $propelConn) as $debate)
+            {
+            	foreach ($debate->getAdjudicatorAllocations(null, $propelConn) as $adjudicatorAllocation)
+            	{
+            		$adjudicatorAllocation->delete($propelConn);
+            	}
+            }
+
 			$debateId = $this->getRequestParameter('debateId');
 			$panels = $this->getRequestParameter('adjudicatorId');		
             foreach($panels as $number => $panel)
             {				
 				$allocation = AdjudicatorAllocationPeer::createAdjudicatorAllocation(
-									$debateId[$number], $panel[0],1);
+										$debateId[$number], $panel[0],1);
 				DebatePeer::retrieveByPk($debateId[$number])->addAdjudicatorAllocation($allocation);
 				$allocation->save($propelConn);
 				
@@ -280,8 +326,10 @@ class tournamentActions extends sfActions
 				
                 DebatePeer::retrieveByPk($debateId[$number])->save($propelConn);
             }
+
             $round->setStatus(Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED);
             $round->save($propelConn);
+
             $propelConn->commit();
         }
         catch(Exception $e)
@@ -296,24 +344,35 @@ class tournamentActions extends sfActions
 	public function executeTraineeAllocation()
 	{
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter('id'));
-		$this->trainees = AdjudicatorPeer::getUnallocatedTrainees($this->round);
+		$this->debates = $this->round->getDebates();
+		$this->trainees = AdjudicatorPeer::getUnallocatedAdjudicators($this->round);
+
+		if ($this->getRequest()->getMethod() == sfRequest::GET)
+		{
+			$panels = array();
+			foreach ($this->debates as $number => $debate)
+			{
+				$c = new Criteria();
+				$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
+				$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::ID);
+				foreach ($debate->getAdjudicatorAllocations($c) as $traineeAllocation)
+				{
+					$panels[$number][] = $traineeAllocation->getAdjudicatorId();
+				}
+			}
+
+			$this->getRequest()->setParameter('trainees', $panels);
+		}
 	}
 	
 	public function validateConfirmTraineeAllocation()
 	{
 		$round = RoundPeer::retrieveByPk($this->getRequestParameter('id'));
 		$trainees = $this->getRequestParameter('trainees');
-		$chairIds = $this->getRequestParameter('chairs');
-		$chairs = array();
-		$debateIds = array();
+		$debateIds = $this->getRequestParameter('debates');
 		$conflicts = array();
 		$hasError = false;
-		foreach($chairIds as $number => $chairId)
-		{
-			$chairs[$number] = AdjudicatorPeer::retrieveByPk($chairId);
-			$debate = $chairs[$number]->getDebate($round);
-			$debateIds[] = $debate->getId();
-		}
+
 		$allocatedTrainees = array();
 		foreach($trainees as $number => $traineesForChair)
 		{
@@ -386,23 +445,34 @@ class tournamentActions extends sfActions
         try
         {
 			$propelConn->begin();
+
 			$round = RoundPeer::retrieveByPK($this->getRequestParameter("id"), $propelConn);
-			$chairIds = $this->getRequestParameter('chairs');
-			$trainees = $this->getRequestParameter('trainees');
-			foreach($chairIds as $number => $chairId)
+			foreach ($round->getDebates(null, $propelConn) as $number => $debate)
 			{
-				foreach($trainees[$number] as $position => $traineeForChair)
+				$c = new Criteria();
+				$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
+				foreach ($debate->getAdjudicatorAllocations($c, $propelConn) as $traineeAllocation)
 				{
-					if($traineeForChair != 0)
+					$traineeAllocation->delete($propelConn);
+				}
+			}
+
+			$traineeAdjudicatorIds = $this->getRequestParameter('trainees');
+			foreach ($this->getRequestParameter('debates') as $number => $debateId)
+			{
+				foreach ($traineeAdjudicatorIds[$number] as $adjudicatorId)
+				{
+					if($adjudicatorId != 0)
 					{
-						$allocation = new TraineeAllocation();
-						$allocation->setRound($round);
-						$allocation->setChairId($chairId);
-						$allocation->setTraineeId($traineeForChair);
+						$allocation = new AdjudicatorAllocation();
+						$allocation->setDebateId($debateId);
+						$allocation->setAdjudicatorId($adjudicatorId);
+						$allocation->setType(AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
 						$allocation->save($propelConn);
 					}
 				}
 			}
+
 			$round->setStatus(Round::ROUND_STATUS_TRAINEE_ALLOCATIONS_CONFIRMED);
             $round->save($propelConn);
 			$propelConn->commit();
@@ -544,6 +614,7 @@ class tournamentActions extends sfActions
         {
             $propelConn->begin();
             $debate = DebatePeer::retrieveByPK($this->getRequestParameter('id'), $propelConn);
+
             foreach($debate->getAdjudicatorAllocations(null, $propelConn) as $adjudicatorAllocation)
             {
                 foreach($adjudicatorAllocation->getTeamScoreSheets(null, $propelConn) as $teamScoreSheet)
@@ -559,6 +630,14 @@ class tournamentActions extends sfActions
             
             foreach($this->getRequestParameter('adjudicator_votes') as $adjudicatorAllocationId => $winningTeamId)
             {
+            	$adjudicatorAllocation = 
+            	  AdjudicatorAllocationPeer::retrieveByPK($adjudicatorAllocationId, $propelConn);
+
+            	if ($adjudicatorAllocation->getType() == AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE)
+            	{
+            		throw new Exception("Result submitted for trainee");
+            	}
+
                 foreach($debate->getDebateTeamXrefs(null, $propelConn) as $debateTeamXref)
                 {
                     $teamScoreSheet = new TeamScoreSheet();

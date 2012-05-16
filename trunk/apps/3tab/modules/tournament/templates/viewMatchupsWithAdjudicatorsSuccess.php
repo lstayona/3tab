@@ -1,11 +1,3 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
 <h1>Matchups for <?php echo $round->getName();?></h1>
 <table id="big" class="zebra-striped bordered-table">
     <thead>
@@ -41,9 +33,10 @@ foreach($round->getDebates() as $number => $debate):
             </td>
 			<?php 
 				$c = new Criteria();
+				$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
 				$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::TYPE);
+				$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::ID);
 				$adjudicatorAllocations = $debate->getAdjudicatorAllocations($c); 
-				$chair = $adjudicatorAllocations[0]->getAdjudicator();
 			?>
 			<td>
 				<?php echo $adjudicatorAllocations[0]->getAdjudicator()->getInfo(); ?>
@@ -65,13 +58,16 @@ foreach($round->getDebates() as $number => $debate):
 				?>
 			</td>
 			<?php
-				$trainees = $chair->getTrainees($round);
+				$c = new Criteria();
+				$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
+				$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::ID);
+				$trainees = $debate->getAdjudicatorAllocations($c); 
 			?>
 			<td>
 				<?php
 					if(count($trainees) > 0)
 					{
-						echo $trainees[0]->getInfo();
+						echo $trainees[0]->getAdjudicator()->getInfo();
 					}
 				?>
 			</td>
@@ -79,7 +75,7 @@ foreach($round->getDebates() as $number => $debate):
 				<?php
 					if(count($trainees) > 1)
 					{
-						echo $trainees[1]->getInfo();
+						echo $trainees[1]->getAdjudicator()->getInfo();
 					}
 				?>
 			</td>
@@ -87,7 +83,7 @@ foreach($round->getDebates() as $number => $debate):
 				<?php
 					if(count($trainees) > 2)
 					{
-						echo $trainees[2]->getInfo();
+						echo $trainees[2]->getAdjudicator()->getInfo();
 					}
 				?>
 			</td>

@@ -1,6 +1,8 @@
 createAdjudicatorAllocationSuccess:
-    javascripts:  [apps/3tab/modules/tournament/createAdjudicatorAllocationSuccess] 
+    javascripts:  [apps/3tab/modules/tournament/createAdjudicatorAllocationSuccess]
 debateResultsEntrySuccess:
     javascripts:  [apps/3tab/modules/tournament/debateResultsEntrySuccess]
 traineeAllocationSuccess:
     javascripts:  [apps/3tab/modules/tournament/traineeAllocationSuccess]
+indexSuccess:
+    javascripts:  [apps/3tab/modules/tournament/indexSuccess]

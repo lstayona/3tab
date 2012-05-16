@@ -143,7 +143,9 @@ class Round extends BaseRound
 		$unscoredDebates = array();
 		foreach($debates as $debate){
 			$xrefs = $debate->getDebateTeamXrefs();
-			$numOfAdjudicatorAllocations = $debate->countAdjudicatorAllocations();
+            $c = new Criteria();
+            $c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+			$numOfAdjudicatorAllocations = $debate->countAdjudicatorAllocations($c);
 			$numOfScoreSheets = 0;
 			foreach($xrefs as $xref)
 			{
@@ -158,5 +160,14 @@ class Round extends BaseRound
 		}
 		return $unscoredDebates;
 	}
-	
+
+    public function hasResultsEntered($con = null)
+    {
+        $c = new Criteria();
+        $c->add(DebatePeer::ROUND_ID, $this->getId());
+        $c->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+        $c->addJoin(DebateTeamXrefPeer::ID, TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID);
+
+        return TeamScoreSheetPeer::doCount($c, true, $con) > 0 ? true : false;
+    }
 }

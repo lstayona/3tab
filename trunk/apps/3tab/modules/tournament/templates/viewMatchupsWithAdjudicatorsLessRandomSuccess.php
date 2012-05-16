@@ -1,11 +1,3 @@
-<script type="text/javascript">
-jQuery(document).ready(function () {	
-	jQuery("#subnav").hide();
-	jQuery(".nav-admin").click(function() {
-		jQuery("#subnav").toggle(300);
-	});
-});
-</script>
 <h1>Matchups for <?php echo $round->getName();?></h1>
 <table id="big">
     <thead>
@@ -45,7 +37,9 @@ jQuery(document).ready(function () {
             </td>
 			<?php 
 				$c = new Criteria();
+				$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
 				$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::TYPE);
+				$c->addAscendingOrderByColumn(AdjudicatorAllocationPeer::ID);
 				$adjudicatorAllocations = $debate->getAdjudicatorAllocations($c); 
 				$chair = $adjudicatorAllocations[0]->getAdjudicator();
 			?>

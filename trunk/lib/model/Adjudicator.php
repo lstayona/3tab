@@ -25,7 +25,9 @@ class Adjudicator extends BaseAdjudicator
 	
 	public function getTeamsAdjudicated($con = null)
 	{
-		$allocations = $this->getAdjudicatorAllocations($con);
+		$c = new Criteria();
+		$c->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+		$allocations = $this->getAdjudicatorAllocations($c, $con);
 		$teams = array();
 		foreach($allocations as $anAllocation)
 		{

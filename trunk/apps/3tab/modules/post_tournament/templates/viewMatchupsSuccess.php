@@ -39,7 +39,7 @@ foreach($round->getDebates() as $number => $debate):
 			<td>
 				<?php 
 					$split = $debate->isSplitDecision();
-					if(strcmp($split, "No Results Yet") == 0)
+					if(is_null($split))
 					{
 						echo "No Results Yet";
 					}
@@ -52,7 +52,7 @@ foreach($round->getDebates() as $number => $debate):
 			<td>
 				<?php 
 					$winnerXref = $debate->getWinningDebateTeamXref();
-					if($winnerXref == "No Results Yet")
+					if(is_null($winnerXref))
 					{
 						echo "No Results Yet";
 					}
@@ -66,7 +66,7 @@ foreach($round->getDebates() as $number => $debate):
 				<?php 
 					$majorityAllocations= $debate->getAdjudicatorAllocationsInMajority();
 					$minorityAllocations = $debate->getAdjudicatorAllocationsInMajority(false);
-					if($majorityAllocations == "No Results Yet" && $minorityAllocations == "No Results Yet")
+					if(is_null($majorityAllocations) and is_null($minorityAllocations))
 					{
 						echo "No Results Yet";
 					}

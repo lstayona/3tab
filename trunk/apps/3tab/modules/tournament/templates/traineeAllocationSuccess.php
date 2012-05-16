@@ -20,13 +20,13 @@
     </thead>
     <tbody>			
 <?php
-foreach($round->getDebates() as $number => $debate):
+foreach($debates as $number => $debate):
 ?>
         <tr>	
 			<td><?php echo $debate->getInfo(); ?></td>
             <?php $chair = $debate->getChair(); ?>
             <td><?php echo $chair->getName(); ?></td>
-			<?php echo input_hidden_tag("chairs[$number]", $chair->getId()); ?>
+			<?php echo input_hidden_tag("debates[$number]", $debate->getId()); ?>
 			<td>
 			<?php echo select_tag("trainees[$number][0]", objects_for_select(
 					  $trainees,
