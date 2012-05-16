@@ -51,7 +51,7 @@ JOIN speaker_score_sheets ON speaker_score_sheets.debate_team_xref_id = debates_
 JOIN debaters ON debaters.id = speaker_score_sheets.debater_id
 JOIN rounds ON rounds.id = debates.round_id
 JOIN adjudicators ON adjudicators.id = adjudicator_allocations.adjudicator_id
-WHERE team_results.majority_team_score = 1
+WHERE team_results.majority_team_score = 1 AND adjudicator_allocations.type <> 3
 GROUP BY 
   debates_teams_xrefs.id,
   debaters.id,

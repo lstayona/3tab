@@ -33,16 +33,17 @@ foreach($round->getDebates() as $number => $debate):
                 <?php echo $debate->getBracket(); ?>
             </td>
             <td>
-                <?php echo $debate->resultsEntered() ? "Yes" : "No"; ?>
-				<?php $debate->resultsEntered() ? $completedCount++ : null ?>
+            	<?php $resultsEntered = $debate->resultsEntered(); ?>
+                <?php echo $resultsEntered ? "Yes" : "No"; ?>
+				<?php $resultsEntered ? $completedCount++ : null ?>
             </td>
             <td>
-                <?php echo link_to($debate->resultsEntered() ? "Edit" : "Enter", "tournament/debateResultsEntry?id=".$debate->getId()); ?>
+                <?php echo link_to($resultsEntered ? "Edit" : "Enter", "tournament/debateResultsEntry?id=".$debate->getId()); ?>
             </td>
 			<td>
 				<?php 
 					$split = $debate->isSplitDecision();
-					if(strcmp($split, "No Results Yet") == 0)
+					if(is_null($split))
 					{
 						echo "No Results Yet";
 					}
@@ -55,7 +56,7 @@ foreach($round->getDebates() as $number => $debate):
 			<td>
 				<?php 
 					$winnerXref = $debate->getWinningDebateTeamXref();
-					if($winnerXref == "No Results Yet")
+					if(is_null($winnerXref))
 					{
 						echo "No Results Yet";
 					}
@@ -69,7 +70,7 @@ foreach($round->getDebates() as $number => $debate):
 				<?php 
 					$majorityAllocations= $debate->getAdjudicatorAllocationsInMajority();
 					$minorityAllocations = $debate->getAdjudicatorAllocationsInMajority(false);
-					if($majorityAllocations == "No Results Yet" && $minorityAllocations == "No Results Yet")
+					if(is_null($majorityAllocations) and is_null($minorityAllocations))
 					{
 						echo "No Results Yet";
 					}
@@ -79,9 +80,25 @@ foreach($round->getDebates() as $number => $debate):
 						{
 							echo $anAllocation->getAdjudicator()->getName().",  ";
 						}
+
 						if($minorityAllocations)
 						{
-							echo "(".$minorityAllocations[0]->getAdjudicator()->getName().")";
+
+							echo "(";
+							foreach ($minorityAllocations as $allocation)
+							{
+								if ($allocation->getType() == AdjudicatorAllocation::ADJUDICATOR_TYPE_CHAIR)
+								{
+				?>
+								<strong><?php echo $allocation->getAdjudicator()->getName(); ?></strong>
+				<?php
+								}
+								else
+								{
+									echo $allocation->getAdjudicator()->getName();
+								}
+							}
+						    echo ")";
 						}
 					}
 				?>
@@ -94,7 +111,7 @@ endforeach;
 </table>
     <?php echo input_hidden_tag('id', $round->getId()); ?>
 	<?php
-		if($completedCount == count($round->getDebates()))
+		if($completedCount == $round->countDebates(null, true))
 		{	
 			echo submit_tag("Confirm", array('class' => 'btn large primary'));
 		}

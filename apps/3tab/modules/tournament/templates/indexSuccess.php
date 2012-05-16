@@ -1,3 +1,51 @@
+<?php
+function options_for_action_select($round)
+{
+    $actions = array();
+    if($round->getStatus() == Round::ROUND_STATUS_DRAFT)
+    {
+        $actions[url_for("tournament/createMatchups?id=".$round->getId(), true)] = "Draw matchups";
+    }
+    
+    if($round->getStatus() >= Round::ROUND_STATUS_MATCHUPS_CONFIRMED and !$round->hasResultsEntered())
+    {
+        $actions[url_for("tournament/preAdjudicatorAllocation?id=".$round->getId(), true)] = "Allocate adjudicators";
+    }
+
+    if($round->getStatus() >= Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED)
+    {
+        $actions[url_for("tournament/traineeAllocation?id=".$round->getId(), true)] = "Allocate trainees";
+    }
+
+    if($round->getStatus() >= Round::ROUND_STATUS_TRAINEE_ALLOCATIONS_CONFIRMED)
+    {
+        $actions[url_for("tournament/resultsEntry?id=".$round->getId(), true)] = "Enter results";
+    }
+
+    return $actions; 
+}
+
+function default_for_action_select($round)
+{
+    if($round->getStatus() == Round::ROUND_STATUS_DRAFT)
+    {
+        return url_for("tournament/createMatchups?id=".$round->getId(), true);
+    }
+    else if($round->getStatus() == Round::ROUND_STATUS_MATCHUPS_CONFIRMED)
+    {
+        return url_for("tournament/preAdjudicatorAllocation?id=".$round->getId(), true);
+    }
+    else if($round->getStatus() == Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED)
+    {
+        return url_for("tournament/traineeAllocation?id=".$round->getId(), true);
+    }
+    else if($round->getStatus() == Round::ROUND_STATUS_TRAINEE_ALLOCATIONS_CONFIRMED)
+    {
+        return url_for("tournament/resultsEntry?id=".$round->getId(), true);
+    }
+}
+
+?>
 <h1>Tournament Management</h1>
 <table class="zebra-striped bordered-table">
     <thead>
@@ -23,26 +71,8 @@ foreach($rounds as $round)
             <?php
             if($round->isCurrentRound())
             {
-                if($round->getStatus() == Round::ROUND_STATUS_DRAFT)
-                {
-					$link = "tournament/createMatchups?id=".$round->getId();
-                    echo link_to("Team matchups", $link);
-                }
-                else if($round->getStatus() == Round::ROUND_STATUS_MATCHUPS_CONFIRMED)
-                {
-					$link = "tournament/preAdjudicatorAllocation?id=".$round->getId();
-                    echo link_to("Allocate Adjudicators", $link);
-                }
-				else if($round->getStatus() == Round::ROUND_STATUS_ADJUDICATOR_ALLOCATIONS_CONFIRMED)
-                {
-					$link = "tournament/traineeAllocation?id=".$round->getId();
-                    echo link_to("Allocate Trainees", $link);
-                }
-				else if($round->getStatus() == Round::ROUND_STATUS_TRAINEE_ALLOCATIONS_CONFIRMED)
-                {
-					$link = "tournament/resultsEntry?id=".$round->getId();
-                    echo link_to("Enter results", $link);
-                }
+                echo select_tag('thing_to_do', options_for_select(options_for_action_select($round), default_for_action_select($round)));
+                echo link_to('Go', '#', array('class' => 'btn primary', 'id' => 'go_button'));
             }
             ?>
         </td>

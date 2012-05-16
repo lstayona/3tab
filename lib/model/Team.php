@@ -144,7 +144,11 @@ class Team extends BaseTeam
         $c = new Criteria();
         $c->addJoin(DebateTeamXrefPeer::ID, TeamScoreSheetPeer::DEBATE_TEAM_XREF_ID);
         $c->add(DebateTeamXrefPeer::DEBATE_ID, $debate->getId());
-        if ($debate->countAdjudicatorAllocations(new Criteria(), false, $con) * 2 != TeamScoreSheetPeer::doCount($c, false, $con))
+
+        $adjudicatorAllocationCriteria = new Criteria();
+        $adjudicatorAllocationCriteria->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+        
+        if ($debate->countAdjudicatorAllocations($adjudicatorAllocationCriteria, false, $con) * 2 != TeamScoreSheetPeer::doCount($c, false, $con))
         {
             return null;
         }
