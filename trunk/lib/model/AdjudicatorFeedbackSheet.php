@@ -45,8 +45,9 @@ class AdjudicatorFeedbackSheet extends BaseAdjudicatorFeedbackSheet
                           WHERE debates_teams_xrefs.debate_id = debates.id 
                           AND adjudicator_allocations.debate_id = debates_teams_xrefs.debate_id
                           AND debates_teams_xrefs.team_id = %d
-                          AND debates.round_id = %d";
-		$query = sprintf($query, $team->getId(), $round->getId());
+                          AND debates.round_id = %d 
+                          AND (NOT adjudicator_allocations.type = %d)";
+		$query = sprintf($query, $team->getId(), $round->getId(), AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
 		$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
 		$allocatedJudges = AdjudicatorAllocationPeer::populateObjects($rs);
                 $judgesWithNoFeedback = array();
