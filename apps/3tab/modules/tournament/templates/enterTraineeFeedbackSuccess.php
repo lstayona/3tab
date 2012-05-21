@@ -15,58 +15,52 @@ jQuery(document).ready(function () {
 
 <?php echo form_tag('tournament/confirmTraineeFeedback') ?>
 
-<h1> Feeback Entry Form </h1>
+<h1> Trainee Feedback Entry Form from <?php echo $chairAllocation->getAdjudicatorName(); ?> for <?php echo $round->getName();?></h1>
 <?php foreach($sf_request->getErrors() as $name => $error): ?>
     <li><h2>Error: <?php echo $error ?></h2></li>
   <?php endforeach; ?>
 <table>
 <tbody>
-<tr>
-	<td>
-		<?php 
-			
-			echo "Feedback For:    ";
-			echo $allocation->getAdjudicatorRelatedByTraineeId()->getName(); 
-		?>
-	</td>
-</tr>
-<tr>
-	<td>		
-		<?php
-			echo "Feedback From:   ";
-			echo $allocation->getAdjudicatorRelatedByChairId()->getName(); 
-			
-		?>
-	</td>
-</tr>
-<tr>
-	<td>
-		<?php 
-			echo "Score:    ";
-			echo input_tag('score', round($allocation->getAdjudicatorRelatedByTraineeId()->getScore()), 'maxlength=1') ;
-		?>
-	</td>
-</tr>
-<tr>
-	<td>
-		<?php 
-			echo "Comments:    ";
-			if(!$comments)
-			{
-				$comments = "No Comment";
-			}
-			echo input_tag('comments', $comments, 'size=40x40') ;
-		?>
-	</td>
-</tr>
+    <?php $traineeCount = 1; foreach ($traineeAllocations as $trainee): ?>
+    <tr>
+            <td>		
+                    <?php                        
+                            echo "<h2>Trainee  ". $traineeCount. ": ";                        
+                            echo $trainee->getAdjudicatorName();
+                            echo "</h2>" 
+                    ?>
+            </td>
+    </tr>
+    <tr>
+            <td>
+                    <?php 
+                            echo "<strong>Score:    </strong>";
+                            //each judge being feedbacked receives his own score
+                            echo input_tag('score'.$traineeCount, '', 'maxlength=1');
+                    ?>
+            </td>
+    </tr>
+    <tr>
+            <td>
+                    <?php 
+                            echo "<strong>Comments:    </strong>";
+                            //each judge being feedbacked receives his own comment
+                            echo textarea_tag('comments'.$traineeCount, "No Comment", 'size=60x10') ;
+                    ?>
+                <br><br>
+            </td>
+    </tr>
 
-
+<?php         
+        echo input_hidden_tag('trainee'.$traineeCount, $trainee->getAdjudicatorId()); 
+        $traineeCount++;       
+        endforeach;
+        echo input_hidden_tag('adjCount', $traineeCount);
+?>
 
 </tbody>
 </table>
 <?php echo input_hidden_tag('id', $round->getId()); ?>
-<?php echo input_hidden_tag('trainee', $allocation->getAdjudicatorRelatedByTraineeId()->getId()); ?>
-<?php echo input_hidden_tag('traineeAllocation', $allocation->getId()); ?>
-<?php echo input_hidden_tag('chair', $allocation->getAdjudicatorRelatedByChairId()->getId()) ?>
+<?php echo input_hidden_tag('chairAllocation', $chairAllocation->getId()) ?>
 <?php echo submit_tag('Submit Feedback') ?>
 

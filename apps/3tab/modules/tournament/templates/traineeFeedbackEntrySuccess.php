@@ -15,15 +15,15 @@ jQuery(document).ready(function () {
 
 <?php echo form_tag('tournament/enterTraineeFeedback') ?>
 
-<h1> Select a trainee </h1>
+<h1> <?php echo $round->getName(); ?>  Trainee Feedback<br><br> Select the chair for whom the feedback is from </h1>
 <table>
 <tbody>
 <tr>
-	<th> Trainee Name </th>
+	<th> Chair Name </th>
 <tr>
 	<td>
 		<?php 
-			echo select_tag('traineeAllocation', objects_for_select($traineeAllocations, 'getId', 'getInfo'));
+			echo select_tag('chairAllocation', objects_for_select($chairAllocations, 'getId', 'getAdjudicatorName'));
 		?>
 	</td>
 </tr>

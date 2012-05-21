@@ -13,9 +13,9 @@ class AdjudicatorAllocation extends BaseAdjudicatorAllocation
 	const ADJUDICATOR_TYPE_PANELIST = 2;
 	const ADJUDICATOR_TYPE_TRAINEE = 3;
 	
-	public function getAdjudicatorName($conn = null){
-		return $this->getAdjudicator()->getName();
-	}
+    public function getAdjudicatorName($conn = null){
+            return $this->getAdjudicator()->getName();
+    }
 	
     public function getTeamScoreSheet($position, $conn = null)
     {
@@ -35,6 +35,42 @@ class AdjudicatorAllocation extends BaseAdjudicatorAllocation
         return $teamScoreSheets[0]->getDebateTeamXref($conn)->getTeam($conn);
     }
     
+    //gets the trainee allocations to the same debate as this adjudicator allocation
+    //but remove all trainee allocations that already have feedback
+    public function getTraineeAllocationsWithoutFeedback($con = null)
+    {
+            $traineeAllocations = self::getTraineeAllocations($con);            
+            $traineeAllocationsWithoutFeedback = array();
+            $c = new Criteria();
+            $c->add(AdjudicatorAllocationPeer::ID,self::getId());
+            
+            foreach($traineeAllocations as $traineeAllocation)
+            {               
+                if(count($traineeAllocation->getAdjudicator($con)->getAdjudicatorFeedbackSheetsJoinAdjudicatorAllocation($c, $con)) == 0)
+                {
+                    $traineeAllocationsWithoutFeedback[] = $traineeAllocation;
+                }
+            }   
+            return $traineeAllocationsWithoutFeedback;
+    }   
+    
+    //return the trainees assigned to the same debate as this adjudicator allocation
+    public function getTraineeAllocations($con = null)
+    {
+        
+        if($con==null)
+            {
+                    $con = Propel::getConnection();
+            }		
+            $stmt = $con->createStatement();
+            $query = "select adjudicator_allocations.* from adjudicator_allocations where debate_id = %d and type = %d";
+            $query = sprintf($query,  $this->getDebateId(), AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
+            $rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
+            $traineeAllocations = AdjudicatorAllocationPeer::populateObjects($rs);
+            
+            return $traineeAllocations;        
+    }
+        
     public function isComplete($conn = null)
     {
         return (

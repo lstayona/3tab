@@ -713,7 +713,7 @@ class tournamentActions extends sfActions
                 $this->adjudicatorsToFeedback = AdjudicatorFeedbackSheet::getFeedbacksExpected($this->round, $this->team);		
 	}
 	
-		public function validateConfirmFeedback()
+	public function validateConfirmFeedback()
 	{
                 $adjCount = $this->getRequestParameter("adjCount");
                 for($i = 1; $i < $adjCount; $i++){
@@ -783,34 +783,39 @@ class tournamentActions extends sfActions
 	
 	public function executeTraineeFeedbackEntry()
 	{
+                //grab all the chairs who still have pending trainees
 		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-		$c = new Criteria;
-		$c->add(TraineeAllocationPeer::ROUND_ID,$this->round->getId());
-		$this->traineeAllocations = TraineeAllocationPeer::doSelect($c);
+                //$this->chairAllocations = AdjudicatorAllocationPeer::getChairsWithTrainees($this->round);
+		$this->chairAllocations = AdjudicatorAllocationPeer::getChairAllocationsWithTraineesWithoutFeedback($this->round);	
 	}
 	
 	public function executeEnterTraineeFeedback()
 	{
-		$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
-		$this->allocation = TraineeAllocationPeer::retrieveByPk($this->getRequestParameter("traineeAllocation"));	
-		$this->comments = $this->getRequestParameter("comments");
+                //get all trainees for selected chair
+            	$this->round = RoundPeer::retrieveByPK($this->getRequestParameter("id"));
+		$this->chairAllocation = AdjudicatorAllocationPeer::retrieveByPk($this->getRequestParameter("chairAllocation"));
+                $this->traineeAllocations = $this->chairAllocation->getTraineeAllocationsWithoutFeedback();
 	}
 	
 	public function validateConfirmTraineeFeedback()
 	{
-		$score = $this->getRequestParameter("score");
-		if($score < 1 || $score > 5)
-		{
-			$this->getRequest()->setError("scoreError", "The score entered for this trainee were not within range");
-			return false;
-		}
-		return true;
+		$traineeCount = $this->getRequestParameter("traineeCount");
+                for($i = 1; $i < $traineeCount; $i++){
+                    $score = $this->getRequestParameter("score".$i);
+                    if($score < 1 || $score > 5){
+                        $this->getRequest()->setError("scoreError", "The scores entered for adjudicator ".
+                                                                     $i." were not within range");
+                        return false;
+                    }                    
+                }
+                return true; 
 	}
 	
 	public function handleErrorConfirmTraineeFeedback()
 	{		
 		$this->getRequest()->setParameter("comments", $this->getRequestParameter("comments"));
 		$this->getRequest()->setParameter("traineeAllocation", $this->getRequestParameter("traineeAllocation"));
+                $this->getRequest()->setParameter("chairAllocation", $this->getRequestParameter("chairAllocation"));
 		$this->forward('tournament', 'enterTraineeFeedback');
 	}
 	
@@ -821,43 +826,28 @@ class tournamentActions extends sfActions
         try
         {			
             $propelConn->begin();
-            $feedback = new AdjudicatorFeedbackSheet();
-			$feedback->setAdjudicatorId($this->getRequestParameter("trainee"));
-			
-			$chair = AdjudicatorPeer::retrieveByPk($this->getRequestParameter("chair"));
-			$feedback->setAdjudicatorAllocation($chair->getAdjudicatorAllocation($round));
-			
-			$feedback->setComments($this->getRequestParameter("comments"));
-			$feedback->setScore($this->getRequestParameter("score"));
-			$feedback->save($propelConn);
-			
-			/*
-			if(!TraineeAllocation::getNotFeedbacked($round))
-			{
-				if($round->getStatus() == Round::ROUND_STATUS_ADJUDICATOR_FEEDBACK_ENTRY_COMPLETE)
-				{
-					$round->setStatus(Round::ROUND_STATUS_COMPLETE);
-				}
-				else
-				{
-					$round->setStatus(Round::ROUND_STATUS_TRAINEE_FEEDBACK_ENTRY_COMPLETE);
-				}
-				$round->save($propelConn);
-				
-				$propelConn->commit();
-				$this->redirect("tournament/index");
-			}*/
-			
-            $propelConn->commit();
+                    $chairAllocation = AdjudicatorAllocationPeer::retrieveByPk($this->getRequestParameter("chairAllocation"));
+                    $adjCount = $this->getRequestParameter("adjCount");
+                    for($i = 1; $i < $adjCount; $i++){
+                        $feedback = new AdjudicatorFeedbackSheet();
+                        $feedback->setAdjudicatorId($this->getRequestParameter("trainee".$i));                        
+                        $feedback->setAdjudicatorAllocation($chairAllocation);
+                        $feedback->setComments($this->getRequestParameter("comments".$i));
+                        //only save if a score entered
+                        $score =$this->getRequestParameter("score".$i);
+                        $feedback->setScore($score);
+                        if($score) $feedback->save($propelConn);
+                    }
+                    
+            
         }
         catch(Exception $e)
         {
             $propelConn->rollback();
             throw $e;
         }
-		
-        
-		$link = "tournament/traineeFeedbackEntry?id=".$round->getId();
+        $propelConn->commit();
+        $link = "tournament/traineeFeedbackEntry?id=".$round->getId();
         $this->redirect($link);
 	}
 	

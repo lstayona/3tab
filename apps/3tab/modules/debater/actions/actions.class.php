@@ -21,7 +21,9 @@ class debaterActions extends sfActions
 
   public function executeList()
   {
-    $this->debaters = DebaterPeer::doSelect(new Criteria());
+    $c = new Criteria();
+    $c->addAscendingOrderByColumn(DebaterPeer::NAME);
+    $this->debaters = DebaterPeer::doSelect($c);
   }
 
   public function executeShow()
