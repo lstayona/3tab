@@ -3,9 +3,9 @@ use_helper('Object');
 use_helper('Bootstrap');
 ?>
 <?php if ($sf_request->hasParameter('id')): ?>
-<h1>Edit Institution</h1>
+<h1>Edit Adjudicator</h1>
 <?php else: ?>
-<h1>Create Institution</h1>
+<h1>Create Adjudicator</h1>
 <?php endif; ?>
 
 <?php if ($sf_flash->has("success")): ?>

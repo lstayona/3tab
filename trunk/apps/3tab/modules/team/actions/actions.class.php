@@ -48,7 +48,9 @@ class teamActions extends sfActions
 
   public function executeList()
   {
-    $this->teams = TeamPeer::doSelect(new Criteria());
+    $c = new Criteria();
+    $c->addAscendingOrderByColumn(TeamPeer::NAME);
+    $this->teams = TeamPeer::doSelect($c);
   }
 
   public function executeShow()

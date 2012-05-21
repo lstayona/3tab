@@ -21,7 +21,10 @@ class institutionActions extends sfActions
 
   public function executeList()
   {
-    $this->institutions = InstitutionPeer::doSelect(new Criteria());
+      $c = new Criteria();
+      $c->addAscendingOrderByColumn(InstitutionPeer::NAME);
+      $this->institutions = InstitutionPeer::doSelect($c);
+   
   }
 
   public function executeShow()
