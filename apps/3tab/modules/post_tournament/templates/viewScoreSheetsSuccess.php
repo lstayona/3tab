@@ -33,8 +33,8 @@ $errors = $sf_request->getErrors();
 <table>
 	<thead>
         <tr>
-            <th colspan = "3">AFFIRMATIVE</th>
-            <th colspan = "3">NEGATIVE</th>
+            <th colspan = "3">GOVERNMENT</th>
+            <th colspan = "3">OPPOSITION</th>
         </tr>
         <tr>
             <th><?php echo $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getName();?></th>
