@@ -31,8 +31,8 @@ jQuery(document).ready(function () {
     <td><?php echo $count++ ?></td>
       <td><?php echo TeamPeer::retrieveByPk($teamScore->getTeamId())->getName() ?></td>
       <td><?php echo $teamScore->getTotalTeamScore() ?></td>
-	  <td><?php echo $teamScore->getTotalSpeakerScore()  ?></td>
-	  <td><?php echo $teamScore->getTotalMargin()  ?></td>
+	  <td><?php echo number_format($teamScore->getTotalSpeakerScore(),2,'.',''); ?></td>
+	  <td><?php echo number_format($teamScore->getTotalMargin(),2,'.','');  ?></td>
 	  <td><?php echo $teamScore->getTeam()->getTotalAffs() ?> </td>
   </tr>
 <?php endforeach; ?>

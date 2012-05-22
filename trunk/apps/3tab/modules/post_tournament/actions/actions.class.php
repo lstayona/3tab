@@ -16,11 +16,12 @@ class post_tournamentActions extends sfActions
    */
   public function executeIndex()
   {
-    $this->rounds = RoundPeer::getRoundsInSequence();
+    //$this->rounds = RoundPeer::getRoundsInSequence();
   }
   
   public function executeSpeakerRankings()
   {
+        $this->rounds = RoundPeer::getRoundsInSequence(); 
 	$this->speakerScores = SpeakerScorePeer::getDebatersInOrder();
   }
   
@@ -31,12 +32,14 @@ class post_tournamentActions extends sfActions
   
   public function executeResultsByRound()
   {
+        
 	$this->rounds = RoundPeer::getRoundsInSequence();
   }
   
   public function executeResultsByTeam()
   {
 	$c = new Criteria();
+        $c->add(TeamPeer::ACTIVE, TRUE);
 	$c->addAscendingOrderByColumn(TeamPeer::NAME);
 	$this->teams = TeamPeer::doSelect($c);
 	$rounds = RoundPeer::getRoundsInSequence();
