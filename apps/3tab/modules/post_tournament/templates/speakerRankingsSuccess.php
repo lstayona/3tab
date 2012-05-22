@@ -18,18 +18,30 @@ jQuery(document).ready(function () {
   <th>Rank</th>
   <th>Name</th>
   <th>Team</th>
+  <?php foreach ($rounds as $round): ?>
+  <th> <?php echo $round->getName() ?></th>
+  <?php endforeach; ?>
+       
   <th>Total Speaker Scores</th>
 </tr>
 </thead>
 <tbody>
 <?php $count = 1 ?>
+<?php $c = new Criteria();
+      $c->addAscendingOrderByColumn(DebaterResultPeer::DEBATE_TEAM_XREF_ID);
+      $c->add(DebaterResultPeer::SPEAKING_POSITION,4,Criteria::NOT_EQUAL);
+?>
 <?php foreach ($speakerScores as $speakerScore): ?>
 <tr>
     <td><?php echo $count++ ?></td>
 	<?php $debater = DebaterPeer::retrieveByPk($speakerScore->getDebaterId()); ?>
       <td><?php echo $debater->getName() ?></td>
 	  <td><?php echo $debater->getTeam()->getName() ?></td>
-      <td><?php echo $speakerScore->getTotalSpeakerScore() ?> </td>
+          <?php $debaterResults = $debater->getDebaterResults($c);?>
+          <?php foreach ($debaterResults as $debaterResult):?>
+            <td><?php echo number_format($debaterResult->getAveragedScore(),2,'.','');?></td>
+          <?php endforeach; ?>          
+      <td><?php echo number_format($speakerScore->getTotalSpeakerScore(),2,'.',''); ?> </td>
   </tr>
 <?php endforeach; ?>
 </tbody>

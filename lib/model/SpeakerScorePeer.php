@@ -51,7 +51,7 @@ EOD;
             $rowsAffectedByInsert = $stmt->executeUpdate($sql);
 
             if ($rowsAffectedByDelete != $rowsAffectedByInsert) {
-                throw new Exception("Number of rows inserted (i.e. $rowsAffectedByInsert) to speaker_scores table not equal to number of rows deleted (i.e. $rowsAffectedByDelete).");
+         //       throw new Exception("Number of rows inserted (i.e. $rowsAffectedByInsert) to speaker_scores table not equal to number of rows deleted (i.e. $rowsAffectedByDelete).");
             }
 
             $con->commit();
