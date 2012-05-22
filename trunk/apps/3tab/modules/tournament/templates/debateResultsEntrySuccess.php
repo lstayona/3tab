@@ -61,8 +61,8 @@ $errors = $sf_request->getErrors();
 <table class="zebra-striped bordered-table condensed-table">
     <thead>
         <tr>
-            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations($c)); ?>">AFFIRMATIVE</th>
-            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations($c)); ?>">NEGATIVE</th>
+            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations($c)); ?>">GOVERNMENT</th>
+            <th colspan="<?php echo (3 + $debate->countAdjudicatorAllocations($c)); ?>">OPPOSITION</th>
         </tr>
         <tr>
             <th id="<?php echo "team_name_" + $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getId();?>"><?php echo $debate->getTeam(DebateTeamXref::AFFIRMATIVE)->getName();?></th>
