@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
 
 <?php use_helper('Object') ?>
 
-<?php echo form_tag('tournament/EnterFeedback') ?>
+<?php echo form_tag('tournament/enterFeedback') ?>
 
 <h1> Select the team where feedback is from: </h1>
 <table id="form">
