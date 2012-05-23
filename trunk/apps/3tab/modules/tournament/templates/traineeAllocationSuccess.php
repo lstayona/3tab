@@ -25,13 +25,13 @@ foreach($debates as $number => $debate):
         <tr>	
 			<td><?php echo $debate->getInfo(); ?></td>
             <?php $chair = $debate->getChair(); ?>
-            <td><?php echo $chair->getName(); ?></td>
+            <td><?php echo $chair->getInfoPlus(); ?></td>
 			<?php echo input_hidden_tag("debates[$number]", $debate->getId()); ?>
 			<td>
 			<?php echo select_tag("trainees[$number][0]", objects_for_select(
 					  $trainees,
 					  'getId',
-					  'getInfo',
+					  'getInfoPlus',
 					  $sf_request->getParameter("trainees[$number][0]"),
 					  'include_blank = true'
 					), array("class" => "adjudicator_selector")) ?>
@@ -42,7 +42,7 @@ foreach($debates as $number => $debate):
 			<?php echo select_tag("trainees[$number][1]", objects_for_select(
 					  $trainees,
 					  'getId',
-					  'getInfo',
+					  'getInfoPlus',
 					  $sf_request->getParameter("trainees[$number][1]"),
 					  'include_blank = true'
 					), array("class" => "adjudicator_selector")) ?>
@@ -53,7 +53,7 @@ foreach($debates as $number => $debate):
 			<?php echo select_tag("trainees[$number][2]", objects_for_select(
 					  $trainees,
 					  'getId',
-					  'getInfo',
+					  'getInfoPlus',
 					  $sf_request->getParameter("trainees[$number][2]"),
 					  'include_blank = true'
 					), array("class" => "adjudicator_selector")) ?>            
