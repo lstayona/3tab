@@ -1,4 +1,5 @@
-<?php use_helper('Object') ?>
+<?php use_helper('Object'); ?>
+<?php use_helper('3tabForm'); ?>
 <h1>Draft Trainee Allocations For <?php echo $round->getName();?></h1>
 <?php if ($sf_request->hasErrors()):?>
 <div class="alert-message error">
@@ -20,6 +21,7 @@
     </thead>
     <tbody>			
 <?php
+$adjudicator_select_options = get_adjudicator_select_options($trainees);
 foreach($debates as $number => $debate):
 ?>
         <tr>	
@@ -28,35 +30,32 @@ foreach($debates as $number => $debate):
             <td><?php echo $chair->getInfoPlus(); ?></td>
 			<?php echo input_hidden_tag("debates[$number]", $debate->getId()); ?>
 			<td>
-			<?php echo select_tag("trainees[$number][0]", objects_for_select(
-					  $trainees,
-					  'getId',
-					  'getInfoPlus',
-					  $sf_request->getParameter("trainees[$number][0]"),
-					  'include_blank = true'
-					), array("class" => "adjudicator_selector")) ?>
+			<?php echo adjudicator_select_tag("trainees[$number][0]", 
+					$adjudicator_select_options, 
+					$sf_request->getParameter("trainees[$number][0]"),
+					true,
+					array("class" => "adjudicator_selector")
+			); ?>	
             <?php echo input_hidden_tag("previous_adjudicator_value[$number][0]"); ?>
             <?php echo input_hidden_tag("previous_adjudicator_text[$number][0]"); ?>
 			</td>
 			<td>
-			<?php echo select_tag("trainees[$number][1]", objects_for_select(
-					  $trainees,
-					  'getId',
-					  'getInfoPlus',
-					  $sf_request->getParameter("trainees[$number][1]"),
-					  'include_blank = true'
-					), array("class" => "adjudicator_selector")) ?>
+			<?php echo adjudicator_select_tag("trainees[$number][1]", 
+					$adjudicator_select_options, 
+					$sf_request->getParameter("trainees[$number][1]"),
+					true,
+					array("class" => "adjudicator_selector")
+			); ?>	
             <?php echo input_hidden_tag("previous_adjudicator_value[$number][1]"); ?>
             <?php echo input_hidden_tag("previous_adjudicator_text[$number][1]"); ?>
 			</td>
 			<td>
-			<?php echo select_tag("trainees[$number][2]", objects_for_select(
-					  $trainees,
-					  'getId',
-					  'getInfoPlus',
-					  $sf_request->getParameter("trainees[$number][2]"),
-					  'include_blank = true'
-					), array("class" => "adjudicator_selector")) ?>            
+			<?php echo adjudicator_select_tag("trainees[$number][2]", 
+					$adjudicator_select_options, 
+					$sf_request->getParameter("trainees[$number][2]"),
+					true,
+					array("class" => "adjudicator_selector")
+			); ?>	
             <?php echo input_hidden_tag("previous_adjudicator_value[$number][2]"); ?>
             <?php echo input_hidden_tag("previous_adjudicator_text[$number][2]"); ?>
 			</td>
