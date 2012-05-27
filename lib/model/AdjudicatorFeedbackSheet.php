@@ -36,49 +36,37 @@ class AdjudicatorFeedbackSheet extends BaseAdjudicatorFeedbackSheet
         
         public static function getFeedbacksExpected($round, $team, $con = null)
         {
-                if($con==null)
-		{
-			$con = Propel::getConnection();
-		}		
-		$stmt = $con->createStatement();
-		$query = "SELECT DISTINCT adjudicator_allocations.* FROM debates_teams_xrefs,debates, adjudicator_allocations
-                          WHERE debates_teams_xrefs.debate_id = debates.id 
-                          AND adjudicator_allocations.debate_id = debates_teams_xrefs.debate_id
-                          AND debates_teams_xrefs.team_id = %d
-                          AND debates.round_id = %d 
-                          AND (NOT adjudicator_allocations.type = %d)";
-		$query = sprintf($query, $team->getId(), $round->getId(), AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE);
-		$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-		$allocatedJudges = AdjudicatorAllocationPeer::populateObjects($rs);
-                $judgesWithNoFeedback = array();
-                foreach($allocatedJudges as $judgeAllocation){
-                    if(!self::checkFeedbackReceived($team, $judgeAllocation->getAdjudicator(),$con))
-                    {
-                        $judgesWithNoFeedback[] = $judgeAllocation;
-                    }
+    
+			$criteria = new Criteria();	
+			$criteria->addJoin(AdjudicatorAllocationPeer::DEBATE_ID, DebatePeer::ID);
+			$criteria->addJoin(DebatePeer::ID, DebateTeamXrefPeer::DEBATE_ID);
+			$criteria->add(DebatePeer::ROUND_ID, $round->getId());
+			$criteria->add(DebateTeamXrefPeer::TEAM_ID, $team->getId());
+			$criteria->add(AdjudicatorAllocationPeer::TYPE, AdjudicatorAllocation::ADJUDICATOR_TYPE_TRAINEE, Criteria::NOT_EQUAL);
+
+            $judgesWithNoFeedback = array();
+            foreach(AdjudicatorAllocationPeer::doSelect($criteria, $con) as $judgeAllocation)
+            {
+                if(!self::checkFeedbackReceived($team, $judgeAllocation->getAdjudicator($con), $round, $con))
+                {
+                    $judgesWithNoFeedback[] = $judgeAllocation;
                 }
-                
-                return $judgesWithNoFeedback;
+            }
+
+            return $judgesWithNoFeedback;
         }       
      
         
-        private static function checkFeedbackReceived($team, $adjudicator, $con = null)
+        private static function checkFeedbackReceived($team, $adjudicator, $round, $con = null)
         {
-            if($con==null)
-		{
-			$con = Propel::getConnection();
-		}		
-		$stmt = $con->createStatement();
-		$query = "SELECT DISTINCT adjudicator_feedback_sheets.* FROM adjudicator_feedback_sheets,debates_teams_xrefs, debates
-                          WHERE adjudicator_feedback_sheets.debate_team_xref_id = debates_teams_xrefs.id
-                          AND debates_teams_xrefs.debate_id = debates.id
-                          AND debates_teams_xrefs.team_id = %d
-                          AND adjudicator_id = %d";
-		$query = sprintf($query, $team->getId(), $adjudicator->getId());
-		$rs = $stmt->executeQuery($query, ResultSet::FETCHMODE_NUM);
-		$feedback_sheets = AdjudicatorFeedbackSheetPeer::populateObjects($rs);
-                
-                return count($feedback_sheets) > 0;
+			$criteria = new Criteria();	
+			$criteria->addJoin(AdjudicatorFeedbackSheetPeer::DEBATE_TEAM_XREF_ID, DebateTeamXrefPeer::ID);
+			$criteria->addJoin(DebateTeamXrefPeer::DEBATE_ID, DebatePeer::ID);
+			$criteria->add(DebatePeer::ROUND_ID, $round->getId());
+			$criteria->add(DebateTeamXrefPeer::TEAM_ID, $team->getId());
+			$criteria->add(AdjudicatorFeedbackSheetPeer::ADJUDICATOR_ID, $adjudicator->getId());
+
+			return AdjudicatorFeedbackSheetPeer::doCount($criteria, true, $con) > 0 ? true : false;
         }
         
 	/*public static function feedbackComplete($round, $con=null)
