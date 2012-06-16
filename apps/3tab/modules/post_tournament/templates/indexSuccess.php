@@ -21,3 +21,9 @@ jQuery(document).ready(function () {
 	<td><div id="button"><?php //echo link_to("View Results By Adjudicator", "post_tournament/resultsByAdjudicator") ?></div></td>
 </tr>
 </table>
+<table>
+<tr>
+        <td><div id="button"><?php echo link_to("View Adjudicator Feedback Scores", "post_tournament/adjudicatorRankings")?></div></td>
+</tr>
+</table>
+</table>

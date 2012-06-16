@@ -30,6 +30,12 @@ class post_tournamentActions extends sfActions
 	$this->teamScores = TeamScorePeer::getTeamsInRankedOrder();
   }
   
+  public function executeAdjudicatorRankings()
+  {
+     $this->rounds = RoundPeer::getRoundsInSequence(); 
+     $this->adjudicators = AdjudicatorPeer::doSelect(new Criteria());
+  }
+  
   public function executeResultsByRound()
   {
         

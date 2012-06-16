@@ -146,6 +146,69 @@ class Adjudicator extends BaseAdjudicator
 		}
 		return $score;
 	}
+        
+        public function getAverageFeedbackScoreForRound($round, $con = null)
+        {
+            if(is_null($con))
+            {
+                $con = Propel::getConnection();
+            }
+            
+            $query = "select count(score) as t_count from adjudicator_feedback_sheets, adjudicator_allocations, debates, rounds where 
+                     adjudicator_allocation_id = adjudicator_allocations.id
+                     and adjudicator_allocations.debate_id = debates.id
+                     and debates.round_id = rounds.id
+                     and rounds.id = %d
+                     and adjudicator_feedback_sheets.adjudicator_id=%d";
+            $query = sprintf($query, $round->getId(), $this->getId());
+            $statement = $con->prepareStatement($query);
+            $rs = $statement->executeQuery();
+	    $rs->next();
+            if($rs->getInt('t_count') == 1)
+	    {
+		$query = "select score as t_score from adjudicator_feedback_sheets, adjudicator_allocations, debates, rounds where 
+                     adjudicator_allocation_id = adjudicator_allocations.id
+                     and adjudicator_allocations.debate_id = debates.id
+                     and debates.round_id = rounds.id
+                     and rounds.id = %d
+                     and adjudicator_feedback_sheets.adjudicator_id=%d";
+                    $query = sprintf($query, $round->getId(), $this->getId());
+                    $statement = $con->prepareStatement($query);
+                    $rs = $statement->executeQuery();
+                    $rs->next();
+                    return $rs->getFloat('t_score');
+	    }else{
+                $query = "select count(score) as a_count from adjudicator_feedback_sheets, debates_teams_xrefs, debates, rounds where 
+                    debate_team_xref_id = debates_teams_xrefs.id
+                    and debates_teams_xrefs.debate_id = debates.id
+                    and debates.round_id = rounds.id
+                    and rounds.id = %d
+                    and adjudicator_id=%d";
+                    $query = sprintf($query, $round->getId(), $this->getId());
+                    $statement = $con->prepareStatement($query);
+                    $rs = $statement->executeQuery();
+                    $rs->next();                   
+            
+                if($rs->getInt('a_count') >= 1)
+                {
+                    $query = "select avg(score) as a_score from adjudicator_feedback_sheets, debates_teams_xrefs, debates, rounds where 
+                        debate_team_xref_id = debates_teams_xrefs.id
+                        and debates_teams_xrefs.debate_id = debates.id
+                        and debates.round_id = rounds.id
+                        and rounds.id = %d
+                        and adjudicator_id=%d";
+                    $query = sprintf($query, $round->getId(), $this->getId());
+                    $statement = $con->prepareStatement($query);
+                    $rs = $statement->executeQuery();
+                    $rs->next();   
+                    return $rs->getFloat('a_score');
+                    
+                }
+                    
+                    
+                    
+            }
+        }
 	
 	public function getAverageFeedbackScore($con = null)
 	{
