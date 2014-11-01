@@ -7,7 +7,7 @@ Full file here : Written by Thevesh Theva
 https://docs.google.com/document/d/1TEPdxq99R-hnefaEAsZBCUbE-Nad6sRacKilhukam0k/edit?usp=sharing
 
 Areas covered in this guide:
-*Setting up 3tab
+  *Setting up 3tab
 *Using 3tab
 *Deleting Data in Bulk
 *Importing Data from a CSV file
