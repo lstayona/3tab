@@ -8,13 +8,13 @@ https://docs.google.com/document/d/1TEPdxq99R-hnefaEAsZBCUbE-Nad6sRacKilhukam0k/
 
 Areas covered in this guide:
   * Setting up 3tab
-*Using 3tab
-*Deleting Data in Bulk
-*Importing Data from a CSV file
-*Changing the Scoring Range
-*Networking via wireless network (using IP address)
-*Backing up and Restoring
-*Post-tournament
+  * Using 3tab
+  * Deleting Data in Bulk
+  * Importing Data from a CSV file
+  * Changing the Scoring Range 
+  * Networking via wireless network (using IP address)
+  * Backing up and Restoring
+  * Post-tournament
 
 = Details =
 
